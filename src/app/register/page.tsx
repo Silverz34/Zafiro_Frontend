@@ -9,13 +9,13 @@ export default function RegisterPage() {
     <main className="relative min-h-screen w-full flex overflow-hidden">
       <div className="relative hidden lg:flex lg:w-1/2 items-center justify-center">
             <FondoHero /> 
-            <h1 className="relative z-10 text-white text-7xl font-bold tracking-tighter">
-             ¡Bienvenido!
+            <h1 className="relative z-10 text-white text-6xl font-bold tracking-tighter">
+             Empieza tu experiencia ahora
             </h1>
       </div>
-        <div className="w-full lg:w-1/2 bg-[#100F1D] lg:rounded-l-[3rem] p-10 px-45">
+        <div className="w-full lg:w-1/2 bg-[#100F1D] lg:rounded-l-[3rem] py-25 px-45">
           <div className="flex items-center justify-center gap-2 mb-6">
-             <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-40 w-auto" />
+             <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-15 w-auto" />
           </div>
           <form className="space-y-5">
        
@@ -100,7 +100,7 @@ export default function RegisterPage() {
             <p className="text-center text-base text-gray-400 mt-4">
               ¿Ya tienes una cuenta? 
               <Link href="/login" className="px-2 text-base text-blue-600 transition-colors ">
-                Login
+                Registrate
               </Link>
             </p>
           </form>
