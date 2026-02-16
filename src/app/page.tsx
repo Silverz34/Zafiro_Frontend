@@ -12,12 +12,12 @@ export default function Home() {
         <div className="flex items-center gap-2">
           <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-30 w-auto" />
         </div>
-        <div className="flex gap-4">
-          <Link href="/login" className="px-4 py-2 text-sm hover:text-blue-400 transition-colors">
-            Sign In
+        <div className="flex gap-4 ">
+          <Link href="/login" className="px-4 py-2 text-sm hover:text-blue-400 transition-colors ">
+            Login
           </Link>
-          <Link href="/register" className="px-4 py-2 text-sm border border-slate-700 rounded-lg hover:bg-slate-800 transition-colors">
-            Register
+          <Link href="/register" className="px-4 py-2 text-sm border border-blue-600 rounded-lg hover:bg-slate-800 transition-colors">
+            Registrar
           </Link>
         </div>
       </header>
