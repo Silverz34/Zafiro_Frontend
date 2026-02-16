@@ -1,13 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FondoHero } from "../../components/Hero/fondo-hero";
+import {FeatureCard} from "../../components/Card"
+import { BrainCircuit, CalendarClock, BarChart3, Tags, Search, Scale, Github } from "lucide-react";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col font-sans dark:bg-[var(--background)]">
+
       <header className="w-full py-5 px-8 flex justify-between items-center max-w-10xl mx-auto">
         <div className="flex items-center gap-2">
-          <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-15 w-auto" />
+          <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-30 w-auto" />
         </div>
         <div className="flex gap-4">
           <Link href="/login" className="px-4 py-2 text-sm hover:text-blue-400 transition-colors">
@@ -35,10 +38,65 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="w-full md:h-100 bg-gradient-to-r from-blue-400 from-blue-600 rounded-2xl shadow-2xl mb-24 relative overflow-hidden group">
+          <div className="justify-center text-center">
+            <h1>Aun no se que colocar aqui, tal vez una frase chida</h1>
+          </div>
+         
+        </section>
 
-
+        <section className="w-full mb-24">
+          <div className="mb-12">
+            <h2 className="text-4xl font-bold text-blue-500 mb-2">Soluciones</h2>
+            <h3 className="text-2xl font-bold text-white">Lo que zafiro ofrece para ti</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeatureCard 
+              icon={<BrainCircuit className="w-6 h-6 text-blue-400" />}
+              title="Sugerencias Inteligentes"
+              desc="Nuestro algoritmo detecta saturación y sugiere los mejores horarios disponibles automáticamente."
+            />
+            <FeatureCard 
+              icon={<CalendarClock className="w-6 h-6 text-purple-400" />}
+              title="Re-agendado Dinámico"
+              desc="¿Imprevistos? No borres ni muevas manualmente. Zafiro recalcula tu agenda al instante."
+            />
+            <FeatureCard 
+              icon={<BarChart3 className="w-6 h-6 text-emerald-400" />}
+              title="Visualizador de Densidad"
+              desc="Detecta qué días están saturados con nuestro semáforo de carga laboral."
+            />
+            <FeatureCard 
+              icon={<Tags className="w-6 h-6 text-yellow-400" />}
+              title="Etiquetas de Prioridad"
+              desc="Clasifica tareas (escuela, trabajo, personal) para enfocarte en lo urgente."
+            />
+            <FeatureCard 
+              icon={<Search className="w-6 h-6 text-pink-400" />}
+              title="Detector de Huecos"
+              desc="Encontramos esos pequeños espacios libres para optimizar tu productividad."
+            />
+            <FeatureCard 
+              icon={<Scale className="w-6 h-6 text-orange-400" />}
+              title="Carga Equilibrada"
+              desc="Si un día pesa mucho, te sugerimos distribuir tareas a días más ligeros."
+            />
+          </div>
+        </section>
 
       </main>
+
+      <footer className="w-full border-t border-slate-800 py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-slate-500 text-sm">
+            © 2026 Zafiro. Todos los derechos reservados.
+          </div>
+          <div className="flex gap-6">
+            <Github className="w-5 h-5 text-slate-500 hover:text-white cursor-pointer" />
+          </div>
+        </div>
+      </footer>
+
     </div>
   );
 }
