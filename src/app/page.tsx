@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FondoHero } from "../../components/Hero/fondo-hero";
-import {FeatureCard} from "../../components/Card"
+import { FondoHero } from "@/components/Hero/fondo-hero";
+import {FeatureCard} from "@/components/Card"
 import { BrainCircuit, CalendarClock, BarChart3, Tags, Search, Scale, Github } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col font-sans dark:bg-[var(--background)]">
+    <div className="min-h-screen flex flex-col font-sans dark:bg-background">
 
       <header className="w-full py-5 px-8 flex justify-between items-center max-w-10xl mx-auto">
         <div className="flex items-center gap-2">
@@ -22,27 +22,26 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-grow flex flex-col items-center w-full max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="grow flex flex-col items-center w-full max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
         <section className="relative w-full text-center py-20 overflow-hidden">
           <FondoHero />
-          <h1 className="text-6xl md:text-7xl font-bold mb-4 tracking-tight font-nunito">
+          <h1 className="text-6xl md:text-7xl font-bold mb-4 tracking-tight font-nunito z-1">
             ZAFIRO
           </h1>
-          <p className="text-xl md:text-2xl text-slate-400 font-light mb-8">
+          <p className="text-xl md:text-2xl text-slate-400 font-light mb-8 z-1">
             Planea fácil, vive ligero
           </p>
           <div className="flex gap-4 justify-center">
-            <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-blue-900/20">
+            <Link href={'/login'} className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-blue-900/20 z-1">
               Empezar Ahora 
-            </button>
+            </Link>
           </div>
         </section>
 
-        <section className="w-full md:h-100 bg-gradient-to-r from-blue-400 from-blue-600 rounded-2xl shadow-2xl mb-24 relative overflow-hidden group">
+        <section className="w-full md:h-100 bg-linear-to-r from-blue-600 rounded-2xl shadow-2xl mb-24 relative overflow-hidden group">
           <div className="justify-center text-center">
             <h1>Aun no se que colocar aqui, tal vez una frase chida</h1>
           </div>
-         
         </section>
 
         <section className="w-full mb-24">
@@ -89,11 +88,10 @@ export default function Home() {
       <footer className="w-full border-t border-slate-800 py-8 mt-auto">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-slate-500 text-sm">
-            © 2026 Zafiro. Todos los derechos reservados.
           </div>
-          <div className="flex gap-6">
+          <a href="https://github.com/Silverz34/Zafiro_Frontend" className="flex gap-6">
             <Github className="w-5 h-5 text-slate-500 hover:text-white cursor-pointer" />
-          </div>
+          </a>
         </div>
       </footer>
 
