@@ -33,22 +33,6 @@ export default function RegisterPage() {
                 />
               </div>
             </div>
-
-            <div className="space-y-2">
-              <label className="text-gray-300 text-sm ml-1">Apellidos:</label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                  <User size={18} />
-                </span>
-                <input 
-                  type="text" 
-                  placeholder="Santa Ana"
-                  className="w-full bg-[#1e293b]/50 border border-blue-900/50 rounded-lg py-3 pl-10
-                   pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
-                />
-              </div>
-            </div>
-
             <div className="space-y-2">
               <label className="text-gray-300 text-sm ml-1">Correo :</label>
               <div className="relative">

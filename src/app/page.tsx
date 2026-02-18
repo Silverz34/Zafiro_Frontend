@@ -10,7 +10,7 @@ export default function Home() {
 
       <header className="w-full py-5 px-8 flex justify-between items-center max-w-10xl mx-auto">
         <div className="flex items-center gap-2">
-          <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-30 w-auto" />
+          <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
         </div>
         <div className="flex gap-4 ">
           <Link href="/login" className="px-4 py-2 text-sm hover:text-blue-400 transition-colors ">
