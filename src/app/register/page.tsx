@@ -1,7 +1,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FondoHero } from '../../../components/Hero/fondo-hero';
+import { FondoHero } from '../../components/Hero/fondo-hero';
 import { User, Mail, Lock} from 'lucide-react'; 
 
 export default function RegisterPage() {

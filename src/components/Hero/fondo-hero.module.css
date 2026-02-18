@@ -19,6 +19,7 @@
   transform-origin: top left;
   transform: scale(0) rotate(0deg) translate(-50%, -50%);
   animation: cube 12s ease-in forwards infinite;
+  z-index: 0;
 }
 
 .cube:nth-child(2n) {
