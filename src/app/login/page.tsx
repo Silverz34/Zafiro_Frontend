@@ -15,7 +15,7 @@ export default function Loginpage() {
             </h1>
       </div>
         
-      <div className="w-full lg:w-1/2 bg-[#100F1D] lg:rounded-r-[3rem] py-55 px-45">
+      <div className="w-full lg:w-1/2 bg-[#100F1D] lg:rounded-l-[3rem] py-55 px-45">
         <div className="flex items-center justify-center gap-2 mb-12">
             <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-15 w-auto" />
         </div>
