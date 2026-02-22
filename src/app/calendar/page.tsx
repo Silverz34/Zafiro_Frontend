@@ -1,6 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
+import { fetchDailyActivities } from "../../../lib/calendarAction";
+export default async function DashboardTemporal() {
 
-export default function DashboardTemporal() {
   return (
     <div className="min-h-screen bg-[#100F1D] text-white flex flex-col items-center justify-center p-8">
       <h1 className="text-4xl font-bold mb-4 text-blue-500">¡Autenticación exitosa!</h1>
@@ -14,6 +15,7 @@ export default function DashboardTemporal() {
         <span className="text-gray-300">Gestiona tu sesión actual:</span>
         <UserButton  />
       </div>
+      
     </div>
   );
 }
