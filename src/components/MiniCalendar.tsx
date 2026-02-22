@@ -20,7 +20,7 @@ export default function MiniCalendar() {
   const today = new Date();
 
   return (
-    <div className="bg-[#171733] p-4 rounded-xl text-white w-full max-w-70 max-h-70">
+    <div className="bg-[#171733] p-3 rounded-xl text-white w-full max-w-60 max-h-77">
       
       <div className="flex justify-between items-center mb-4">
         <button onClick={handlePrevMonth} className="text-blue-600 hover:text-white px-2 py-1 rounded transition-colors">&lt;</button>
@@ -29,7 +29,7 @@ export default function MiniCalendar() {
           <select 
             value={month} 
             onChange={handleMonthChange}
-            className="bg-[#171733] border border-gray-500 text-sm rounded px-2 py-1 outline-none cursor-pointer"
+            className=" bg-[#171733] border border-gray-500 text-xs rounded px-1 py-1 outline-none cursor-pointer"
           >
             {monthNames.map((m, index) => (
               <option key={m} value={index}>{m}</option>
@@ -38,7 +38,7 @@ export default function MiniCalendar() {
           <select 
             value={year} 
             onChange={handleYearChange}
-            className="bg-[#171733] border border-gray-500 text-sm rounded px-2 py-1 outline-none cursor-pointer"
+            className="bg-[#171733] border border-gray-500 text-xs rounded px-1 py-1 outline-none cursor-pointer"
           >
             {years.map((y) => (
               <option key={y} value={y}>{y}</option>
@@ -46,7 +46,7 @@ export default function MiniCalendar() {
           </select>
         </div>
 
-        <button onClick={handleNextMonth} className="text-blue-600 hover:text-white px-2 py-1 rounded transition-colors">&gt;</button>
+        <button onClick={handleNextMonth} className="text-blue-600 hover:text-white px-1 py-1 rounded transition-colors">&gt;</button>
       </div>
       <div className="grid grid-cols-7 gap-1 mb-2">
         {weekDays.map((day) => (

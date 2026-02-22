@@ -23,7 +23,7 @@ export default function Prioridad() {
   };
 
   return (
-    <div className="w-full max-w-70 p-4 bg-[#171733] rounded-xl">
+    <div className="w-full max-w-60 p-4 bg-[#171733] rounded-xl">
       <h3 className="text-sm text-white mb-4 font-medium">Prioridad</h3>
       
       <div className="space-y-3">
