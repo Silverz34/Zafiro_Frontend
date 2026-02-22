@@ -1,9 +1,10 @@
 import { UserButton } from "@clerk/nextjs";
 import MiniCalendar from "@/components/MiniCalendar";
-export default async function DashboardTemporal() {
+import Prioridad from "@/components/EtiquetasPrioridad";
 
+export default async function DashboardTemporal() {
   return (
-    <div className="min-h-screen bg-[#100F1D] text-white flex flex-col items-center justify-center p-8">
+    <div className="min-h-screen bg-[#010112] text-white flex flex-col items-center justify-center p-8">
       <h1 className="text-4xl font-bold mb-4 text-blue-500">¡Autenticación exitosa!</h1>
       
       <p className="text-gray-400 mb-8 text-center max-w-md text-lg">
@@ -14,6 +15,7 @@ export default async function DashboardTemporal() {
         <UserButton  />
       </div>
       <MiniCalendar/>
+      <Prioridad/>
     </div>
   );
 }
