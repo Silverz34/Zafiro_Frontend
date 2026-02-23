@@ -1,9 +1,6 @@
 'use client'
-import { date } from "zod";
 import { CalendarLogic } from "../../hooks/calendar"
 import { GoogleEvent } from "../../interfaces/GEvent"
-import { PiX } from "react-icons/pi";
-
 interface CalendarProps{
     currentDate: Date;
     events : GoogleEvent[];
@@ -49,19 +46,20 @@ export default function CalendarGrid({currentDate, events}:CalendarProps){
                                   {hours.map((hour)=>(
                                     <div key={`grid-line${hour}`} className="h-20 bordeer-b border-gray-800/300"></div>
                                   ))}
-                                  
-
+                                  {processedEvents.map(event =>(
+                                    <div key={event.id} className="obsolute left-1 right-1 bg-[#100F1D]/20 border border-[#1a73e8] rounded-md p-1.5 
+                                    overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-[#1a73e8]/30 z-10" style={event.positionStyle}>
+                                       <p className="text-xs font-semibold text-blue-100 line-clamp-1">{event.summary}</p>
+                                       <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime}</p>
+                                    </div>
+                                  ))}
                                 </div>
-                            )
-                        
-                        
+                            );
                         })}
 
                     </div>
                 </div>
           </div>
-      
       </div>
-
-    )
+    );
 }
