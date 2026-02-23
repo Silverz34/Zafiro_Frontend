@@ -1,13 +1,27 @@
-import { UserButton } from "@clerk/nextjs";
+'use client'
 import DashboardLayout from "@/components/empaque";
-export default async function DashboardTemporal() {
+import { useEffect, useState } from 'react';
+import CalendarGrid from "@/components/CalendarGrid";
+import { fetchDailyActivities } from "../../../lib/calendarAction";
+import { GoogleEvent } from "../../../interfaces/GEvent";
+
+export default function DashboardTemporal() {
+  const [events, setEvents] = useState<GoogleEvent[] | null>(null);
+  const [currentDate] = useState(new Date());
+  
+  useEffect(() => {
+    const loadEvents = async () => {
+      const data = await fetchDailyActivities();
+      setEvents(data);
+    };
+    loadEvents();
+  }, []);
+  
   return (
-    <div className="min-h-screen bg-[#010112] text-white flex flex-col items-center justify-center">
-      <DashboardLayout>
-        <div className="border-2 border-dashed border-gray-800 rounded-xl h-full flex items-center justify-center text-gray-500">
-          <h1>Aquí irá la cuadrícula principal de la agenda para los estudiantes y trabajadores</h1>
-        </div>
-      </DashboardLayout>
-    </div>
+    <DashboardLayout>
+      <div className="pt-15">
+        <CalendarGrid currentDate={currentDate} events={events || []} />
+      </div>
+    </DashboardLayout>
   );
 }

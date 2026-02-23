@@ -15,15 +15,15 @@ export default function DashboardLayout({ children }: Dashboard) {
   };
 
   return (
-    <div className="flex h-screen w-full text-white overflow-hidden">
+    <div className="flex h-screen w-full bg-[#010112] text-white overflow-hidden">
+      <Sidebar isOpen={isSidebarOpen} />
       <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
         <CalendarHeader toggleSidebar={toggleSidebar} />
-        <Sidebar isOpen={isSidebarOpen} />
-        <main className="flex-1 overflow-y-autop-4 lg:p-6">
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           {children}
         </main>
-
       </div>
+
     </div>
   );
 }
