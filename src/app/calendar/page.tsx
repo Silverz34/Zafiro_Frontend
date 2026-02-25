@@ -7,21 +7,29 @@ import { GoogleEvent } from "../../../interfaces/GEvent";
 
 export default function DashboardTemporal() {
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
-  const [currentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date());
   
-  useEffect(() => {
+  const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
+ useEffect(() => {
     const loadEvents = async () => {
-      const data = await fetchDailyActivities();
-      setEvents(data);
+      const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
+      if (lastFetchedMonth !== currentMonthKey) {
+        console.log(`Descargando bloque de datos para: ${currentMonthKey}...`);
+        const data = await fetchDailyActivities(currentDate.toISOString());
+        
+        if (data) {
+          setEvents(data);
+          setLastFetchedMonth(currentMonthKey); 
+        }
+      }
     };
+
     loadEvents();
-  }, []);
-  
+  }, [currentDate, lastFetchedMonth]); 
+
   return (
-    <DashboardLayout>
-      <div className="pt-15">
-        <CalendarGrid currentDate={currentDate} events={events || []} />
-      </div>
+    <DashboardLayout currentDate={currentDate} setCurrentDate={setCurrentDate}>
+      <CalendarGrid currentDate={currentDate} events={events || [] } />
     </DashboardLayout>
   );
 }

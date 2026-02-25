@@ -1,18 +1,30 @@
-// actions/calendarActions.ts
 "use server";
 import { getGoogleToken } from "./googleAuth";
 
-export async function fetchDailyActivities() {
+export async function fetchDailyActivities(targetDateIso: string) {
   try {
     const token = await getGoogleToken();
-    const googleApiUrl = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
-    const startOfWeek = new Date()
-    startOfWeek.setDate(startOfWeek.getDate()-startOfWeek.getDay());
-    startOfWeek.setHours(0,0,0,0);
-    googleApiUrl.searchParams.append("timeMin", startOfWeek.toISOString());
+    const targetDate = new Date(targetDateIso);
 
-    googleApiUrl.searchParams.append("singleEvents", "true");
-    googleApiUrl.searchParams.append("orderBy", "startTime");
+    const year = targetDate.getFullYear();
+    const month = targetDate.getMonth();
+
+    const timeMin = new Date(year, month, 1);
+    const timeMax = new Date(year, month + 1, 0)
+
+    timeMin.setDate(timeMin.getDate()-10);
+    timeMax.setDate(timeMax.getDate() + 10 );
+    timeMin.setHours(0,0,0,0);
+    timeMax.setHours(23,59,59,999);
+
+    const googleApiUrl = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
+    
+    googleApiUrl.searchParams.append("timeMin", timeMin.toISOString());
+    googleApiUrl.searchParams.append("timeMax", timeMax.toISOString());
+
+    googleApiUrl.searchParams.append("singleEvents", "true"); 
+    googleApiUrl.searchParams.append("orderBy", "startTime"); 
+    googleApiUrl.searchParams.append("maxResults", "1000");
     
     const res = await fetch(googleApiUrl.toString(), {
       headers: {

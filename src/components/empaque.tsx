@@ -6,9 +6,11 @@ import CalendarHeader from './header';
 
 interface Dashboard {
   children: React.ReactNode;
+  currentDate: Date;
+  setCurrentDate: (date : Date) => void;
 }
 
-export default function DashboardLayout({ children }: Dashboard) {
+export default function DashboardLayout({ children, currentDate, setCurrentDate }: Dashboard) {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const toggleSidebar = (): void => {
     setIsSidebarOpen((prev) => !prev);
@@ -18,7 +20,7 @@ export default function DashboardLayout({ children }: Dashboard) {
     <div className="flex h-screen w-full bg-[#010112] text-white overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} />
       <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
-        <CalendarHeader toggleSidebar={toggleSidebar} />
+        <CalendarHeader toggleSidebar={toggleSidebar} currentDate ={currentDate} setCurrentDate={setCurrentDate}/>
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           {children}
         </main>
