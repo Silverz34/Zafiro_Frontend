@@ -6,7 +6,14 @@ export async function fetchDailyActivities() {
   try {
     const token = await getGoogleToken();
     const googleApiUrl = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
-    googleApiUrl.searchParams.append("timeMin", new Date().toISOString());
+    const startOfWeek = new Date()
+    startOfWeek.setDate(startOfWeek.getDate()-startOfWeek.getDay());
+    startOfWeek.setHours(0,0,0,0);
+    googleApiUrl.searchParams.append("timeMin", startOfWeek.toISOString());
+
+    googleApiUrl.searchParams.append("singleEvents", "true");
+    googleApiUrl.searchParams.append("orderBy", "startTime");
+    
     const res = await fetch(googleApiUrl.toString(), {
       headers: {
         Authorization: `Bearer ${token}`,
