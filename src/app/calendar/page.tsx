@@ -29,7 +29,9 @@ export default function DashboardTemporal() {
 
   return (
     <DashboardLayout currentDate={currentDate} setCurrentDate={setCurrentDate}>
-      <CalendarGrid currentDate={currentDate} events={events || [] } />
+      <div className="pt-12">
+       <CalendarGrid currentDate={currentDate} events={events || [] } />
+      </div>
     </DashboardLayout>
   );
 }

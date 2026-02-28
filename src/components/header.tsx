@@ -22,7 +22,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
   } = useCalendarNavigation(currentDate, setCurrentDate);
 
   return (
-    <header className="bg-[#010112] fixed top-0 left-0 z-50 h-15 flex items-center justify-between p-4 lg:px-6 w-full">
+    <header className="bg-[#010112] fixed top-0 left-0 z-50 h-16 flex items-center justify-between lg:px-6 w-full">
 
       <div className="flex items-center justify-between gap-50">
         <div className="flex items-center gap-3">

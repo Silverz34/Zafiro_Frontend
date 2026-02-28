@@ -12,7 +12,7 @@ export default function CalendarGrid({currentDate, events}:CalendarProps){
     const dayNames= ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
     return(
-      <div className="flex flex-col h-full bg-[#100F1D] rounded-xl border border-gray-800 overflow-hidden text-whiteb p">
+      <div className="flex flex-col h-full bg-[#100F1D] rounded-xl border border-gray-800 overflow-hidden text-white">
           <div className="flex border-b border-gray-800">
             <div className="w-16 border-r border-gray-800 shrink-0 flex items-center justify-center text-xs text-white font-bold bg-blue-600">
                 GMT
