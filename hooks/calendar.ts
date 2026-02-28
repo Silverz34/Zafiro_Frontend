@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { GoogleEvent } from "../interfaces/GEvent";
+import { GoogleEvent } from "../interfaces/Evento";
 
 export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[]){
     const weekDay = useMemo(()=>{

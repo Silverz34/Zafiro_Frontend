@@ -3,7 +3,7 @@ import DashboardLayout from "@/components/empaque";
 import { useEffect, useState } from 'react';
 import CalendarGrid from "@/components/CalendarGrid";
 import { fetchDailyActivities } from "../../../lib/calendarAction";
-import { GoogleEvent } from "../../../interfaces/GEvent";
+import { GoogleEvent } from "../../../interfaces/Evento";
 
 export default function DashboardTemporal() {
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);

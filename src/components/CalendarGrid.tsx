@@ -1,6 +1,6 @@
 'use client'
 import { CalendarLogic } from "../../hooks/calendar"
-import { GoogleEvent } from "../../interfaces/GEvent"
+import { GoogleEvent } from "../../interfaces/Evento"
 
 interface CalendarProps{
     currentDate: Date;

@@ -1,5 +1,5 @@
 import z from "zod";
-import { GEventSchema} from "./GEvent"; 
+import { GEventSchema} from "./Evento"; 
 
 
 export const remiderSchema = z.object({
