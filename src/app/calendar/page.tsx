@@ -14,7 +14,7 @@ export default function DashboardTemporal() {
     const loadEvents = async () => {
       const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
       if (lastFetchedMonth !== currentMonthKey) {
-        console.log(`Descargando bloque de datos para: ${currentMonthKey}...`);
+        console.log(`Descargando datos: ${currentMonthKey}...`);
         const data = await fetchDailyActivities(currentDate.toISOString());
         
         if (data) {
