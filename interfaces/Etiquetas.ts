@@ -1,15 +1,14 @@
-import {z} from "zod";
+import { z } from "zod";
 
-export const SchemaEtiqueta= z.object({
- etiqueta: z.string(), 
- color: z.string(),    
+export const SchemaEtiqueta = z.object({
+    etiqueta: z.string(), 
+    color: z.string(),    
 });
 
-export const extras_dict  = z.object({
+export const extras_dict = z.object({
     prioridad: z.enum(["Alta", "Media", "Baja"]),
-    color: z.string
+    color: z.string() 
 });
 
-export type etiquetas = z.infer <typeof SchemaEtiqueta>
-export type prioridades = z.infer <typeof extras_dict>
-
+export type Etiquetas = z.infer<typeof SchemaEtiqueta>;
+export type Prioridades = z.infer<typeof extras_dict>;

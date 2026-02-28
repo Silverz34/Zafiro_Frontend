@@ -1,18 +1,16 @@
 import { z } from "zod";
 
+export const GoogleSchema= z.object({
+    dateTime: z.string().optional(),
+    date: z.string()
+})
+
 export const GEventSchema = z.object(
     {
         id: z.string(),
-        summary: z.string(),
-        start: z.object({
-            dateTime: z.string(),
-            date: z.string(),
-        }),
-        end: z.object({
-            dateTime: z.string(),
-            date: z.string()
-        }),
-
+        summary: z.string().optional(),
+        start: GoogleSchema,
+        end: GoogleSchema
     }
 );
 
