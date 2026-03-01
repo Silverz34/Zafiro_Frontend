@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { GoogleEvent } from "../interfaces/Evento";
+import { start } from "repl";
 
 export type ViewType = 'dia' | 'semana' | 'mes' | 'año'
 export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view: ViewType){
@@ -21,6 +22,20 @@ export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view:
                 return day;
             });
         }
+        
+        else if (view === 'mes'){
+            const startOfMonth = new Date(year, month, 1);
+            const startDayOfWeek = startOfMonth.getDay();
+            const firstDay= new Date(startOfMonth);
+            firstDay.setDate(startOfMonth.getDate()- startDayOfWeek);
+            
+            return Array.from({length: 42}).map((_, i)=>{
+                const day = new Date(firstDay);
+                day.setDate(firstDay.getDate()+i);
+                return day;
+            });
+        }
+
         else if(view === 'año'){
             return Array.from({length: 12}).map((_, i) => new Date (year, i ,1));
         }
