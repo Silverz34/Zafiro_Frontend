@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FondoHero } from "@/components/Hero/fondo-hero";
-import {FeatureCard} from "@/components/Card"
+import { FondoHero } from "@/components/landing/Hero/fondo-hero";
+import {FeatureCard} from "@/components/landing/Card"
 import { BrainCircuit, CalendarClock, BarChart3, Tags, Search, Scale, Github } from "lucide-react";
 
 export default function Home() {

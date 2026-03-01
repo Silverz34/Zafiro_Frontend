@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Sidebar from './sidebar';
+import Sidebar from './sidebar/sidebar';
 import CalendarHeader from './header';
-import { ViewType } from '../../hooks/calendar';
+import { ViewType } from '../../../hooks/calendar';
+
 interface Dashboard {
   children: React.ReactNode;
   currentDate: Date;

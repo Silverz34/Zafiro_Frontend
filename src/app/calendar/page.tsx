@@ -1,5 +1,5 @@
 'use client'
-import DashboardLayout from "@/components/empaque";
+import DashboardLayout from "@/components/empaque/empaque";
 import { useEffect, useState } from 'react';
 import CalendarGrid from "@/components/CalendarGrid";
 import { fetchDailyActivities } from "../../../lib/calendarAction";

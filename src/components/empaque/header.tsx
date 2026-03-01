@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useCalendarNavigation } from "../../hooks/NavigationCalendar";
+import { useCalendarNavigation } from "../../../hooks/NavigationCalendar";
 import { HiMenu, HiChevronDown } from "react-icons/hi";
-import { ViewType } from '../../hooks/calendar';
+import { ViewType } from '../../../hooks/calendar';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
