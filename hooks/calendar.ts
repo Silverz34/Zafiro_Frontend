@@ -1,18 +1,32 @@
 import { useMemo } from "react";
 import { GoogleEvent } from "../interfaces/Evento";
 
-export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[]){
-    const weekDay = useMemo(()=>{
-        const startOfWeek = new Date(currentDate);
-        startOfWeek.setDate(currentDate.getDate()- currentDate.getDay());
+export type ViewType = 'dia' | 'semana' | 'mes' | 'año'
+export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view: ViewType){
+    const days= useMemo(()=>{
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
 
-        return Array.from({length: 7}).map((_, i) => {
-            const day = new Date(startOfWeek);
-            day.setDate(startOfWeek.getDate() + i);
-            return day;
-        });
-    }, [currentDate]);
+        if (view = 'dia'){
+            return [new Date(currentDate)];
+        }
+        
+        else if(view === 'semana'){
+            const startOfWeek = new Date(currentDate);
+            startOfWeek.setDate(currentDate.getDate()- currentDate.getDay());
 
+            return Array.from({length: 7}).map((_, i) => {
+                const day = new Date(startOfWeek);
+                day.setDate(startOfWeek.getDate() + i);
+                return day;
+            });
+        }
+        else if(view === 'año'){
+            return Array.from({length: 12}).map((_, i) => new Date (year, i ,1));
+        }
+        return[];
+    }, [currentDate, view]);
+    
     const hours = Array.from({length: 24}).map((_, i)=> i);
     const getProcessed = (date: Date) =>{
         if(!rawEvents) return[];
@@ -42,5 +56,5 @@ export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[]){
             };
         });
     }
-    return {weekDay, hours, getProcessed};
+    return {days, hours, getProcessed};
 };
