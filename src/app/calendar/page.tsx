@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import CalendarGrid from "@/components/CalendarGrid";
 import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
+import { ViewType } from "../../../hooks/calendar";
 
 export default function DashboardTemporal() {
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentView, setCurrentView] = useState<ViewType>('semana');
   
   const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
  useEffect(() => {
@@ -28,9 +30,13 @@ export default function DashboardTemporal() {
   }, [currentDate, lastFetchedMonth]); 
 
   return (
-    <DashboardLayout currentDate={currentDate} setCurrentDate={setCurrentDate}>
+    <DashboardLayout currentDate={currentDate} 
+      setCurrentDate={setCurrentDate}
+      currentView = {currentView} 
+      setCurrentView = {setCurrentView}
+    >
       <div className="pt-12">
-       <CalendarGrid currentDate={currentDate} events={events || [] } />
+       <CalendarGrid currentDate={currentDate} events={events || [] } view = {currentView} />
       </div>
     </DashboardLayout>
   );

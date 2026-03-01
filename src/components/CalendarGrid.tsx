@@ -1,10 +1,10 @@
 'use client'
-import { CalendarLogic } from "../../hooks/calendar"
+import { CalendarLogic, ViewType } from "../../hooks/calendar"
 import { GoogleEvent } from "../../interfaces/Evento"
-
 interface CalendarProps{
     currentDate: Date;
     events : GoogleEvent[];
+    view : ViewType;
 }
 
 export default function CalendarGrid({currentDate, events}:CalendarProps){

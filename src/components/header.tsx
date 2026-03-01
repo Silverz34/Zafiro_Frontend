@@ -3,14 +3,17 @@
 import Image from 'next/image';
 import { useCalendarNavigation } from "../../hooks/NavigationCalendar";
 import { HiMenu, HiChevronDown } from "react-icons/hi";
+import { ViewType } from '../../hooks/calendar';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
+  currentView: ViewType;                  
+  setCurrentView: (view: ViewType) => void;
 }
 
-export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate }: CalendarHeaderProps) {
+export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate, currentView, setCurrentView }: CalendarHeaderProps) {
   const { 
     goToToday, 
     goToPreviousWeek, 
@@ -70,10 +73,14 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
         </button>
 
         <div className=" relative hidden md:block">
-          <select className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
+          <select 
+           value={currentView}
+           onChange={(e) => setCurrentView(e.target.value as ViewType)}
+           className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
+            <option value="dia">Día</option>
             <option value="semana">Semana</option>
             <option value="mes">Mes</option>
-            <option value="dia">Día</option>
+            <option value="año">Año</option>
           </select>
           <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
            <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />
