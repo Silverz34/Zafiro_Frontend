@@ -1,39 +1,32 @@
-'use client'
 
-import React, {useState} from "react";
-import { Actividad } from "../interfaces/Actividad";
-import { SchemaActividad } from "../interfaces/Actividad";
 
-interface CreateModal{
-    isOpen: boolean;
-    onClose: ()=> void;
-    onSubmit: (actividad: Partial<Actividad>) => void;
-}
 
-export default function CreateActividad(){
-    const [summary, setSummary] = useState('');
-    const [start, setStart] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [end, setEnd] = useState('');
-    
-    const[recurrence, setRecurrence] = useState<'none'|'daily'| 'weekdays'|'weekly'>('none');
-    
-    //logica de ocurrencias 
-    let recurrenceArray: string[] | undefined = undefined;
-    switch(recurrence){
-        case 'daily':
-            recurrenceArray = ["RRULE:FREQ=DAILY;COUNT=30"];
-            break;
-        case 'weekdays': 
-            recurrenceArray= ["RRULE:FREQ=WEEKLY;COUNT=20;BYDAY=MO,TU,WE,TH,FR"];
-            break;
-        case 'weekly':
-            recurrenceArray = ["RRULE:FREQ=WEEKLY;COUNT=4"];
-           break;
-        case 'none':
-            default: 
-            recurrenceArray = undefined;
+export type TipoOcurrencia = 'none' | 'daily' | 'weekdays' | 'weekly';
+
+export function generarReglaOcurrencia(fechaInicioISO: string, tipo: TipoOcurrencia): string[] | undefined {
+  if (tipo === 'none') return undefined;
+
+  const startDate = new Date(fechaInicioISO);
+  const untilDate = new Date(startDate);
+  untilDate.setMonth(untilDate.getMonth() + 1);
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  
+  const formattedUntil = 
+    `${untilDate.getUTCFullYear()}` +
+    `${pad(untilDate.getUTCMonth() + 1)}` + 
+    `${pad(untilDate.getUTCDate())}T` +
+    `${pad(untilDate.getUTCHours())}` +
+    `${pad(untilDate.getUTCMinutes())}` +
+    `${pad(untilDate.getUTCSeconds())}Z`;
+
+  switch (tipo) {
+    case 'daily':
+      return [`RRULE:FREQ=DAILY;UNTIL=${formattedUntil}`];
+    case 'weekdays':
+      return [`RRULE:FREQ=WEEKLY;UNTIL=${formattedUntil};BYDAY=MO,TU,WE,TH,FR`];
+    case 'weekly':
+      return [`RRULE:FREQ=WEEKLY;UNTIL=${formattedUntil}`];
+    default:
+      return undefined;
     }
-
-    
 }

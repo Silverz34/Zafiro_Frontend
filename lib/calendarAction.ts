@@ -72,5 +72,6 @@ export async function createGoogleActivity(rawData:unknown){
   }catch (error){
     console.error("Error en createGoogleActivity:", error);
     return { success: false, error: "Error al crear la actividad." };
+
   }
 }
