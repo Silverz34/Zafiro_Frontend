@@ -1,5 +1,5 @@
 'use client'
-import { CalendarLogic } from "../../hooks/calendar"
+import { CalendarLogic } from "../../hooks/Calendar"
 import { GoogleEvent } from "../../interfaces/Evento"
 
 interface CalendarProps{
