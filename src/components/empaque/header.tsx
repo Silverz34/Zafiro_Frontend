@@ -80,7 +80,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
             <option value="dia">Día</option>
             <option value="semana">Semana</option>
             <option value="mes">Mes</option>
-            <option value="año">Año</option>
+
           </select>
           <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
            <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />

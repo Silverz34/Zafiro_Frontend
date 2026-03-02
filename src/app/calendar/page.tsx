@@ -1,10 +1,13 @@
 'use client'
 import DashboardLayout from "@/components/empaque/empaque";
 import { useEffect, useState } from 'react';
-import CalendarGrid from "@/components/CalendarGrid";
 import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
+
+import DayView from "@/components/viewsCalendar/DayView";
+import WeekView from "@/components/viewsCalendar/WeekView";
+import MonthView from "@/components/viewsCalendar/MonthView";
 
 export default function DashboardTemporal() {
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
@@ -12,7 +15,7 @@ export default function DashboardTemporal() {
   const [currentView, setCurrentView] = useState<ViewType>('semana');
   
   const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
- useEffect(() => {
+  useEffect(() => {
     const loadEvents = async () => {
       const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
       if (lastFetchedMonth !== currentMonthKey) {
@@ -29,14 +32,29 @@ export default function DashboardTemporal() {
     loadEvents();
   }, [currentDate, lastFetchedMonth]); 
 
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'dia':
+        return <DayView currentDate={currentDate} events={events || []} />;
+      case 'semana':
+        return <WeekView currentDate={currentDate} events={events || []} />;
+      case 'mes':
+        return <MonthView currentDate={currentDate} events={events || []} />;
+    default: 
+        return <WeekView currentDate={currentDate} events={events || []} />;
+    }
+  };
+
   return (
-    <DashboardLayout currentDate={currentDate} 
+    <DashboardLayout 
+      currentDate={currentDate} 
       setCurrentDate={setCurrentDate}
-      currentView = {currentView} 
-      setCurrentView = {setCurrentView}
+      currentView={currentView} 
+      setCurrentView={setCurrentView}
     >
-      <div className="pt-12">
-       <CalendarGrid currentDate={currentDate} events={events || [] } view = {currentView} />
+     
+      <div className="pt-12 h-full">
+        {renderCurrentView()}
       </div>
     </DashboardLayout>
   );
