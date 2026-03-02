@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { GoogleEvent } from "../interfaces/Evento";
 
-export type ViewType = 'dia' | 'semana' | 'mes' | 'año'
+export type ViewType = 'dia' | 'semana' | 'mes';
 export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view: ViewType){
     const days= useMemo(()=>{
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
 
-        if (view = 'dia'){
+        if (view === 'dia'){
             return [new Date(currentDate)];
         }
         
@@ -34,11 +34,8 @@ export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view:
                 return day;
             });
         }
+        return [];
 
-        else if(view === 'año'){
-            return Array.from({length: 12}).map((_, i) => new Date (year, i ,1));
-        }
-        return[];
     }, [currentDate, view]);
     
     const hours = Array.from({length: 24}).map((_, i)=> i);
