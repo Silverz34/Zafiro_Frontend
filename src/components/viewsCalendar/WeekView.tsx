@@ -1,13 +1,13 @@
-'use client'
-import { CalendarLogic } from "../../hooks/calendar";
-import { GoogleEvent } from "../../interfaces/Evento"
+'use calendar'
+import { CalendarLogic } from "../../../hooks/calendar"
+import { GoogleEvent } from "../../../interfaces/Evento"
 
-interface CalendarProps{
+interface ViewProp{
     currentDate: Date;
-    events : GoogleEvent[];
+    events: GoogleEvent[]; 
 }
 
-export default function CalendarGrid({currentDate, events}:CalendarProps){
+export default function WeekView ({currentDate, events }:ViewProp){
     const {weekDay, hours, getProcessed} = CalendarLogic(currentDate, events);
     const dayNames= ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
