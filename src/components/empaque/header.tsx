@@ -1,25 +1,28 @@
 'use client';
 
 import Image from 'next/image';
-import { useCalendarNavigation } from "../../hooks/NavigationCalendar";
+import { useCalendarNavigation } from "../../../hooks/NavigationCalendar";
 import { HiMenu, HiChevronDown } from "react-icons/hi";
+import { ViewType } from '../../../hooks/calendar';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
+  currentView: ViewType;                  
+  setCurrentView: (view: ViewType) => void;
 }
 
-export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate }: CalendarHeaderProps) {
+export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate, currentView, setCurrentView }: CalendarHeaderProps) {
   const { 
     goToToday, 
-    goToPreviousWeek, 
-    goToNextWeek, 
+    goToPrevious, 
+    goToNext, 
     handleYearChange,
     formattedMonth, 
     currentYear,
     yearsRange
-  } = useCalendarNavigation(currentDate, setCurrentDate);
+  } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
   return (
     <header className="bg-[#010112] fixed top-0 left-0 z-50 h-16 flex items-center justify-between lg:px-6 w-full">
@@ -35,9 +38,9 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
         </div>
         <div className="flex items-center lg:gap-6 gap-3">
           <div className="flex items-center border border-blue-600 rounded-lg overflow-hidden">
-            <button onClick={goToPreviousWeek} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&lt;</button>
+            <button onClick={goToPrevious} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&lt;</button>
             <button onClick={goToToday} className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 border-x border-blue-600 transition-colors">Hoy</button>
-            <button onClick={goToNextWeek} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&gt;</button>
+            <button onClick={goToNext} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&gt;</button>
           </div>
 
           <div className="hidden sm:flex items-center gap-4 ml-2">
@@ -70,10 +73,14 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
         </button>
 
         <div className=" relative hidden md:block">
-          <select className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
+          <select 
+           value={currentView}
+           onChange={(e) => setCurrentView(e.target.value as ViewType)}
+           className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
+            <option value="dia">Día</option>
             <option value="semana">Semana</option>
             <option value="mes">Mes</option>
-            <option value="dia">Día</option>
+
           </select>
           <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
            <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />

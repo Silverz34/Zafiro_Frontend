@@ -1,6 +1,6 @@
 import { SignUp } from '@clerk/nextjs';
 import Image from 'next/image';
-import { FondoHero } from '@/components/Hero/fondo-hero';
+import { FondoHero } from '@/components/landing/Hero/fondo-hero';
 
 export default function RegisterPage() {
   return (

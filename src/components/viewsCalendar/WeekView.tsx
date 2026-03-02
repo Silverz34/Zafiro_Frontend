@@ -8,7 +8,7 @@ interface ViewProp{
 }
 
 export default function WeekView ({currentDate, events }:ViewProp){
-    const {weekDay, hours, getProcessed} = CalendarLogic(currentDate, events);
+    const {days, hours, getProcessed} = CalendarLogic(currentDate, events, 'semana');
     const dayNames= ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
     return(
@@ -18,7 +18,7 @@ export default function WeekView ({currentDate, events }:ViewProp){
                 GMT
             </div>
             <div className="flex-1 grid grid-cols-7">
-             {weekDay.map((date, index) =>(
+             {days.map((date, index) =>(
                <div key={index} className="flex flex-col items-center justify-center py-3 border-r border-gray-800">   
                  <span className="text-sm font-semibold text-white">{dayNames[index]}</span>
                  <span className={`text-xl mt-1 w-8 h-8 flex items-center justify-center rounded-full ${
@@ -40,7 +40,7 @@ export default function WeekView ({currentDate, events }:ViewProp){
                     </div>
                     
                     <div className="flex-1 grid grid-cols-7 relative">
-                        {weekDay.map((date, dayIndex)=>{
+                        {days.map((date, dayIndex)=>{
                             const processedEvents = getProcessed(date);
 
                             return(
