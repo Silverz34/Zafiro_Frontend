@@ -1,22 +1,35 @@
 import { useCallback } from "react";
+import { ViewType } from "./calendar";
 
-export function useCalendarNavigation(currentDate: Date, setCurrentDate: (date: Date) => void) {
-  
+export function useCalendarNavigation(currentDate: Date, setCurrentDate: (date: Date) => void, currentView: ViewType) {
+
   const goToToday = useCallback(() => {
     setCurrentDate(new Date());
   }, [setCurrentDate]);
 
-  const goToPreviousWeek = useCallback(() => {
+  const goToPrevious = useCallback(() => {
     const newDate = new Date(currentDate);
-    newDate.setDate(currentDate.getDate() - 7);
+    if(currentView === 'dia'){
+      newDate.setDate(currentDate.getDate()- 1);
+    }else if (currentView === 'semana'){
+      newDate.setDate(currentDate.getDate()-7);
+    }else if (currentView == 'mes'){
+      newDate.setMonth(currentDate.getMonth()-1);
+    }
     setCurrentDate(newDate);
-  }, [currentDate, setCurrentDate]);
+  }, [currentDate, setCurrentDate, currentView]);
 
-  const goToNextWeek = useCallback(() => {
+  const goToNext= useCallback(() => {
     const newDate = new Date(currentDate);
-    newDate.setDate(currentDate.getDate() + 7);
+    if (currentView === 'dia') {
+      newDate.setDate(currentDate.getDate() + 1);
+    } else if (currentView === 'semana') {
+      newDate.setDate(currentDate.getDate() + 7);
+    } else if (currentView === 'mes') {
+      newDate.setMonth(currentDate.getMonth() + 1);
+    }
     setCurrentDate(newDate);
-  }, [currentDate, setCurrentDate]);
+  }, [currentDate, setCurrentDate, currentView]);
 
   const handleYearChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const newDate = new Date(currentDate);
@@ -32,8 +45,8 @@ export function useCalendarNavigation(currentDate: Date, setCurrentDate: (date: 
 
   return {
     goToToday,
-    goToPreviousWeek,
-    goToNextWeek,
+    goToPrevious,
+    goToNext,
     handleYearChange,
     formattedMonth,
     currentYear,
