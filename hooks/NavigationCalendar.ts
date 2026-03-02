@@ -22,11 +22,11 @@ export function useCalendarNavigation(currentDate: Date, setCurrentDate: (date: 
   const goToNext= useCallback(() => {
     const newDate = new Date(currentDate);
     if (currentView === 'dia') {
-      newDate.setDate(currentDate.getDate() - 1);
+      newDate.setDate(currentDate.getDate() + 1);
     } else if (currentView === 'semana') {
-      newDate.setDate(currentDate.getDate() - 7);
+      newDate.setDate(currentDate.getDate() + 7);
     } else if (currentView === 'mes') {
-      newDate.setMonth(currentDate.getMonth() - 1);
+      newDate.setMonth(currentDate.getMonth() + 1);
     }
     setCurrentDate(newDate);
   }, [currentDate, setCurrentDate, currentView]);

@@ -23,7 +23,7 @@ export default function DayView({ currentDate, events }: ViewProps) {
             </div>
 
             <div className="flex-1 flex flex-col items-center justify-center py-3">   
-                 <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">{dayName}</span>
+                 <span className="text-lg font-semibold text-gray-300 tracking-wider">{dayName}</span>
                  <span className={`text-2xl mt-1 w-10 h-10 flex items-center justify-center rounded-full ${
                   targetDate.toDateString() === new Date().toDateString() ? 'bg-blue-600 font-bold text-white shadow-lg shadow-blue-900/50' : 'text-gray-100'
                   }`}>
