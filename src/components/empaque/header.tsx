@@ -16,13 +16,13 @@ interface CalendarHeaderProps {
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate, currentView, setCurrentView }: CalendarHeaderProps) {
   const { 
     goToToday, 
-    goToPreviousWeek, 
-    goToNextWeek, 
+    goToPrevious, 
+    goToNext, 
     handleYearChange,
     formattedMonth, 
     currentYear,
     yearsRange
-  } = useCalendarNavigation(currentDate, setCurrentDate);
+  } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
   return (
     <header className="bg-[#010112] fixed top-0 left-0 z-50 h-16 flex items-center justify-between lg:px-6 w-full">
@@ -38,9 +38,9 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
         </div>
         <div className="flex items-center lg:gap-6 gap-3">
           <div className="flex items-center border border-blue-600 rounded-lg overflow-hidden">
-            <button onClick={goToPreviousWeek} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&lt;</button>
+            <button onClick={goToPrevious} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&lt;</button>
             <button onClick={goToToday} className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 border-x border-blue-600 transition-colors">Hoy</button>
-            <button onClick={goToNextWeek} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&gt;</button>
+            <button onClick={goToNext} className="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">&gt;</button>
           </div>
 
           <div className="hidden sm:flex items-center gap-4 ml-2">
