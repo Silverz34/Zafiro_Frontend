@@ -1,25 +1,22 @@
-name: Deploy to EC2
+- name: Deploy via SSH
+  uses: appleboy/ssh-action@master
+  with:
+    host: ${{ secrets.HOST }}
+    username: ubuntu
+    key: ${{ secrets.KEY }}
+    script: |
+      # 1. Entrar a la carpeta del proyecto (ajusta 'Zafiro_Frontend' si el nombre es otro)
+      cd ~/Zafiro_Frontend || exit
 
-on:
-  push:
-    branches:
-      - main  # O la rama que uses
+      # 2. Actualizar Node.js a la versión 20 (usando el nodo de NodeSource)
+      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+      sudo apt-get install -y nodejs
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            npm install
-            pm2 restart all
-            cd ~/Zafiro_Frontend
-            git pull origin main
-            npm install
-            npm run build
-            pm2 restart all
+      # 3. Limpiar e instalar dependencias
+      npm install
+
+      # 4. Construir el proyecto
+      npm run build
+
+      # 5. Reiniciar con PM2 (esto evita el error "No process found")
+      pm2 restart zafiro || pm2 start npm --name "zafiro" -- start
