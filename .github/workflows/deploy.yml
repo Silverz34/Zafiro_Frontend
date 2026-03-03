@@ -1,22 +1,38 @@
-- name: Deploy via SSH
-  uses: appleboy/ssh-action@master
-  with:
-    host: ${{ secrets.HOST }}
-    username: ubuntu
-    key: ${{ secrets.KEY }}
-    script: |
-      # 1. Entrar a la carpeta del proyecto (ajusta 'Zafiro_Frontend' si el nombre es otro)
-      cd ~/Zafiro_Frontend || exit
+name: Deploy to EC2
 
-      # 2. Actualizar Node.js a la versión 20 (usando el nodo de NodeSource)
-      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-      sudo apt-get install -y nodejs
+on:
+  push:
+    branches:
+      - main
 
-      # 3. Limpiar e instalar dependencias
-      npm install
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # 1. Entrar primero a la carpeta (esto evita el error ENOENT)
+            cd ~/Zafiro_Frontend || exit
 
-      # 4. Construir el proyecto
-      npm run build
+            # 2. Actualizar Node.js a la versión 20 (Requerido por Next.js)
+            curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+            sudo apt-get install -y nodejs
 
-      # 5. Reiniciar con PM2 (esto evita el error "No process found")
-      pm2 restart zafiro || pm2 start npm --name "zafiro" -- start
+            # 3. Bajar los cambios de GitHub
+            git pull origin main
+
+            # 4. Instalar dependencias con la nueva versión de Node
+            npm install
+
+            # 5. Construir el proyecto (Build)
+            npm run build
+
+            # 6. Reiniciar la app con PM2
+            # Usamos 'restart zafiro' o el nombre de tu app. 
+            # Si no existe, lo inicia.
+            pm2 restart all || pm2 start npm --name "zafiro-frontend" -- start
