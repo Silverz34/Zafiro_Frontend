@@ -15,7 +15,6 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 40m
           script: |
             # 1. Entrar primero a la carpeta (esto evita el error ENOENT)
             cd ~/Zafiro_Frontend || exit
