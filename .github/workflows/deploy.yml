@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - main  # O la rama que uses
 
 jobs:
   deploy:
@@ -16,23 +16,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. Entrar primero a la carpeta (esto evita el error ENOENT)
-            cd ~/Zafiro_Frontend || exit
 
-            # 2. Actualizar Node.js a la versión 20 (Requerido por Next.js)
-            curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-
-            # 3. Bajar los cambios de GitHub
-            git pull origin main
-
-            # 4. Instalar dependencias con la nueva versión de Node
             npm install
-
-            # 5. Construir el proyecto (Build)
+            pm2 restart all
+            cd ~/Zafiro_Frontend
+            git pull origin main
+            npm install
             npm run build
-
-            # 6. Reiniciar la app con PM2
-            # Usamos 'restart zafiro' o el nombre de tu app. 
-            # Si no existe, lo inicia.
-            pm2 restart all || pm2 start npm --name "zafiro-frontend" -- start
+            pm2 restart all
