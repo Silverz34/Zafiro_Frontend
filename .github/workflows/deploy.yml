@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # O la rama que uses
+      - main
 
 jobs:
   deploy:
@@ -18,11 +18,17 @@ jobs:
           port: 22
           command_timeout: 40m 
           script: |
-
-            cd ~/Zafiro_Frontend
-            npm install
-            pm2 restart all
+            # 1. Entrar a la carpeta y limpiar cambios locales si los hubiera
+            cd ~/Zafiro_Frontend || exit
+            
+            # 2. Actualizar el código
             git pull origin main
+            
+            # 3. Instalar dependencias solo si es necesario
             npm install
+            
+            # 4. Construir el proyecto (Aquí es donde suele dar el timeout o falta de RAM)
             npm run build
-            pm2 restart all
+            
+            # 5. Reiniciar con PM2 (Si no existe el proceso, lo crea)
+            pm2 restart all || pm2 start npm --name "zafiro-front" -- start
