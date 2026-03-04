@@ -19,16 +19,18 @@ jobs:
           command_timeout: 40m 
           script: |
             # 1. Entrar a la carpeta y limpiar cambios locales si los hubiera
-            cd ~/Zafiro_Frontend || exit
+            rm -f /home/ubuntu/package-lock.json
             
             # 2. Actualizar el código
-            git pull origin main
+            cd ~/Zafiro_Frontend || exit
             
             # 3. Instalar dependencias solo si es necesario
+            git pull origin main
             npm install
             
             # 4. Construir el proyecto (Aquí es donde suele dar el timeout o falta de RAM)
+            export NEXT_TELEMETRY_DISABLED=1
             npm run build
             
             # 5. Reiniciar con PM2 (Si no existe el proceso, lo crea)
-            pm2 restart all || pm2 start npm --name "zafiro-front" -- start
+            pm2 restart all || pm2 start npm --name "zafiro" -- start
