@@ -9,6 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -18,19 +21,33 @@ jobs:
           port: 22
           command_timeout: 40m 
           script: |
-            # 1. Entrar a la carpeta y limpiar cambios locales si los hubiera
+            echo "Iniciando deploy..."
+            
+            #1 limpieza del archivo
             rm -f /home/ubuntu/package-lock.json
-            
-            # 2. Actualizar el código
-            cd ~/Zafiro_Frontend || exit
-            
-            # 3. Instalar dependencias solo si es necesario
+
+            #2 navegación
+            cd ~/Zafiro_Frontend || { echo "Carpeta no encontrada"; exit 1; }
+
+            #3 limpiar y actualizar
+            git stash
             git pull origin main
-            npm install
-            
-            # 4. Construir el proyecto (Aquí es donde suele dar el timeout o falta de RAM)
+
+            #4 intalacion limpia
+            echo "intalando dependencias..."
+            npm install --no-audit --no-fund
+
+            #5contruccion de la aplicación
+            echo "Construyendo proyecto (esto puede tardar)..."
             export NEXT_TELEMETRY_DISABLED=1
-            npm run build
+            export NODE_OPTIONS="--max-old-space-size=2048"
+
+            #6 ejecucion
+            npm run build || { echo "Error en el build"; exit 1; }
+
+            #7 reinicio del servidor
+            echo "Actualizando procesos..."
+            pm2 restart zafiro || pm2 start npm --name "zafiro" -- start
+            pm2 save
             
-            # 5. Reiniciar con PM2 (Si no existe el proceso, lo crea)
-            pm2 restart all || pm2 start npm --name "zafiro" -- start
+            echo "Deploy completado exitosamente!"
