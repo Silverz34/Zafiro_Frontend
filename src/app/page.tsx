@@ -7,7 +7,6 @@ import { BrainCircuit, CalendarClock, BarChart3, Tags, Search, Scale, Github } f
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col font-sans dark:bg-background">
-
       <header className="w-full py-5 px-8 flex justify-between items-center max-w-10xl mx-auto">
         <div className="flex items-center gap-2">
           <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
