@@ -1,3 +1,5 @@
+'use client'
+
 import { SignUp , useAuth} from '@clerk/nextjs';
 import Image from 'next/image';
 import { FondoHero } from '@/components/landing/Hero/fondo-hero';
