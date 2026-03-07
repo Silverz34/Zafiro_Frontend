@@ -19,7 +19,7 @@ export default function WeekView ({currentDate, events }:ViewProp){
             </div>
             <div className="flex-1 grid grid-cols-7">
              {days.map((date, index) =>(
-               <div key={index} className="flex flex-col items-center justify-center py-3 border-r border-gray-800">   
+               <div key={index} className="flex flex-col items-center justify-center py-2 border-r border-gray-800">   
                  <span className="text-sm font-semibold text-white">{dayNames[index]}</span>
                  <span className={`text-xl mt-1 w-8 h-8 flex items-center justify-center rounded-full ${
                   date.toDateString() === new Date().toDateString() ? 'bg-blue-600 font-bold text-white' : 'text-gray-300'
@@ -33,7 +33,7 @@ export default function WeekView ({currentDate, events }:ViewProp){
                 <div className="flex min-h-max relative">
                     <div className="w-16 shrink-0 border-r border-gray-800 bg-[#100F1D]">
                         {hours.map((hour)=>(
-                            <div key={`hour-label-${hour}`} className="h-20 border-b border-gray-800 flex justify-center py-2 text-xs text-white font-medium">
+                            <div key={`hour-label-${hour}`} className="h-18 border-b border-gray-800 flex justify-center py-2 text-xs text-white font-medium">
                                 {hour === 0 ? '12 am' : hour < 12 ? `${hour} am` : hour === 12? '12 pm' : `${hour - 12} pm` }
                             </div>
                         ))}
@@ -46,7 +46,7 @@ export default function WeekView ({currentDate, events }:ViewProp){
                             return(
                                 <div key={`day-col-${dayIndex}`} className="border-r border-gray-800 relative min-h-80 ">
                                   {hours.map((hour)=>(
-                                    <div key={`grid-line${hour}`} className="h-20 border-b border-gray-800/30"></div>
+                                    <div key={`grid-line${hour}`} className="h-18 border-b border-gray-800/30"></div>
                                   ))}
                                   
                                   {processedEvents.map(event =>(
