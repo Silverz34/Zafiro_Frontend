@@ -1,19 +1,61 @@
-import { UserButton } from "@clerk/nextjs";
+'use client'
+import DashboardLayout from "@/components/empaque/empaque";
+import { useEffect, useState } from 'react';
+import { fetchDailyActivities } from "../../../lib/calendarAction";
+import { GoogleEvent } from "../../../interfaces/Evento";
+import { ViewType } from "../../../hooks/calendar";
+
+import DayView from "@/components/viewsCalendar/DayView";
+import WeekView from "@/components/viewsCalendar/WeekView";
+import MonthView from "@/components/viewsCalendar/MonthView";
 
 export default function DashboardTemporal() {
-  return (
-    <div className="min-h-screen bg-[#100F1D] text-white flex flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-bold mb-4 text-blue-500">¡Autenticación exitosa!</h1>
-      
-      <p className="text-gray-400 mb-8 text-center max-w-md text-lg">
-        Esta será la vista principal de la agenda. Aquí es donde eventualmente se cargarán las actividades del día a día y la lista de tareas priorizadas.
-      </p>
-      
+  const [events, setEvents] = useState<GoogleEvent[] | null>(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentView, setCurrentView] = useState<ViewType>('semana');
+  
+  const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
+  useEffect(() => {
+    const loadEvents = async () => {
+      const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
+      if (lastFetchedMonth !== currentMonthKey) {
+        console.log(`Descargando datos: ${currentMonthKey}...`);
+        const data = await fetchDailyActivities(currentDate.toISOString());
+        
+        if (data) {
+          setEvents(data);
+          setLastFetchedMonth(currentMonthKey); 
+        }
+      }
+    };
 
-      <div className="bg-[#1e293b]/50 p-4 rounded-xl border border-blue-900/50 flex flex-col items-center gap-4">
-        <span className="text-gray-300">Gestiona tu sesión actual:</span>
-        <UserButton  />
+    loadEvents();
+  }, [currentDate, lastFetchedMonth]); 
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'dia':
+        return <DayView currentDate={currentDate} events={events || []} />;
+      case 'semana':
+        return <WeekView currentDate={currentDate} events={events || []} />;
+      case 'mes':
+        return <MonthView currentDate={currentDate} events={events || []} />;
+    default: 
+        return <WeekView currentDate={currentDate} events={events || []} />;
+    }
+  };
+
+  return (
+    <DashboardLayout 
+      currentDate={currentDate} 
+      setCurrentDate={setCurrentDate}
+      currentView={currentView} 
+      setCurrentView={setCurrentView}
+    >
+     
+      <div className="pt-12 h-full">
+        {renderCurrentView()}
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
