@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
 
 :root {
   --background-base: #010112;
@@ -7,7 +7,6 @@
   --color-calendar: #100F1D;
   --color-text: #F5F5F5;
   --border: #2554E0;
-
 
   --background: var(--background-base);
   --foreground: var(--color-text);
@@ -19,6 +18,7 @@
   --font-sans: var(--font-inter); 
   --font-nunito: var(--font-nunito)
 }
+
 
 body {
   background-color: var(--background);

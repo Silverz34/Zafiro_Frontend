@@ -1,5 +1,5 @@
 import { FondoHero } from "../landing/Hero/fondo-hero"
-import Image from "next/image";
+import "daisyui"; 
 
 export default function Loading(){
     return(
