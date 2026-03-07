@@ -1,4 +1,4 @@
-'use calendar'
+'use client'
 import { CalendarLogic } from "../../../hooks/calendar"
 import { GoogleEvent } from "../../../interfaces/Evento"
 
