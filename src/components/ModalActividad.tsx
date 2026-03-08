@@ -70,6 +70,11 @@ const REMINDER_OPTIONS = [
   { value: "30",    label: "30 minutos antes" }
 ];
 
+const OCUPACION=[
+  {value: "opaque", label: "ocupado"},
+  {value:"transparent", label: "Libre"}
+]
+
 const formatDate = (d: Date) =>
   d.toLocaleDateString("es-MX", {
     weekday: "long",
@@ -89,6 +94,7 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
   const [recurrencia,  setRecurrencia]  = useState("none");
   const [reminder,     setReminder]     = useState("10");
   const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
+  const [ocupacion, setOcupacion] = useState("opaque");
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -216,7 +222,7 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2">
               <Label className="text-[11px] font-semibold text-white-500 uppercase tracking-wider ml-0.5">
                 Repetición
@@ -248,6 +254,26 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
                 </SelectTrigger>
                 <SelectContent className="bg-[#111029]  border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
                   {REMINDER_OPTIONS.map(o => (
+                    <SelectItem
+                      key={o.value} value={o.value}
+                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg"
+                    >
+                      {o.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold uppercase tracking-wider ml-0.5">
+                ocupacion 
+              </Label>
+              <Select value={ocupacion} onValueChange={setOcupacion}>
+                <SelectTrigger className="bg-[#111029]  border-blue-600 text-gray-200 text-sm h-9 rounded-lg  transition-colors">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029]  border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                  {OCUPACION.map(o => (
                     <SelectItem
                       key={o.value} value={o.value}
                       className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg"
