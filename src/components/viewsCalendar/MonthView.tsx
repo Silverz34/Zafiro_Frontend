@@ -5,9 +5,10 @@ import { GoogleEvent } from "../../../interfaces/Evento"
 interface ViewProps {
     currentDate: Date;
     events: GoogleEvent[];
+    onOpenModal: () => void;
 }
 
-export default function MonthView({ currentDate, events }: ViewProps) {
+export default function MonthView({ currentDate, events, onOpenModal}: ViewProps) {
 
     const { days, getProcessed } = CalendarLogic(currentDate, events, 'mes');
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -31,6 +32,7 @@ export default function MonthView({ currentDate, events }: ViewProps) {
                     return (
                         <div 
                             key={index} 
+                            onClick={onOpenModal}
                             className={`border-r border-b border-gray-800 p-1 flex flex-col gap-1 min-h-25 hover:bg-gray-800/30 transition-colors cursor-pointer ${
                                 !isCurrentMonth ? 'bg-[#0a0914] opacity-50' : ''
                             }`}

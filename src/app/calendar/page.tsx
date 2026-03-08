@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
+import ModalActividad from "@/components/ModalActividad";
 
 import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";
@@ -13,6 +14,7 @@ export default function DashboardTemporal() {
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<ViewType>('semana');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
   useEffect(() => {
@@ -35,27 +37,31 @@ export default function DashboardTemporal() {
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dia':
-        return <DayView currentDate={currentDate} events={events || []} />;
+        return <DayView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
       case 'semana':
-        return <WeekView currentDate={currentDate} events={events || []} />;
+        return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
       case 'mes':
-        return <MonthView currentDate={currentDate} events={events || []} />;
+        return <MonthView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
     default: 
-        return <WeekView currentDate={currentDate} events={events || []} />;
+        return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
     }
   };
 
   return (
-    <DashboardLayout 
-      currentDate={currentDate} 
-      setCurrentDate={setCurrentDate}
-      currentView={currentView} 
-      setCurrentView={setCurrentView}
-    >
-     
-      <div className="pt-12 h-full">
-        {renderCurrentView()}
-      </div>
-    </DashboardLayout>
+    <>
+      <DashboardLayout 
+        currentDate={currentDate} 
+        setCurrentDate={setCurrentDate}
+        currentView={currentView} 
+        setCurrentView={setCurrentView}
+        onOpenModal={() => setIsModalOpen(true)}
+      >
+      
+        <div className="pt-12 h-full">
+          {renderCurrentView()}
+        </div>
+      </DashboardLayout>
+      <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 }

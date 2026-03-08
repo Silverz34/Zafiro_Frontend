@@ -5,9 +5,10 @@ import { GoogleEvent } from "../../../interfaces/Evento"
 interface ViewProp{
     currentDate: Date;
     events: GoogleEvent[]; 
+    onOpenModal: () => void;
 }
 
-export default function WeekView ({currentDate, events }:ViewProp){
+export default function WeekView ({currentDate, events, onOpenModal}:ViewProp){
     const {days, hours, getProcessed} = CalendarLogic(currentDate, events, 'semana');
     const dayNames= ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
@@ -39,7 +40,7 @@ export default function WeekView ({currentDate, events }:ViewProp){
                         ))}
                     </div>
                     
-                    <div className="flex-1 grid grid-cols-7 relative">
+                    <div className="flex-1 grid grid-cols-7 relative" onClick={onOpenModal}>
                         {days.map((date, dayIndex)=>{
                             const processedEvents = getProcessed(date);
 

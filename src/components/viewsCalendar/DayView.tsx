@@ -5,9 +5,10 @@ import { GoogleEvent } from "../../../interfaces/Evento"
 interface ViewProps {
     currentDate: Date;
     events: GoogleEvent[];
+    onOpenModal: () => void;
 }
 
-export default function DayView({ currentDate, events }: ViewProps) {
+export default function DayView({ currentDate, events, onOpenModal }: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');
     const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const targetDate = days[0] || currentDate;
@@ -41,7 +42,7 @@ export default function DayView({ currentDate, events }: ViewProps) {
                             </div>
                         ))}
                     </div>
-                    <div className="flex-1 relative min-h-80">
+                    <div onClick={onOpenModal} className="flex-1 relative min-h-80">
                         {hours.map((hour)=>(
                             <div key={`grid-line${hour}`} className="h-18 border-b border-gray-800/30"></div>
                         ))}
