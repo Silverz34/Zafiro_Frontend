@@ -1,140 +1,317 @@
 'use client'
 
-import React, {useState} from "react";
-import { HiX, HiOutlineClock, HiOutlineCalendar, HiOutlineRefresh, HiOutlineFlag, HiOutlineBell } from "react-icons/hi";
+import { useState } from "react";
+import { HiX, HiOutlineCalendar, HiChevronDown, HiClock } from "react-icons/hi";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button }   from "@/components/ui/button";
+import { Input }    from "@/components/ui/input";
+import { Label }    from "@/components/ui/label";
+import { Switch }   from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
+import { TimePicker } from "./ui/time";
+import { TIME_SLOTS, type TimeSlot } from "./ui/time";
 
-interface modalProps{
-    isOpen: boolean;
-    onClose: () => void;
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export default function ModalActividad({isOpen, onClose}: modalProps){
-    const[isAllDay, setIsAllDay] = useState(false);
-    const[prioridad, setPrioridad] = useState<'Alta' | 'Media' | 'Baja'>('Media');
+type PrioridadType = "Alta" | "Media" | "Baja";
 
-    if(!isOpen) return null;
-    return(<div className="fixed inset-0 z-100 flex items-center justify-center bg-[#010112]/80 backdrop-blur-sm p-4">
-      
-            <div className="bg-[#100F1D] w-full max-w-lg rounded-2xl border border-gray-800 shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-                
-                <div className="flex justify-between items-center p-5 border-b border-gray-800 bg-[#0b0a14]">
-                    <h2 className="text-xl font-bold text-white tracking-wide">Nueva Actividad</h2>
-                    <button 
-                        onClick={onClose}
-                        className="text-gray-400 hover:text-white hover:bg-gray-800 p-1.5 rounded-lg transition-colors"
-                    >
-                     
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                </div>
+const PRIORIDADES: {
+  nivel: PrioridadType;
+  color: string;
+  bg: string;
+  border: string;
+}[] = [
+  {
+    nivel:  "Baja",
+    color:  "text-emerald-400",
+    bg:     "bg-emerald-500/10",
+    border: "border-emerald-500/40"
+  },
+  {
+    nivel:  "Media",
+    color:  "text-amber-400",
+    bg:     "bg-amber-500/10",
+    border: "border-amber-500/40"
+  },
+  {
+    nivel:  "Alta",
+    color:  "text-rose-400",
+    bg:     "bg-rose-500/10",
+    border: "border-rose-500/40"
+  },
+];
 
-                <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+const RECURRENCE_OPTIONS = [
+  { value: "none",     label: "No se repite" },
+  { value: "daily",    label: "Todos los días" },
+  { value: "weekdays", label: "Días laborables  (L – V)" },
+  { value: "weekly",   label: "Cada semana" },
+];
 
-                    <div>
-                        <input 
-                            type="text" 
-                            placeholder="Añade un título o resumen..." 
-                            className="w-full bg-transparent border-b-2 border-gray-800 focus:border-blue-600 text-2xl text-white placeholder-gray-500 py-2 outline-none transition-colors"
-                        />
-                    </div>
+const REMINDER_OPTIONS = [
+  { value: "none",  label: "Sin recordatorio" },
+  { value: "5",     label: "5 minutos antes" },
+  { value: "10",    label: "10 minutos antes" },
+  { value: "30",    label: "30 minutos antes" }
+];
 
-
-                    <div className="flex flex-col gap-4 bg-gray-900/30 p-4 rounded-xl border border-gray-800/50">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-300 flex items-center gap-2">
-                                Horario
-                            </span>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <span className="text-xs text-gray-400">Todo el día</span>
-                                <input 
-                                    type="checkbox" 
-                                    checked={isAllDay}
-                                    onChange={() => setIsAllDay(!isAllDay)}
-                                    className="toggle toggle-info toggle-sm" 
-                                />
-                            </label>
-                        </div> 
-
-                        <div className="flex items-center gap-3">
-                            <span className="text-xs text-gray-500 w-8">De</span>
-                            <input type="date" className="flex-1 bg-[#010112] border border-gray-700 text-white text-sm rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
-                            {!isAllDay && (
-                                <input type="time" className="w-28 bg-[#010112] border border-gray-700 text-white text-sm rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
-                            )}
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                            <span className="text-xs text-gray-500 w-8">Hasta</span>
-                            <input type="date" className="flex-1 bg-[#010112] border border-gray-700 text-white text-sm rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
-                            {!isAllDay && (
-                                <input type="time" className="w-28 bg-[#010112] border border-gray-700 text-white text-sm rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-medium text-gray-400 ml-1">🔁 Repetición</label>
-                            <select className="bg-[#010112] border border-gray-800 text-white text-sm rounded-lg px-3 py-2.5 outline-none focus:border-blue-500 appearance-none">
-                                <option value="none">No se repite</option>
-                                <option value="daily">Cada día</option>
-                                <option value="weekly">Cada semana</option>
-                                <option value="monthly">Cada mes</option>
-                            </select>
-                        </div>
-
-                        <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-medium text-gray-400 ml-1"> Aviso</label>
-                            <select className="bg-[#010112] border border-gray-800 text-white text-sm rounded-lg px-3 py-2.5 outline-none focus:border-blue-500 appearance-none">
-                                <option value="default">Por defecto (10 min)</option>
-                                <option value="30">30 minutos antes</option>
-                                <option value="60">1 hora antes</option>
-                                <option value="none">Sin recordatorio</option>
-                            </select>
-                        </div>
-                    </div>
-
-             
-                    <div className="flex flex-col gap-2">
-                        <label className="text-xs font-medium text-gray-400 ml-1">🚩 Prioridad</label>
-                        <div className="flex gap-2">
-                            {(['Baja', 'Media', 'Alta'] as const).map((nivel) => (
-                                <button
-                                    key={nivel}
-                                    onClick={() => setPrioridad(nivel)}
-                                    className={`flex-1 py-2 text-sm font-medium rounded-lg border transition-all ${
-                                        prioridad === nivel 
-                                            ? nivel === 'Alta' ? 'bg-red-500/20 border-red-500 text-red-400'
-                                            : nivel === 'Media' ? 'bg-yellow-500/20 border-yellow-500 text-yellow-400'
-                                            : 'bg-green-500/20 border-green-500 text-green-400'
-                                            : 'bg-transparent border-gray-800 text-gray-500 hover:border-gray-600'
-                                    }`}
-                                >
-                                    {nivel}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                </div>
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("es-MX", {
+    weekday: "long",
+    day:     "numeric",
+    month:   "long",
+    year:    "numeric",
+  });
 
 
-                <div className="flex justify-end gap-3 p-5 border-t border-gray-800 bg-[#0b0a14]">
-                    <button 
-                        onClick={onClose}
-                        className="px-5 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
-                    >
-                        Cancelar
-                    </button>
-                    <button 
-                        className="px-6 py-2 text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-lg shadow-blue-900/40 transition-all"
-                    >
-                        Guardar Actividad
-                    </button>
-                </div>
+export default function ModalActividad({ isOpen, onClose }: ModalProps) {
+  const [titulo,       setTitulo]       = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showPicker,   setShowPicker]   = useState(false);
+  const [horaInicio,   setHoraInicio]   = useState("09:00");
+  const [horaFin,      setHoraFin]      = useState("10:00");
+  const [isAllDay,     setIsAllDay]     = useState(false);
+  const [recurrencia,  setRecurrencia]  = useState("none");
+  const [reminder,     setReminder]     = useState("10");
+  const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
 
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent
+        className="
+          bg-[#010112] border border-[#2554E0] text-white
+          max-w-120 w-full rounded-2xl
+          shadow-2xl shadow-blue-950/60
+          p-0 gap-0 overflow-hidden
+          [&>button]:hidden
+        "
+      >
+        <DialogHeader className="px-6 pt-5 pb-4 border-b border-[#1e1d3a]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <DialogTitle className="text-2xl font-semibold tracking-wide text-white">
+                Nueva Actividad
+              </DialogTitle>
             </div>
+            <button
+              onClick={onClose}
+              className="text-white-500 hover:bg-blue-600 rounded-lg p-1.5 transition-all"
+            >
+              <HiX className="w-5 h-5" />
+            </button>
+          </div>
+        </DialogHeader>
+        
+        <div className="px-6 py-5 flex flex-col gap-5 overflow-y-auto max-h-[72vh] scrollbar-thin scrollbar-thumb-[#2a2948] scrollbar-track-transparent">
+          <div className="group">
+            <Input
+              value={titulo}
+              onChange={e => setTitulo(e.target.value)}
+              placeholder="Estudiar matematicas..."
+              className="
+                bg-transparent border-0 border-b-2 border-[#1e1d3a]
+                focus-visible:border-blue-600 focus-visible:ring-0
+                text-2xl font-medium text-white placeholder:text-gray-600
+                px-0 rounded-none pb-2 h-auto transition-colors duration-200
+              "
+            />
+          </div>
+
+          <div className="flex items-center justify-between rounded-xl px-4 py-3 border border-[#2554E0] hover:border-[#2a2948] transition-colors">
+            <div className="flex flex-col">
+              <Label className="text-sm font-medium text-gray-200 cursor-pointer">
+                Todo el día
+              </Label>
+              <span className="text-xs text-gray-500 mt-0.5">
+                Sin hora de inicio ni fin
+              </span>
+            </div>
+            <Switch
+              checked={isAllDay}
+              onCheckedChange={setIsAllDay}
+              className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-[#2a2948]"
+            />
+          </div>
+          <div className="flex flex-col gap-0 rounded-xl border border-[#2554E0]">
+
+            <div className="px-4 py-3 border-b border-[#1e1d3a] bg-[#0d0c1e] gap-1.5 flex items-center">
+              <span className="text-[14px] font-bold text-white tracking-[0.12em]">
+                Fecha y horario
+              </span>
+              <HiClock className="w-4 h-4"></HiClock>
+            </div>
+
+            <div className="px-4 py-3 flex flex-col gap-3">
+              <div className="flex items-center gap-3 relative">
+                <button
+                  onClick={() => setShowPicker(p => !p)}
+                  className={`
+                    flex-1 flex items-center gap-2 text-left text-sm px-3 py-2 rounded-lg border transition-all duration-200 font-medium
+                    ${showPicker
+                      ? "bg-blue-600/12 border-blue-600 text-blue-300"
+                      : "bg-[#0d0c1e] border-[#2a2948] text-gray-200 hover:border-blue-600/50 hover:text-white"}
+                  `}
+                >
+                  <HiOutlineCalendar className={`w-4 h-4 shrink-0 ${showPicker ? "text-blue-400" : "text-gray-500"}`} />
+                  <span className="flex-1">{formatDate(selectedDate)}</span>
+                  <HiChevronDown
+                    className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${showPicker ? "rotate-180" : ""}`}
+                  />
+                </button>
+              </div>
+              {showPicker && (
+                <div className="absolute left-10 mt-10 z-50  rounded-xl overflow-hidden border border-blue-600">
+                  <MiniCalendar 
+                    selectedDate={selectedDate}
+                    onSelectDate={d => {
+                      setSelectedDate(d);
+                      setShowPicker(false);
+                    }}
+                  />
+                </div>
+              )}
+
+              {!isAllDay && (
+                <>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[11px] text-white w-10 text-right shrink-0 font-medium">
+                      Inicio
+                    </span>
+                    <TimePicker 
+                      value={horaInicio} 
+                      onChange={(val) => {
+                        setHoraInicio(val);
+                        if (val >= horaFin) {
+                          const idx = TIME_SLOTS.findIndex((s:TimeSlot) => s.value === val);
+                          const next = TIME_SLOTS[idx + 1];
+                          if (next) setHoraFin(next.value);
+                        }
+                      }} 
+                    />
+
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[11px] w-10 text-right shrink-0 font-medium">
+                      Fin
+                    </span>
+                    <TimePicker value={horaFin} onChange={setHoraFin} minTime={horaInicio}/>
+                  </div>               
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold text-white-500 uppercase tracking-wider ml-0.5">
+                Repetición
+              </Label>
+              <Select value={recurrencia} onValueChange={setRecurrencia}>
+                <SelectTrigger className="bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                  {RECURRENCE_OPTIONS.map(o => (
+                    <SelectItem
+                      key={o.value} value={o.value}
+                      className="text-gray-300 text-sm  border-blue-600 focus:bg-blue-600/20 focus:text-white rounded-lg"
+                    >
+                      {o.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold uppercase tracking-wider ml-0.5">
+                Aviso
+              </Label>
+              <Select value={reminder} onValueChange={setReminder}>
+                <SelectTrigger className="bg-[#111029]  border-blue-600 text-gray-200 text-sm h-9 rounded-lg  transition-colors">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029]  border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                  {REMINDER_OPTIONS.map(o => (
+                    <SelectItem
+                      key={o.value} value={o.value}
+                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg"
+                    >
+                      {o.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2.5">
+            <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+               Prioridad
+            </Label>
+            <div className="grid grid-cols-3 gap-2">
+              {PRIORIDADES.map(({ nivel, color, bg, border}) => {
+                const active = prioridad === nivel;
+                return (
+                  <button
+                    key={nivel}
+                    onClick={() => setPrioridad(nivel)}
+                    className={`
+                      py-2.5 text-sm font-semibold rounded-xl border transition-all duration-200
+                      flex text-center gap-2
+                      ${active
+                        ? `${bg} ${border} ${color}`
+                        : "bg-[#111029] border-[#1e1d3a] text-gray-500 hover:border-[#2a2948] hover:text-gray-400"}
+                    `}
+                  >
+                    <span
+                      className={`w-2 h-2 rounded-full transition-all duration-200 ${active}`}
+                    />
+                    {nivel}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
-    );
-      
+
+        <div className="flex items-center justify-end px-6 py-4 border-t border-[#1e1d3a] bg-[#080716]">
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              className="text-white border border-blue-600 hover:text-white hover:bg-white/5 text-sm h-9 px-4"
+            >
+              Cancelar
+            </Button>
+            <Button
+              className="
+                bg-blue-600 hover:bg-blue-900
+                text-white text-sm font-semibold h-9 px-5 rounded-lg transition-all duration-150
+              "
+            >
+              Guardar 
+            </Button>
+          </div>
+        </div>
+
+      </DialogContent>
+    </Dialog>
+  );
 }
