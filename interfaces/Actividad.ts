@@ -3,8 +3,8 @@ import { GEventSchema, GoogleSchema } from "./Evento";
 import { SchemaEtiqueta, extras_dict } from "./Etiquetas";
 
 export const reminderSchema = z.object({
-    method: z.enum(["email", "popup"]), 
-    minutes: z.number()
+    method: z.literal("popup"), 
+    minutes: z.number().min(0).max(40320)
 });
 
 
@@ -15,9 +15,10 @@ export const SchemaCrearActividad = GEventSchema.extend({
         useDefault: z.boolean(),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
-      etiqueta: SchemaEtiqueta.optional(),
+    etiqueta: SchemaEtiqueta.optional(),
     prioridad: extras_dict.optional()
 });
+
 export const SchemaActividad = SchemaCrearActividad.extend({
     status: z.enum(["confirmed", "tentative", "cancelled"]).optional(),
     created: z.string().optional(), 
