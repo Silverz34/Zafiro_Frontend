@@ -7,22 +7,26 @@ export const reminderSchema = z.object({
     minutes: z.number()
 });
 
-export const SchemaActividad = GEventSchema.extend({
-    status: z.enum(["confirmed", "tentative", "cancelled"]).optional(),
-    created: z.string().optional(), 
-    updated: z.string().optional(), 
-    transparency: z.enum(["transparent", "opaque"]).optional(),
-    eventType: z.enum(["default", "focusTime", "outOfOffice"]).optional(),
-    recurrence: z.array(z.string()).optional(),     
-    recurringEventId: z.string().optional(),        
-    originalStartTime: GoogleSchema.optional(), 
 
+export const SchemaCrearActividad = GEventSchema.extend({
+  transparency: z.enum(["transparent", "opaque"]).optional(),
+   recurrence: z.array(z.string()).optional(), 
     reminders: z.object({ 
         useDefault: z.boolean(),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
-    etiqueta: SchemaEtiqueta.optional(),
+      etiqueta: SchemaEtiqueta.optional(),
     prioridad: extras_dict.optional()
+});
+export const SchemaActividad = SchemaCrearActividad.extend({
+    status: z.enum(["confirmed", "tentative", "cancelled"]).optional(),
+    created: z.string().optional(), 
+    updated: z.string().optional(), 
+    eventType: z.enum(["default", "focusTime", "outOfOffice"]).optional(),
+    recurrence: z.array(z.string()).optional(),     
+    recurringEventId: z.string().optional(),        
+    originalStartTime: GoogleSchema.optional()
 });
 
 export type Actividad = z.infer<typeof SchemaActividad>;
+export type CrearActividad = z.infer <typeof SchemaCrearActividad>;
