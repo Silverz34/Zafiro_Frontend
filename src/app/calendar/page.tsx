@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
-import ModalActividad from "@/components/ModalActividad";
+import ModalActividad from "@/components/modal/ModalActividad";
 
 import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";

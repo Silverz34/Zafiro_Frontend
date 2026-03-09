@@ -21,8 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
-import { TimePicker } from "./ui/time";
-import { TIME_SLOTS, type TimeSlot } from "./ui/time";
+import { TimePicker,TIME_SLOTS, type TimeSlot } from "../ui/time";
 
 interface ModalProps {
   isOpen: boolean;
