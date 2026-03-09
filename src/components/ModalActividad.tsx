@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from "react";
-import { HiX, HiOutlineCalendar, HiChevronDown, HiClock } from "react-icons/hi";
+import { HiX, HiOutlineCalendar, HiChevronDown} from "react-icons/hi";
+import { Undo2, Bell,Clock,BriefcaseBusiness  } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -159,7 +160,7 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
               <span className="text-[14px] font-bold text-white tracking-[0.12em]">
                 Fecha y horario
               </span>
-              <HiClock className="w-4 h-4"></HiClock>
+              <Clock className="w-4 h-4"></Clock>
             </div>
 
             <div className="px-4 py-3 flex flex-col gap-3">
@@ -222,67 +223,72 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2">
-              <Label className="text-[11px] font-semibold text-white-500 uppercase tracking-wider ml-0.5">
-                Repetición
-              </Label>
-              <Select value={recurrencia} onValueChange={setRecurrencia}>
-                <SelectTrigger className="bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
-                  {RECURRENCE_OPTIONS.map(o => (
-                    <SelectItem
-                      key={o.value} value={o.value}
-                      className="text-gray-300 text-sm  border-blue-600 focus:bg-blue-600/20 focus:text-white rounded-lg"
-                    >
+          <div className="flex flex-col gap-3 px-4">
+              <div className="flex flex-col gap-2">
+                <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                  Repetición
+                </Label>
+                
+                  <Select value={recurrencia} onValueChange={setRecurrencia}>
+                    <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                      <div className="flex items-center gap-2">
+                        <Undo2 className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                        <SelectValue />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                      {RECURRENCE_OPTIONS.map(o => (
+                        <SelectItem key={o.value} value={o.value}
+                          className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
+                          {o.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                  Aviso
+                </Label>
+                
+                <Select value={reminder} onValueChange={setReminder}>
+                  <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                    <div className="flex items-center gap-2">
+                      <Bell className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                      <SelectValue />
+                    </div>
+                  </SelectTrigger>
+                    <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                      {REMINDER_OPTIONS.map(o => (
+                    <SelectItem key={o.value} value={o.value}
+                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
                       {o.label}
                     </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label className="text-[11px] font-semibold uppercase tracking-wider ml-0.5">
-                Aviso
-              </Label>
-              <Select value={reminder} onValueChange={setReminder}>
-                <SelectTrigger className="bg-[#111029]  border-blue-600 text-gray-200 text-sm h-9 rounded-lg  transition-colors">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-[#111029]  border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
-                  {REMINDER_OPTIONS.map(o => (
-                    <SelectItem
-                      key={o.value} value={o.value}
-                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg"
-                    >
-                      {o.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label className="text-[11px] font-semibold uppercase tracking-wider ml-0.5">
-                ocupacion 
-              </Label>
-              <Select value={ocupacion} onValueChange={setOcupacion}>
-                <SelectTrigger className="bg-[#111029]  border-blue-600 text-gray-200 text-sm h-9 rounded-lg  transition-colors">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-[#111029]  border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
-                  {OCUPACION.map(o => (
-                    <SelectItem
-                      key={o.value} value={o.value}
-                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg"
-                    >
-                      {o.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                     ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                  Ocupación
+                </Label>
+                
+                  <Select value={ocupacion} onValueChange={setOcupacion}>
+                    <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                      <div className="flex items-center gap-2">
+                        <BriefcaseBusiness className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                        <SelectValue />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                      {OCUPACION.map(o => (
+                        <SelectItem key={o.value} value={o.value}
+                          className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
+                          {o.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
             </div>
           </div>
 
