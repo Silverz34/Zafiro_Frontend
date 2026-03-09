@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 export const GoogleSchema= z.object({
-    dateTime: z.string().optional(),
-    date: z.string().optional()
+  dateTime: z.string().optional(),
+  date: z.string().optional(),
+  timeZone: z.string().optional(),
 }).refine(
   data => data.dateTime || data.date,
   { message: "Se requiere dateTime o date" }

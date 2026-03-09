@@ -1,6 +1,10 @@
 'use client'
 
 import { useState } from "react";
+import { toast } from "sonner";
+import { createActividad } from "../../../lib/createActividad";
+import { FormActividad } from "../../../lib/types/FormActividad";
+import { TipoOcurrencia } from "../../../hooks/Ocurrencia";
 import { HiX, HiOutlineCalendar, HiChevronDown} from "react-icons/hi";
 import { Undo2, Bell,Clock,BriefcaseBusiness  } from "lucide-react";
 import {
@@ -85,7 +89,7 @@ const formatDate = (d: Date) =>
   });
 
 
-export default function ModalActividad({ isOpen, onClose }: ModalProps) {
+export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps) {
   const [titulo,       setTitulo]       = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker,   setShowPicker]   = useState(false);
@@ -96,7 +100,43 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
   const [reminder,     setReminder]     = useState("10");
   const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
   const [ocupacion, setOcupacion] = useState("opaque");
+  const[loading, setLoading] = useState(false);
+  
+    const handleGuardar = async () => {
+  if (!titulo.trim()) {
+    toast.error("El título es obligatorio");
+    return;
+  }
 
+  setLoading(true);
+
+  const form: FormActividad = {
+    titulo,
+    fecha:       selectedDate.toISOString().split('T')[0],
+    horaInicio,
+    horaFin,
+    isAllDay,
+    recurrencia: recurrencia as TipoOcurrencia,
+    reminder,
+    ocupacion:   ocupacion as "opaque" | "transparent",
+    prioridad,
+  };
+
+  const result = await createActividad(form);
+  setLoading(false);
+
+  if (result.success) {
+      toast.success("Actividad creada", {
+        description: `"${titulo}" fue agregada a tu calendario.`,
+      });
+      onSuccess();
+      onClose();
+    } else {
+      toast.error("No se pudo crear la actividad", {
+        description: "Verifica tu conexión e intenta de nuevo.",
+      });
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -333,12 +373,14 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
               Cancelar
             </Button>
             <Button
+              onClick={handleGuardar}
+              disabled={loading || !titulo.trim()}
               className="
                 bg-blue-600 hover:bg-blue-900
                 text-white text-sm font-semibold h-9 px-5 rounded-lg transition-all duration-150
               "
             >
-              Guardar 
+              {loading ? "Guardando..." : "Guardar"}
             </Button>
           </div>
         </div>

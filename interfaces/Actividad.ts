@@ -15,8 +15,8 @@ export const SchemaCrearActividad = GEventSchema.extend({
         useDefault: z.boolean(),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
-    etiqueta: SchemaEtiqueta.optional(),
-    prioridad: extras_dict.optional()
+    //etiqueta: SchemaEtiqueta.optional(),
+    //prioridad: extras_dict.optional()
 });
 
 export const SchemaActividad = SchemaCrearActividad.extend({
@@ -30,4 +30,4 @@ export const SchemaActividad = SchemaCrearActividad.extend({
 });
 
 export type Actividad = z.infer<typeof SchemaActividad>;
-export type CrearActividad = z.infer <typeof SchemaCrearActividad>;
+export type CrearActividad = z.infer<typeof SchemaCrearActividad>;

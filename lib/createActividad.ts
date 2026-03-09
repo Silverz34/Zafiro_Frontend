@@ -5,11 +5,11 @@ import { SchemaCrearActividad } from "../interfaces/Actividad";
 import { generarRegla } from "../hooks/Ocurrencia";
 import { FormActividad } from "./types/FormActividad";
 
-const PRIORIDAD_COLORES: Record <string, string> = {
+/**const PRIORIDAD_COLORES: Record <string, string> = {
   Alta:  "#AB3535",
   Media: "#E2761F",
   Baja:  "#2FA941",
-};
+};**/
 
 export async function createActividad(form: FormActividad) {
     try{
@@ -22,9 +22,9 @@ export async function createActividad(form: FormActividad) {
         const payload ={
             summary: form.titulo,
             start: form.isAllDay
-            ? {date: form.fecha} : {dateTime: StartISO},
+            ? {date: form.fecha} : {dateTime: StartISO, timeZone: "America/Mexico_City" },
             end: form.isAllDay
-            ? {date: form.fecha} : {dateTime: endISO},
+            ? {date: form.fecha} : {dateTime: endISO, timeZone: "America/Mexico_City" },
 
             transparency: form.ocupacion === "transparent" ? "transparent" : undefined,
 
@@ -32,17 +32,13 @@ export async function createActividad(form: FormActividad) {
                 StartISO ?? `${form.fecha}T00:00:00`,
                 form.recurrencia
             ),
-            remiders: form.remider === "none"
+            remiders: form.reminder === "none"
             ? {useDefault: false} : {
                 useDefault: false,
                 overrides: [{
                     method: "popup", 
-                    minutes: parseInt(form.remider),
+                    minutes: parseInt(form.reminder),
                 }],
-            },
-            prioridad: {
-                Prioridad: form.prioridad,
-                color: PRIORIDAD_COLORES[form.prioridad],
             }
         };
 

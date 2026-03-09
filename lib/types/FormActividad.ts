@@ -10,7 +10,7 @@ export interface FormActividad{
 
     isAllDay: boolean;
     recurrencia: TipoOcurrencia;
-    remider: string;
+    reminder: string;
     ocupacion: "opaque" | "transparent";
     prioridad: PrioridadType;
 }
