@@ -26,6 +26,7 @@ import { TimePicker,TIME_SLOTS, type TimeSlot } from "../ui/time";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
 type PrioridadType = "Alta" | "Media" | "Baja";

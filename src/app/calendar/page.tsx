@@ -15,7 +15,9 @@ export default function DashboardTemporal() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<ViewType>('semana');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+  const handleRecargarEventos = () =>{
+    setLastFetchedMonth(null);
+  }
   const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
   useEffect(() => {
     const loadEvents = async () => {
@@ -38,6 +40,7 @@ export default function DashboardTemporal() {
     switch (currentView) {
       case 'dia':
         return <DayView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+
       case 'semana':
         return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
       case 'mes':
@@ -61,7 +64,8 @@ export default function DashboardTemporal() {
           {renderCurrentView()}
         </div>
       </DashboardLayout>
-      <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} 
+        onSuccess={handleRecargarEventos}/>
     </>
   );
 }
