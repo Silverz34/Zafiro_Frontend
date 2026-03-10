@@ -5,6 +5,8 @@ import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
 import ModalActividad from "@/components/modal/ModalActividad";
+import { MiniModal } from "../../../interfaces/Preview";
+import EventoPreview from "@/components/modal/MiniModal";
 
 import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";
@@ -15,8 +17,13 @@ export default function DashboardTemporal() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<ViewType>('semana');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+  const handleRecargarEventos = () =>{
+    setLastFetchedMonth(null);
+  }
   const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
+  const [MiniModal, setMiniModal] = useState<MiniModal | null>(null);
+
+
   useEffect(() => {
     const loadEvents = async () => {
       const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
@@ -37,13 +44,30 @@ export default function DashboardTemporal() {
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dia':
-        return <DayView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <DayView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)} 
+        onEventClick={setMiniModal}
+        />;
+
       case 'semana':
-        return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <WeekView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)} 
+        onEventClick={setMiniModal}
+        />;
       case 'mes':
-        return <MonthView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <MonthView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)}
+        onEventClick={setMiniModal} 
+        />;
     default: 
-        return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <WeekView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)}
+        onEventClick={setMiniModal} 
+        />;
     }
   };
 
@@ -61,7 +85,15 @@ export default function DashboardTemporal() {
           {renderCurrentView()}
         </div>
       </DashboardLayout>
-      <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} 
+        onSuccess={handleRecargarEventos}/>
+      <EventoPreview
+        evento={MiniModal}
+        onClose={() => setMiniModal(null)}
+        onEdit={(evento) => console.log("editar", evento)}
+        onDelete={() => {setMiniModal(null);
+        setLastFetchedMonth(null); }}
+      />
     </>
   );
 }

@@ -1,100 +1,41 @@
 'use client'
 
-import { useState } from "react";
 import { HiX, HiOutlineCalendar, HiChevronDown} from "react-icons/hi";
 import { Undo2, Bell,Clock,BriefcaseBusiness  } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { useModalActividad } from "../../../hooks/useModal";
+import { PRIORIDADES, RECURRENCE_OPTIONS, REMINDER_OPTIONS, OCUPACION, formatDate } from "../../../hooks/custom/modalconstantes";
+import {Dialog, DialogContent, DialogHeader,DialogTitle} from "@/components/ui/dialog";
 import { Button }   from "@/components/ui/button";
 import { Input }    from "@/components/ui/input";
 import { Label }    from "@/components/ui/label";
 import { Switch }   from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
-import { TimePicker,TIME_SLOTS, type TimeSlot } from "../ui/time";
+import { TimePicker} from "../ui/time";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-type PrioridadType = "Alta" | "Media" | "Baja";
-
-const PRIORIDADES: {
-  nivel: PrioridadType;
-  color: string;
-  bg: string;
-  border: string;
-}[] = [
-  {
-    nivel:  "Baja",
-    color:  "text-emerald-400",
-    bg:     "bg-emerald-500/10",
-    border: "border-emerald-500/40"
-  },
-  {
-    nivel:  "Media",
-    color:  "text-amber-400",
-    bg:     "bg-amber-500/10",
-    border: "border-amber-500/40"
-  },
-  {
-    nivel:  "Alta",
-    color:  "text-rose-400",
-    bg:     "bg-rose-500/10",
-    border: "border-rose-500/40"
-  },
-];
-
-const RECURRENCE_OPTIONS = [
-  { value: "none",     label: "No se repite" },
-  { value: "daily",    label: "Todos los días" },
-  { value: "weekdays", label: "Días laborables  (L – V)" },
-  { value: "weekly",   label: "Cada semana" },
-];
-
-const REMINDER_OPTIONS = [
-  { value: "none",  label: "Sin recordatorio" },
-  { value: "5",     label: "5 minutos antes" },
-  { value: "10",    label: "10 minutos antes" },
-  { value: "30",    label: "30 minutos antes" }
-];
-
-const OCUPACION=[
-  {value: "opaque", label: "ocupado"},
-  {value:"transparent", label: "Libre"}
-]
-
-const formatDate = (d: Date) =>
-  d.toLocaleDateString("es-MX", {
-    weekday: "long",
-    day:     "numeric",
-    month:   "long",
-    year:    "numeric",
-  });
-
-
-export default function ModalActividad({ isOpen, onClose }: ModalProps) {
-  const [titulo,       setTitulo]       = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showPicker,   setShowPicker]   = useState(false);
-  const [horaInicio,   setHoraInicio]   = useState("09:00");
-  const [horaFin,      setHoraFin]      = useState("10:00");
-  const [isAllDay,     setIsAllDay]     = useState(false);
-  const [recurrencia,  setRecurrencia]  = useState("none");
-  const [reminder,     setReminder]     = useState("10");
-  const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
-  const [ocupacion, setOcupacion] = useState("opaque");
+export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps) {
+  const {
+    titulo, setTitulo,
+    selectedDate, setSelectedDate,
+    showPicker, setShowPicker,
+    horaInicio,  
+    horaFin, setHoraFin,
+    isAllDay, setIsAllDay,
+    recurrencia, setRecurrencia,
+    reminder, setReminder,
+    prioridad, setPrioridad,
+    ocupacion, setOcupacion,
+    loading,
+    handleHoraInicio,
+    handleGuardar,
+  } = useModalActividad({ onClose, onSuccess });
+  
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -199,15 +140,8 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
                       Inicio
                     </span>
                     <TimePicker 
-                      value={horaInicio} 
-                      onChange={(val) => {
-                        setHoraInicio(val);
-                        if (val >= horaFin) {
-                          const idx = TIME_SLOTS.findIndex((s:TimeSlot) => s.value === val);
-                          const next = TIME_SLOTS[idx + 1];
-                          if (next) setHoraFin(next.value);
-                        }
-                      }} 
+                      value={horaInicio}
+                      onChange={(handleHoraInicio)}
                     />
 
                   </div>
@@ -332,12 +266,14 @@ export default function ModalActividad({ isOpen, onClose }: ModalProps) {
               Cancelar
             </Button>
             <Button
+              onClick={handleGuardar}
+              disabled={loading || !titulo.trim()}
               className="
                 bg-blue-600 hover:bg-blue-900
                 text-white text-sm font-semibold h-9 px-5 rounded-lg transition-all duration-150
               "
             >
-              Guardar 
+              {loading ? "Guardando..." : "Guardar"}
             </Button>
           </div>
         </div>

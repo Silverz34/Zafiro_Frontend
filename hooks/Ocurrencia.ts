@@ -1,32 +1,57 @@
-
-
-
 export type TipoOcurrencia = 'none' | 'daily' | 'weekdays' | 'weekly';
 
-export function generarReglaOcurrencia(fechaInicioISO: string, tipo: TipoOcurrencia): string[] | undefined {
+/**
+ * Calcula la fecha UNTIL (1 mes después del inicio)
+ * con fix de overflow: si el mes siguiente no tiene ese día,
+ * retrocede al último día del mes.
+ */
+export function calcularUntil(fechaInicioISO: string): string{
+  const startDate = new Date(fechaInicioISO);
+
+  const year = startDate.getUTCFullYear();
+  const month = startDate.getUTCMonth()
+  const day = startDate.getUTCDate();
+ 
+  const ultimoDia = new Date(Date.UTC(year, month + 2, 0 )).getUTCDate();
+  const diaFinal = Math.min(day, ultimoDia);
+  const until = new Date(Date.UTC(year, month + 1,diaFinal ));
+  const pad = (n:number)=> n.toString().padStart(2, '0');
+
+  return(
+    `${until.getUTCFullYear()}` +
+    `${pad(until.getUTCMonth() + 1)}` +
+    `${pad(until.getUTCDate())}` +
+    `T000000Z`
+  );
+}
+
+
+
+/**
+ * Regla de RRULE para google calendar 
+ * las repeticiones tienen limite de un mes para evitar ocurrencias infinitas 
+ * retorna udefined si el tipo es 'none'
+ */
+
+export function generarRegla(
+  fechaInicioISO: string,
+  tipo: TipoOcurrencia
+): string[] | undefined {
   if (tipo === 'none') return undefined;
 
-  const startDate = new Date(fechaInicioISO);
-  const untilDate = new Date(startDate);
-  untilDate.setMonth(untilDate.getMonth() + 1);
-  const pad = (n: number) => n.toString().padStart(2, '0');
-  
-  const formattedUntil = 
-    `${untilDate.getUTCFullYear()}` +
-    `${pad(untilDate.getUTCMonth() + 1)}` + 
-    `${pad(untilDate.getUTCDate())}T` +
-    `${pad(untilDate.getUTCHours())}` +
-    `${pad(untilDate.getUTCMinutes())}` +
-    `${pad(untilDate.getUTCSeconds())}Z`;
+  const until = calcularUntil(fechaInicioISO);
 
   switch (tipo) {
     case 'daily':
-      return [`RRULE:FREQ=DAILY;UNTIL=${formattedUntil}`];
+      return [`RRULE:FREQ=DAILY;UNTIL=${until}`];
+
     case 'weekdays':
-      return [`RRULE:FREQ=WEEKLY;UNTIL=${formattedUntil};BYDAY=MO,TU,WE,TH,FR`];
+      return [`RRULE:FREQ=WEEKLY;UNTIL=${until};BYDAY=MO,TU,WE,TH,FR`];
+
     case 'weekly':
-      return [`RRULE:FREQ=WEEKLY;UNTIL=${formattedUntil}`];
+      return [`RRULE:FREQ=WEEKLY;UNTIL=${until}`];
+
     default:
       return undefined;
-    }
+  }
 }
