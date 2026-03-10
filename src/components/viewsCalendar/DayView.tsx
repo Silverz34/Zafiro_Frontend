@@ -1,14 +1,6 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar" 
-import { GoogleEvent } from "../../../interfaces/Evento"
-import { MiniModal } from "../../../interfaces/Preview";
-
-interface ViewProps {
-    currentDate: Date;
-    events: GoogleEvent[];
-    onOpenModal: () => void;
-    onEventClick: (evento: MiniModal) => void;
-}
+import type { ViewProps } from "../../../interfaces/types/props";
 
 export default function DayView({ currentDate, events, onOpenModal, onEventClick}: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');

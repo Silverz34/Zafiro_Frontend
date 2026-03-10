@@ -54,19 +54,19 @@ export default function DashboardTemporal() {
         return <WeekView currentDate={currentDate} 
         events={events || []} 
         onOpenModal={() => setIsModalOpen(true)} 
-        //onEventClick={setMiniModal}
+        onEventClick={setMiniModal}
         />;
       case 'mes':
         return <MonthView currentDate={currentDate} 
         events={events || []} 
         onOpenModal={() => setIsModalOpen(true)}
-        //onEventClick={setMiniModal} 
+        onEventClick={setMiniModal} 
         />;
     default: 
         return <WeekView currentDate={currentDate} 
         events={events || []} 
         onOpenModal={() => setIsModalOpen(true)}
-        //onEventClick={setMiniModal} 
+        onEventClick={setMiniModal} 
         />;
     }
   };
