@@ -1,5 +1,3 @@
-import type { TipoOcurrencia } from "../Ocurrencia";
-
 export type PrioridadType = "Alta" | "Media" | "Baja";
 
 export const PRIORIDADES = [

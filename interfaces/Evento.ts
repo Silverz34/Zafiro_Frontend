@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { reminderSchema } from "./Actividad";
 
 export const GoogleSchema= z.object({
   dateTime: z.string().optional(),
@@ -19,4 +20,15 @@ export const GEventSchema = z.object(
 );
 
 export type GoogleEvent = z.infer <typeof GEventSchema>
+
+//es para el mini modal (preview de la actividad)
+export const PreviewSchema = GEventSchema.extend({
+  transparency: z.enum(["transparent", "opaque"]).optional(),
+   reminders: z.object({ 
+      useDefault: z.boolean(),
+      overrides: z.array(reminderSchema).optional() 
+    }).optional()
+});
+
+export type MiniModal = z.infer <typeof PreviewSchema>;
 

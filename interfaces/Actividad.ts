@@ -24,7 +24,6 @@ export const SchemaActividad = SchemaCrearActividad.extend({
     created: z.string().optional(), 
     updated: z.string().optional(), 
     eventType: z.enum(["default", "focusTime", "outOfOffice"]).optional(),
-    recurrence: z.array(z.string()).optional(),     
     recurringEventId: z.string().optional(),        
     originalStartTime: GoogleSchema.optional()
 });
