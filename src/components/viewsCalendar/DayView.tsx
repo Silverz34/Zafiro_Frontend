@@ -1,13 +1,8 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar" 
-import { GoogleEvent } from "../../../interfaces/Evento"
+import type { ViewProps } from "../../../interfaces/types/props";
 
-interface ViewProps {
-    currentDate: Date;
-    events: GoogleEvent[];
-}
-
-export default function DayView({ currentDate, events }: ViewProps) {
+export default function DayView({ currentDate, events, onOpenModal, onEventClick}: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');
     const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const targetDate = days[0] || currentDate;
@@ -36,19 +31,31 @@ export default function DayView({ currentDate, events }: ViewProps) {
                 <div className="flex min-h-max relative">
                     <div className="w-16 shrink-0 border-r border-gray-800 bg-[#100F1D]">
                         {hours.map((hour)=>(
-                            <div key={`hour-label-${hour}`} className="h-18 border-b border-gray-800 flex justify-center py-2 text-xs font-medium text-gray-400">
+                            <div key={`hour-label-${hour}`} className="h-16 border-b border-gray-800 flex justify-center py-2 text-xs font-medium text-gray-400">
                                 {hour === 0 ? '12 am' : hour < 12 ? `${hour} am` : hour === 12? '12 pm' : `${hour - 12} pm` }
                             </div>
                         ))}
                     </div>
-                    <div className="flex-1 relative min-h-80">
+                    <div onClick={onOpenModal} className="flex-1 relative min-h-80">
                         {hours.map((hour)=>(
-                            <div key={`grid-line${hour}`} className="h-18 border-b border-gray-800/30"></div>
+                            <div key={`grid-line${hour}`} className="h-16 border-b border-gray-800/30"></div>
                         ))}
                         {processedEvents.map(event =>(
                             <div 
-                                key={event.id} 
-                                className="absolute left-2 right-4 bg-blue-600/20 border-l-4 border-blue-500 rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10 flex flex-col" 
+                               key={event.id} 
+                               onClick={(e) => {
+                                    e.stopPropagation(); 
+                                    if (!event.id) return; 
+                                    onEventClick({
+                                        id:           event.id,
+                                        summary:      event.summary,
+                                        start:        event.start,
+                                        end:          event.end,
+                                        transparency: (event as any).transparency,
+                                        reminders:    (event as any).reminders,
+                                    });
+                                }}
+                                className=" absolute left-2 right-4 bg-blue-600/20 border-l-4 border-blue-500 rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10 flex flex-col" 
                                 style={event.positionStyle}
                             >
                                 <p className="text-sm font-bold text-blue-100">{event.summary}</p>

@@ -1,6 +1,5 @@
 "use server";
 import { getGoogleToken } from "./googleAuth";
-import { SchemaActividad, Actividad } from "../interfaces/Actividad";
 
 export async function fetchDailyActivities(targetDateIso: string) {
   try {
@@ -48,30 +47,3 @@ export async function fetchDailyActivities(targetDateIso: string) {
   }
 }
 
-export async function createGoogleActivity(rawData:unknown){
-  try{
-    const validation: Actividad = SchemaActividad.parse(rawData);
-    const token = await getGoogleToken();
-    const googleApiUrl = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
-    const res = await fetch(googleApiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(validation),
-    });
-     
-    if(!res.ok){
-      const errorData = await res.json();
-      console.error("error en la api", errorData);
-      throw new Error("fallo el tratar de insertar la actividad");
-    }
-    const createdEvent = await res.json();
-    return{succes: true, data: createdEvent};
-  }catch (error){
-    console.error("Error en createGoogleActivity:", error);
-    return { success: false, error: "Error al crear la actividad." };
-
-  }
-}

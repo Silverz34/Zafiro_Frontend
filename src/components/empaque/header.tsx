@@ -11,9 +11,11 @@ interface CalendarHeaderProps {
   setCurrentDate: (date: Date) => void;
   currentView: ViewType;                  
   setCurrentView: (view: ViewType) => void;
+  onOpenModal: () => void;
 }
 
-export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate, currentView, setCurrentView }: CalendarHeaderProps) {
+export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate, 
+  currentView, setCurrentView, onOpenModal }: CalendarHeaderProps) {
   const { 
     goToToday, 
     goToPrevious, 
@@ -21,7 +23,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
     handleYearChange,
     formattedMonth, 
     currentYear,
-    yearsRange
+    yearsRange, 
   } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
   return (
@@ -68,7 +70,8 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
       </div>
 
       <div className="flex items-center gap-3">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-4 rounded-lg flex items-center gap-1 transition-all shadow-md">
+        <button onClick={onOpenModal}
+        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-4 rounded-lg flex items-center gap-1 transition-all shadow-md">
           Crear <span className="text-lg leading-none ml-1">+</span>
         </button>
 
