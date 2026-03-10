@@ -2,8 +2,8 @@
 
 import { HiX, HiOutlineCalendar, HiOutlineBell } from "react-icons/hi";
 import { BriefcaseBusiness, Pencil, Trash2 } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { MiniModal } from "../../../interfaces/Evento";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { MiniModal } from "../../../interfaces/Preview";
 
 interface EventoPreviewProps {
   evento:  MiniModal | null;
@@ -58,18 +58,15 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
         className="
           bg-[#0d0c1e] border border-[#2554E0] text-white
           max-w-sm w-full rounded-2xl
-          shadow-2xl shadow-blue-950/60
           p-0 gap-0 overflow-hidden
           [&>button]:hidden
         "
       >
-       
-        <div className="h-1.5 w-full bg-blue-600" />
 
         <div className="px-5 pt-4 pb-3 flex items-start justify-between gap-3">
-          <h2 className="text-lg font-bold text-white leading-snug flex-1 pr-2">
+          <DialogTitle className="text-lg font-bold text-white leading-snug flex-1 pr-2">
             {evento.summary ?? "Sin título"}
-          </h2>
+          </DialogTitle>
           <div className="flex items-center gap-1 shrink-0">
             {onEdit && (
               <button
@@ -142,8 +139,9 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
               {esLibre ? "Libre" : "Ocupado"}
             </span>
           </div>
-
         </div>
+        {/*esto tendra relevancia mas tarde*/}
+        <div className="h-1.5 w-full bg-blue-600" />
       </DialogContent>
     </Dialog>
   );

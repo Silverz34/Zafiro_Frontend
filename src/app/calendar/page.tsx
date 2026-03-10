@@ -5,7 +5,7 @@ import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
 import ModalActividad from "@/components/modal/ModalActividad";
-import { MiniModal } from "../../../interfaces/Evento";
+import { MiniModal } from "../../../interfaces/Preview";
 import EventoPreview from "@/components/modal/MiniModal";
 
 import DayView from "@/components/viewsCalendar/DayView";
@@ -47,7 +47,7 @@ export default function DashboardTemporal() {
         return <DayView currentDate={currentDate} 
         events={events || []} 
         onOpenModal={() => setIsModalOpen(true)} 
-        //onEventClick={setMiniModal}
+        onEventClick={setMiniModal}
         />;
 
       case 'semana':
