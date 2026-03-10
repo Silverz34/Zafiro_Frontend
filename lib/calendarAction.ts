@@ -1,6 +1,5 @@
 "use server";
 import { getGoogleToken } from "./googleAuth";
-import { SchemaActividad, Actividad } from "../interfaces/Actividad";
 
 export async function fetchDailyActivities(targetDateIso: string) {
   try {

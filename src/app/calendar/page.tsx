@@ -5,6 +5,7 @@ import { fetchDailyActivities } from "../../../lib/calendarAction";
 import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
 import ModalActividad from "@/components/modal/ModalActividad";
+import { MiniModal } from "../../../interfaces/Evento";
 
 import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";
@@ -19,6 +20,9 @@ export default function DashboardTemporal() {
     setLastFetchedMonth(null);
   }
   const [lastFetchedMonth, setLastFetchedMonth] = useState <string | null >(null);
+  const [MiniModal, setMiniModal] = useState<MiniModal | null>(null);
+
+
   useEffect(() => {
     const loadEvents = async () => {
       const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
@@ -39,14 +43,30 @@ export default function DashboardTemporal() {
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dia':
-        return <DayView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <DayView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)} 
+        //onEventClick={setMiniModal}
+        />;
 
       case 'semana':
-        return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <WeekView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)} 
+        //onEventClick={setMiniModal}
+        />;
       case 'mes':
-        return <MonthView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <MonthView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)}
+        //onEventClick={setMiniModal} 
+        />;
     default: 
-        return <WeekView currentDate={currentDate} events={events || []} onOpenModal={() => setIsModalOpen(true)} />;
+        return <WeekView currentDate={currentDate} 
+        events={events || []} 
+        onOpenModal={() => setIsModalOpen(true)}
+        //onEventClick={setMiniModal} 
+        />;
     }
   };
 

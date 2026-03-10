@@ -3,7 +3,7 @@
 import { getGoogleToken } from "./googleAuth";
 import { SchemaCrearActividad } from "../interfaces/Actividad";
 import { generarRegla } from "../hooks/Ocurrencia";
-import { FormActividad } from "./types/FormActividad";
+import { FormActividad } from "../interfaces/types/FormActividad";
 
 /**const PRIORIDAD_COLORES: Record <string, string> = {
   Alta:  "#AB3535",

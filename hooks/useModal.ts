@@ -1,7 +1,7 @@
 import { useState }              from "react";
 import { toast }                 from "sonner";
 import { createActividad } from "../lib/createActividad";
-import type { FormActividad } from "../lib/types/FormActividad";
+import type { FormActividad } from "../interfaces/types/FormActividad";
 import type { TipoOcurrencia } from "./Ocurrencia";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
 import type { PrioridadType } from "./custom/modalconstantes";

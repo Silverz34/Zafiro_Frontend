@@ -1,13 +1,7 @@
 import { z } from "zod";
 import { GEventSchema, GoogleSchema } from "./Evento"; 
 import { SchemaEtiqueta, extras_dict } from "./Etiquetas";
-
-export const reminderSchema = z.object({
-    method: z.literal("popup"), 
-    minutes: z.number().min(0).max(40320)
-});
-
-
+import { reminderSchema } from "./Remiders";
 export const SchemaCrearActividad = GEventSchema.extend({
   transparency: z.enum(["transparent", "opaque"]).optional(),
    recurrence: z.array(z.string()).optional(), 
