@@ -1,73 +1,79 @@
 'use client';
 import React, { useState } from 'react';
 
-export default function MiniCalendar() {
+interface MiniCalendarProps {
+  selectedDate?: Date;              
+  onSelectDate?: (date: Date) => void; 
+}
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+export default function MiniCalendar({ selectedDate, onSelectDate }: MiniCalendarProps) {
+  const [currentDate, setCurrentDate] = useState(selectedDate ?? new Date());
+  
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const weekDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
-  const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const years = Array.from({ length: 11 }, (_, i) => year - 5 + i);
+  const today = new Date();
 
   const handlePrevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
   const handleNextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
-  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => setCurrentDate(new Date(year, parseInt(e.target.value), 1));
-  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => setCurrentDate(new Date(parseInt(e.target.value), month, 1));
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setCurrentDate(new Date(year, parseInt(e.target.value), 1));
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setCurrentDate(new Date(parseInt(e.target.value), month, 1));
 
-  const today = new Date();
+  const handleDayClick = (day: number) => {
+    if (!onSelectDate) return; 
+    onSelectDate(new Date(year, month, day));
+  };
 
   return (
     <div className="bg-[#171733] p-3 rounded-xl text-white w-full max-w-60 max-h-77">
-      
       <div className="flex justify-between items-center mb-4">
         <button onClick={handlePrevMonth} className="text-blue-600 hover:text-white px-2 py-1 rounded transition-colors">&lt;</button>
-        
         <div className="flex gap-2">
-          <select 
-            value={month} 
-            onChange={handleMonthChange}
-            className=" bg-[#171733] border border-gray-500 text-xs rounded px-1 py-1 outline-none cursor-pointer"
-          >
-            {monthNames.map((m, index) => (
-              <option key={m} value={index}>{m}</option>
-            ))}
+          <select value={month} onChange={handleMonthChange}
+            className="bg-[#171733] border border-gray-500 text-xs rounded px-1 py-1 outline-none cursor-pointer">
+            {monthNames.map((m, index) => <option key={m} value={index}>{m}</option>)}
           </select>
-          <select 
-            value={year} 
-            onChange={handleYearChange}
-            className="bg-[#171733] border border-gray-500 text-xs rounded px-1 py-1 outline-none cursor-pointer"
-          >
-            {years.map((y) => (
-              <option key={y} value={y}>{y}</option>
-            ))}
+          <select value={year} onChange={handleYearChange}
+            className="bg-[#171733] border border-gray-500 text-xs rounded px-1 py-1 outline-none cursor-pointer">
+            {years.map(y => <option key={y} value={y}>{y}</option>)}
           </select>
         </div>
-
         <button onClick={handleNextMonth} className="text-blue-600 hover:text-white px-1 py-1 rounded transition-colors">&gt;</button>
       </div>
+
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {weekDays.map((day) => (
-          <div key={day} className="text-[10px] text-blue-500 font-bold text-center uppercase tracking-wider">
-            {day}
-          </div>
+        {weekDays.map(day => (
+          <div key={day} className="text-[10px] text-blue-500 font-bold text-center uppercase tracking-wider">{day}</div>
         ))}
       </div>
+
       <div className="grid grid-cols-7 gap-y-2 gap-x-1 text-center">
-        {Array.from({ length: firstDayOfMonth }).map((_, index) => (
-          <div key={`empty-${index}`} className="p-1"></div>
-        ))}
+        {Array.from({ length: firstDayOfMonth }).map((_, i) => <div key={`empty-${i}`} />)}
         {Array.from({ length: daysInMonth }).map((_, index) => {
           const day = index + 1;
-          const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+          const isToday    = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+          const isSelected = selectedDate
+            && day === selectedDate.getDate()
+            && month === selectedDate.getMonth()
+            && year === selectedDate.getFullYear();
 
           return (
-            <button
-              key={day}
+            <button key={day}
+              onClick={() => handleDayClick(day)}
               className={`text-xs rounded w-7 h-7 mx-auto flex items-center justify-center transition-colors
-                ${isToday ? ' border border-blue-600 text-white font-bold' : 'text-gray-300 hover:bg-gray-800'}
+                ${isSelected
+                  ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/40'
+                  : isToday
+                    ? 'border border-blue-600 text-white font-bold'
+                    : onSelectDate  
+                      ? 'text-gray-300 hover:bg-gray-700 cursor-pointer'
+                      : 'text-gray-300 cursor-default'}
               `}
             >
               {day}

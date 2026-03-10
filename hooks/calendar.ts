@@ -60,8 +60,8 @@ export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view:
             return {
                 ...event,
                 positionStyle: { 
-                    top: `${startHour * 80}px`,
-                    height: `${duration * 80}px`,
+                    top: `${startHour * 64}px`,
+                    height: `${duration * 64}px`,
                 },
                 formattedTime: start.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
             };

@@ -1,13 +1,8 @@
-'use calendar'
+'use client'
 import { CalendarLogic } from "../../../hooks/calendar"
-import { GoogleEvent } from "../../../interfaces/Evento"
+import type { ViewProps } from "../../../interfaces/types/props";
 
-interface ViewProp{
-    currentDate: Date;
-    events: GoogleEvent[]; 
-}
-
-export default function WeekView ({currentDate, events }:ViewProp){
+export default function WeekView ({currentDate, events, onOpenModal, onEventClick}:ViewProps){
     const {days, hours, getProcessed} = CalendarLogic(currentDate, events, 'semana');
     const dayNames= ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
@@ -33,24 +28,39 @@ export default function WeekView ({currentDate, events }:ViewProp){
                 <div className="flex min-h-max relative">
                     <div className="w-16 shrink-0 border-r border-gray-800 bg-[#100F1D]">
                         {hours.map((hour)=>(
-                            <div key={`hour-label-${hour}`} className="h-18 border-b border-gray-800 flex justify-center py-2 text-xs text-white font-medium">
+                            <div key={`hour-label-${hour}`} className="h-16 border-b border-gray-800 flex justify-center py-2 text-xs text-white font-medium">
                                 {hour === 0 ? '12 am' : hour < 12 ? `${hour} am` : hour === 12? '12 pm' : `${hour - 12} pm` }
                             </div>
                         ))}
                     </div>
                     
-                    <div className="flex-1 grid grid-cols-7 relative">
+                    <div className="flex-1 grid grid-cols-7 relative" onClick={onOpenModal}>
                         {days.map((date, dayIndex)=>{
                             const processedEvents = getProcessed(date);
 
                             return(
                                 <div key={`day-col-${dayIndex}`} className="border-r border-gray-800 relative min-h-80 ">
                                   {hours.map((hour)=>(
-                                    <div key={`grid-line${hour}`} className="h-18 border-b border-gray-800/30"></div>
+                                    <div key={`grid-line${hour}`} className="h-16 border-b border-gray-800/30"></div>
                                   ))}
                                   
                                   {processedEvents.map(event =>(
-                                    <div key={event.id} className="absolute left-1 right-1 bg-blue-600/20 border border-blue-500 rounded-md p-1.5 
+                                    <div
+                                      key={event.id} 
+                                        onClick={(e) => {
+                                            e.stopPropagation(); 
+                                            if (!event.id) return; 
+                                            onEventClick({
+                                                id:           event.id,
+                                                summary:      event.summary,
+                                                start:        event.start,
+                                                end:          event.end,
+                                                transparency: (event as any).transparency,
+                                                reminders:    (event as any).reminders,
+                                            });
+                                        }} 
+                                    
+                                    className="absolute left-1 right-1 bg-blue-600/20 border border-blue-500 rounded-md p-1.5 
                                     overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10" style={event.positionStyle}>
                                        <p className="text-xs font-semibold text-blue-100 line-clamp-1">{event.summary}</p>
                                        <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime}</p>

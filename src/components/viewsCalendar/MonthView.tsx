@@ -1,13 +1,8 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar" 
-import { GoogleEvent } from "../../../interfaces/Evento"
+import type { ViewProps } from "../../../interfaces/types/props";
 
-interface ViewProps {
-    currentDate: Date;
-    events: GoogleEvent[];
-}
-
-export default function MonthView({ currentDate, events }: ViewProps) {
+export default function MonthView({ currentDate, events, onOpenModal, onEventClick}: ViewProps) {
 
     const { days, getProcessed } = CalendarLogic(currentDate, events, 'mes');
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -31,6 +26,7 @@ export default function MonthView({ currentDate, events }: ViewProps) {
                     return (
                         <div 
                             key={index} 
+                            onClick={onOpenModal}
                             className={`border-r border-b border-gray-800 p-1 flex flex-col gap-1 min-h-25 hover:bg-gray-800/30 transition-colors cursor-pointer ${
                                 !isCurrentMonth ? 'bg-[#0a0914] opacity-50' : ''
                             }`}
@@ -45,7 +41,19 @@ export default function MonthView({ currentDate, events }: ViewProps) {
                             <div className="flex flex-col gap-1 overflow-y-auto max-h-full scrollbar-none pb-1">
                                 {processedEvents.map(event => (
                                     <div 
-                                        key={event.id} 
+                                         key={event.id} 
+                               onClick={(e) => {
+                                    e.stopPropagation(); 
+                                    if (!event.id) return; 
+                                    onEventClick({
+                                        id:           event.id,
+                                        summary:      event.summary,
+                                        start:        event.start,
+                                        end:          event.end,
+                                        transparency: (event as any).transparency,
+                                        reminders:    (event as any).reminders,
+                                    });
+                                }} 
                                         className="bg-blue-600/20 border border-blue-500 text-blue-100 text-[10px] px-1.5 py-1 rounded truncate shadow-sm transition-all hover:bg-blue-600/40"
                                     >
                                         <span className="font-semibold mr-1">{event.formattedTime}</span> 
