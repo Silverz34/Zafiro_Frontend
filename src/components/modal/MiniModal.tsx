@@ -4,6 +4,7 @@ import { HiX, HiOutlineCalendar, HiOutlineBell } from "react-icons/hi";
 import { BriefcaseBusiness, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { MiniModal } from "../../../interfaces/Preview";
+import ConfirmDelete from "../message/ConfirmDelete";
 
 interface EventoPreviewProps {
   evento:  MiniModal | null;
@@ -68,24 +69,23 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
             {evento.summary ?? "Sin título"}
           </DialogTitle>
           <div className="flex items-center gap-1 shrink-0">
-            {onEdit && (
-              <button
-                onClick={() => onEdit(evento)}
-                className="text-gray-400 hover:text-white hover:bg-white/8 rounded-lg p-1.5 transition-all"
-                title="Editar"
-              >
-                <Pencil className="w-4 h-4" />
-              </button>
-            )}
-            {onDelete && (
-              <button
-                onClick={() => onDelete(evento.id)}
-                className="text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg p-1.5 transition-all"
-                title="Eliminar"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
+            
+            <button
+              onClick={() =>(evento)}
+              className="text-gray-400 hover:text-white hover:bg-white/8 rounded-lg p-1.5 transition-all"
+              title="Editar"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
+            
+            <button
+              onClick={() => (evento.id)}
+              className="text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg p-1.5 transition-all"
+              title="Eliminar"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+           
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-white hover:bg-white/8 rounded-lg p-1.5 transition-all"

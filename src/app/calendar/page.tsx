@@ -87,10 +87,13 @@ export default function DashboardTemporal() {
       </DashboardLayout>
       <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} 
         onSuccess={handleRecargarEventos}/>
-        <EventoPreview
-          evento={MiniModal}
-          onClose={() => setMiniModal(null)}
-        />
+      <EventoPreview
+        evento={MiniModal}
+        onClose={() => setMiniModal(null)}
+        onEdit={(evento) => console.log("editar", evento)}
+        onDelete={() => {setMiniModal(null);
+        setLastFetchedMonth(null); }}
+      />
     </>
   );
 }
