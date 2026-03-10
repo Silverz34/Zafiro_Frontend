@@ -6,7 +6,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { MiniModal } from "../../../interfaces/Evento";
 
 interface EventoPreviewProps {
-  evento:  MiniModal;
+  evento:  MiniModal | null;
   onClose: () => void;
   onEdit?:   (evento: MiniModal) => void;
   onDelete?: (id: string) => void;

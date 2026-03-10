@@ -6,6 +6,7 @@ import { GoogleEvent } from "../../../interfaces/Evento";
 import { ViewType } from "../../../hooks/calendar";
 import ModalActividad from "@/components/modal/ModalActividad";
 import { MiniModal } from "../../../interfaces/Evento";
+import EventoPreview from "@/components/modal/MiniModal";
 
 import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";
@@ -86,6 +87,10 @@ export default function DashboardTemporal() {
       </DashboardLayout>
       <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} 
         onSuccess={handleRecargarEventos}/>
+        <EventoPreview
+          evento={MiniModal}
+          onClose={() => setMiniModal(null)}
+        />
     </>
   );
 }
