@@ -5,6 +5,7 @@ import { BriefcaseBusiness, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { MiniModal } from "../../../interfaces/Preview";
 import ConfirmDelete from "../message/ConfirmDelete";
+import { useState } from "react";
 
 interface EventoPreviewProps {
   evento:  MiniModal | null;
@@ -44,6 +45,7 @@ function formatearRecordatorio(minutes?: number): string {
 
 
 export default function EventoPreview({ evento, onClose, onEdit, onDelete }: EventoPreviewProps) {
+  const[showConfirm, setShowConfirmed] = useState(false);
   if (!evento) return null;
 
   const esAllDay    = !evento.start.dateTime;
@@ -79,8 +81,8 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
             </button>
             
             <button
-              onClick={() => (evento.id)}
-              className="text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg p-1.5 transition-all"
+              onClick={() => (setShowConfirmed(true))}
+              className="text-white hover:bg-rose-500/10 rounded-lg p-1.5 transition-all"
               title="Eliminar"
             >
               <Trash2 className="w-4 h-4" />
@@ -143,6 +145,16 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
         {/*esto tendra relevancia mas tarde*/}
         <div className="h-1.5 w-full bg-blue-600" />
       </DialogContent>
+      <ConfirmDelete
+        open={showConfirm}
+        onOpenChange={setShowConfirmed}
+        eventoId={evento.id}
+        eventoNombre={evento.summary}
+        onSuccess={() => {
+          onDelete?.(evento.id);
+          onClose();
+        }}
+      />
     </Dialog>
   );
 }
