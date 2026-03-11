@@ -73,7 +73,7 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
           <div className="flex items-center gap-1 shrink-0">
             
             <button
-              onClick={() =>(evento)}
+              onClick={() => onEdit?.(evento)}
               className="text-gray-400 hover:text-white hover:bg-white/8 rounded-lg p-1.5 transition-all"
               title="Editar"
             >

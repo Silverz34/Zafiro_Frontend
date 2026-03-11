@@ -12,14 +12,17 @@ import { Switch }   from "@/components/ui/switch";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
 import { TimePicker} from "../ui/time";
+import { MiniModal } from "../../../interfaces/Preview";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  modo: "crear" | "editar";        
+  eventoInicial?:  MiniModal | null;  
 }
 
-export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps) {
+export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInicial, modo}: ModalProps) {
   const {
     titulo, setTitulo,
     selectedDate, setSelectedDate,
@@ -34,7 +37,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps
     loading,
     handleHoraInicio,
     handleGuardar,
-  } = useModalActividad({ onClose, onSuccess });
+  } = useModalActividad({ onClose, onSuccess, eventoInicial,modo });
   
 
   return (
@@ -52,7 +55,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <DialogTitle className="text-2xl font-semibold tracking-wide text-white">
-                Nueva Actividad
+                {modo === "editar" ? "Editar Actividad" : "Nueva Actividad"}
               </DialogTitle>
             </div>
             <button
@@ -206,7 +209,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps
                   Ocupación
                 </Label>
                 
-                  <Select value={ocupacion} onValueChange={setOcupacion}>
+                  <Select value={ocupacion}  onValueChange={(val) => setOcupacion(val as "opaque" | "transparent")}>
                     <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
                       <div className="flex items-center gap-2">
                         <BriefcaseBusiness className="w-3.5 h-3.5 text-gray-500 shrink-0" />
@@ -227,7 +230,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps
 
           <div className="flex flex-col gap-2.5">
             <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
-               Prioridad
+              Prioridad
             </Label>
             <div className="grid grid-cols-3 gap-2">
               {PRIORIDADES.map(({ nivel, color, bg, border}) => {
@@ -273,7 +276,10 @@ export default function ModalActividad({ isOpen, onClose, onSuccess}: ModalProps
                 text-white text-sm font-semibold h-9 px-5 rounded-lg transition-all duration-150
               "
             >
-              {loading ? "Guardando..." : "Guardar"}
+             {loading
+              ? modo === "editar" ? "Actualizando..." : "Guardando..."
+              : modo === "editar" ? "Actualizar"      : "Guardar"}
+          
             </Button>
           </div>
         </div>

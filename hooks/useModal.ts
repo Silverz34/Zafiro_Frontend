@@ -4,24 +4,29 @@ import { createActividad } from "../lib/createActividad";
 import type { FormActividad } from "../interfaces/types/FormActividad";
 import type { TipoOcurrencia } from "./Ocurrencia";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
-import type { PrioridadType } from "./custom/modalconstantes";
+import type { ModoModal, PrioridadType } from "./custom/modalconstantes";
+import { MiniModal } from "../interfaces/Preview";
+import { updateActividad } from "../lib/updateActividad";
+
 
 interface UseModalProps {
   onClose:   () => void;
   onSuccess: () => void;
-}
+  eventoInicial? : MiniModal | null;
+  modo: ModoModal;
+} 
 
-export function useModalActividad({ onClose, onSuccess }: UseModalProps) {
-  const [titulo,       setTitulo]       = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
+export function useModalActividad({ onClose, onSuccess, eventoInicial, modo}: UseModalProps) {
+  const [titulo,       setTitulo]       = useState(eventoInicial?.summary ?? "");
+  const [selectedDate, setSelectedDate] = useState(eventoInicial?.start.dateTime ? new Date(eventoInicial.start.dateTime): new Date);
   const [showPicker,   setShowPicker]   = useState(false);
-  const [horaInicio,   setHoraInicio]   = useState("09:00");
-  const [horaFin,      setHoraFin]      = useState("10:00");
+  const [horaInicio,   setHoraInicio]   = useState(eventoInicial?.start.dateTime ? new Date(eventoInicial.start.dateTime).toTimeString().slice(0, 5): "09:00");
+  const [horaFin,      setHoraFin]      = useState(  eventoInicial?.end.dateTime ? new Date(eventoInicial.end.dateTime).toTimeString().slice(0, 5): "10:00");
   const [isAllDay,     setIsAllDay]     = useState(false);
   const [recurrencia,  setRecurrencia]  = useState("none");
   const [reminder,     setReminder]     = useState("10");
   const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
-  const [ocupacion,    setOcupacion]    = useState("opaque");
+  const [ocupacion, setOcupacion] = useState<"opaque" | "transparent">(eventoInicial?.transparency ?? "opaque");
   const [loading,      setLoading]      = useState(false);
 
   const handleHoraInicio = (val: string) => {
@@ -38,37 +43,56 @@ export function useModalActividad({ onClose, onSuccess }: UseModalProps) {
       toast.error("El título es obligatorio");
       return;
     }
-
     setLoading(true);
 
-    const form: FormActividad = {
-      titulo,
-      fecha:       selectedDate.toISOString().split("T")[0],
-      horaInicio,
-      horaFin,
-      isAllDay,
-      recurrencia: recurrencia as TipoOcurrencia,
-      reminder,
-      ocupacion:   ocupacion as "opaque" | "transparent",
-      prioridad,
-    };
+      if (modo === "editar" && eventoInicial?.id) {
+      const cambios: Record<string, unknown> = {
+        summary: titulo,
+        start: isAllDay
+          ? { date: selectedDate.toISOString().split("T")[0] }
+          : { dateTime: `${selectedDate.toISOString().split("T")[0]}T${horaInicio}:00`, timeZone: "America/Mexico_City" },
+        end: isAllDay
+          ? { date: selectedDate.toISOString().split("T")[0] }
+          : { dateTime: `${selectedDate.toISOString().split("T")[0]}T${horaFin}:00`, timeZone: "America/Mexico_City" },
+        transparency: ocupacion,
+        reminders: reminder === "none"
+          ? { useDefault: false }
+          : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
+      };
 
-    const result = await createActividad(form);
-    setLoading(false);
+      const result = await updateActividad(eventoInicial.id, cambios);
+      setLoading(false);
 
-    if (result.success) {
-      toast.success("Actividad creada", {
-        description: `"${titulo}" fue agregada a tu calendario.`,
-      });
-      onSuccess();
-      onClose();
+      if (result.success) {
+        toast.success("Actividad actualizada");
+        onSuccess();
+        onClose();
+      } else {
+        toast.error("No se pudo actualizar la actividad");
+      }
+
     } else {
-      toast.error("No se pudo crear la actividad", {
-        description: "Verifica tu conexión e intenta de nuevo.",
-      });
+      const form: FormActividad = {
+        titulo, fecha: selectedDate.toISOString().split("T")[0],
+        horaInicio, horaFin, isAllDay,
+        recurrencia: recurrencia as TipoOcurrencia,
+        reminder, ocupacion: ocupacion as "opaque" | "transparent", prioridad,
+      };
+
+      const result = await createActividad(form);
+      setLoading(false);
+
+      if (result.success) {
+        toast.success("Actividad creada", {
+          description: `"${titulo}" fue agregada a tu calendario.`,
+        });
+        onSuccess();
+        onClose();
+      } else {
+        toast.error("No se pudo crear la actividad");
+      }
     }
   };
-
   return {
     // estados
     titulo, setTitulo,

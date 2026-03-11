@@ -13,6 +13,7 @@ import WeekView from "@/components/viewsCalendar/WeekView";
 import MonthView from "@/components/viewsCalendar/MonthView";
 
 export default function DashboardTemporal() {
+  const [eventoEditar, setEventoEditar] = useState<MiniModal | null>(null);
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<ViewType>('semana');
@@ -85,12 +86,21 @@ export default function DashboardTemporal() {
           {renderCurrentView()}
         </div>
       </DashboardLayout>
-      <ModalActividad isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} 
-        onSuccess={handleRecargarEventos}/>
+      <ModalActividad 
+       isOpen={isModalOpen} 
+       onClose={() => setIsModalOpen(false)} 
+       onSuccess={handleRecargarEventos}
+       modo = {eventoEditar ? "editar" : "crear"}  
+       eventoInicial={eventoEditar}
+       />
       <EventoPreview
         evento={MiniModal}
         onClose={() => setMiniModal(null)}
-        onEdit={(evento) => console.log("editar", evento)}
+        onEdit={(evento) => {
+          setMiniModal(null);       
+          setEventoEditar(evento);  
+          setIsModalOpen(true);     
+        }}
         onDelete={() => {setMiniModal(null);
         setLastFetchedMonth(null); }}
       />
