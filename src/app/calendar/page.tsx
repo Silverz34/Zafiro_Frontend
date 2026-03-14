@@ -88,8 +88,12 @@ export default function DashboardTemporal() {
       </DashboardLayout>
       <ModalActividad 
        isOpen={isModalOpen} 
-       onClose={() => setIsModalOpen(false)} 
-       onSuccess={handleRecargarEventos}
+       onClose={() => {setIsModalOpen(false)
+        setEventoEditar(null);
+       }} 
+       onSuccess={() =>{handleRecargarEventos
+        setEventoEditar(null);
+       }}
        modo = {eventoEditar ? "editar" : "crear"}  
        eventoInicial={eventoEditar}
        />
