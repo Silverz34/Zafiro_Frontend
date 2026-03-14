@@ -1,5 +1,7 @@
 export type PrioridadType = "Alta" | "Media" | "Baja";
 
+export type ModoModal= "crear" | "editar";
+
 export const PRIORIDADES = [
   { nivel: "Baja"  as PrioridadType, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/40" },
   { nivel: "Media" as PrioridadType, color: "text-amber-400",   bg: "bg-amber-500/10",   border: "border-amber-500/40"   },

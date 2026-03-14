@@ -1,17 +1,20 @@
-import { useState }              from "react";
-import { toast }                 from "sonner";
-import { createActividad } from "../lib/createActividad";
-import type { FormActividad } from "../interfaces/types/FormActividad";
-import type { TipoOcurrencia } from "./Ocurrencia";
+import { useState, useEffect }     from "react";
+import { useCrearActividad }       from "./useCrearActividad";
+import { useEditarActividad }      from "./useEditarActividad";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
-import type { PrioridadType } from "./custom/modalconstantes";
+import type { ModoModal, PrioridadType } from "./custom/modalconstantes";
+import type { MiniModal }          from "../interfaces/Preview";
+import type { TipoOcurrencia }     from "./Ocurrencia";
+import type { FormActividad }      from "../interfaces/types/FormActividad";
 
 interface UseModalProps {
-  onClose:   () => void;
-  onSuccess: () => void;
+  onClose:        () => void;
+  onSuccess:      () => void;
+  eventoInicial?: MiniModal | null;
+  modo:           ModoModal;
 }
 
-export function useModalActividad({ onClose, onSuccess }: UseModalProps) {
+export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: UseModalProps) {
   const [titulo,       setTitulo]       = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker,   setShowPicker]   = useState(false);
@@ -21,8 +24,40 @@ export function useModalActividad({ onClose, onSuccess }: UseModalProps) {
   const [recurrencia,  setRecurrencia]  = useState("none");
   const [reminder,     setReminder]     = useState("10");
   const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
-  const [ocupacion,    setOcupacion]    = useState("opaque");
+  const [ocupacion,    setOcupacion]    = useState<"opaque" | "transparent">("opaque");
   const [loading,      setLoading]      = useState(false);
+
+  const { handleCrear }  = useCrearActividad({ onClose, onSuccess });
+  const { handleEditar } = useEditarActividad({ onClose, onSuccess });
+
+  
+  useEffect(() => {
+    if (eventoInicial) {
+      setTitulo(eventoInicial.summary ?? "");
+      setIsAllDay(!eventoInicial.start.dateTime);
+      if (eventoInicial.start.dateTime) {
+        const start = new Date(eventoInicial.start.dateTime);
+        setSelectedDate(start);
+        setHoraInicio(start.toTimeString().slice(0, 5));
+      }
+      if (eventoInicial.end.dateTime) {
+        setHoraFin(new Date(eventoInicial.end.dateTime).toTimeString().slice(0, 5));
+      }
+      setOcupacion(eventoInicial.transparency ?? "opaque");
+      const override = eventoInicial.reminders?.overrides?.[0];
+      setReminder(override ? String(override.minutes) : "none");
+    } else {
+      setTitulo("");
+      setSelectedDate(new Date());
+      setHoraInicio("09:00");
+      setHoraFin("10:00");
+      setIsAllDay(false);
+      setRecurrencia("none");
+      setReminder("10");
+      setOcupacion("opaque");
+      setPrioridad("Media");
+    }
+  }, [eventoInicial]);
 
   const handleHoraInicio = (val: string) => {
     setHoraInicio(val);
@@ -34,43 +69,41 @@ export function useModalActividad({ onClose, onSuccess }: UseModalProps) {
   };
 
   const handleGuardar = async () => {
-    if (!titulo.trim()) {
-      toast.error("El título es obligatorio");
-      return;
-    }
+    if (!titulo.trim()) return;
 
-    setLoading(true);
+    const fecha = selectedDate.toISOString().split("T")[0];
 
-    const form: FormActividad = {
-      titulo,
-      fecha:       selectedDate.toISOString().split("T")[0],
-      horaInicio,
-      horaFin,
-      isAllDay,
-      recurrencia: recurrencia as TipoOcurrencia,
-      reminder,
-      ocupacion:   ocupacion as "opaque" | "transparent",
-      prioridad,
-    };
-
-    const result = await createActividad(form);
-    setLoading(false);
-
-    if (result.success) {
-      toast.success("Actividad creada", {
-        description: `"${titulo}" fue agregada a tu calendario.`,
-      });
-      onSuccess();
-      onClose();
+    if (modo === "editar" && eventoInicial?.id) {
+      await handleEditar(
+        eventoInicial.id,
+        {
+          summary: titulo,
+          start: isAllDay
+            ? { date: fecha }
+            : { dateTime: `${fecha}T${horaInicio}:00`, timeZone: "America/Mexico_City" },
+          end: isAllDay
+            ? { date: fecha }
+            : { dateTime: `${fecha}T${horaFin}:00`, timeZone: "America/Mexico_City" },
+          transparency: ocupacion,
+          reminders: reminder === "none"
+            ? { useDefault: false }
+            : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
+        },
+        setLoading
+      );
     } else {
-      toast.error("No se pudo crear la actividad", {
-        description: "Verifica tu conexión e intenta de nuevo.",
-      });
+      await handleCrear(
+        {
+          titulo, fecha, horaInicio, horaFin, isAllDay,
+          recurrencia: recurrencia as TipoOcurrencia,
+          reminder, ocupacion, prioridad,
+        } as FormActividad,
+        setLoading
+      );
     }
   };
 
   return {
-    // estados
     titulo, setTitulo,
     selectedDate, setSelectedDate,
     showPicker, setShowPicker,
@@ -81,7 +114,6 @@ export function useModalActividad({ onClose, onSuccess }: UseModalProps) {
     prioridad, setPrioridad,
     ocupacion, setOcupacion,
     loading,
-    // handlers
     handleHoraInicio,
     handleGuardar,
   };
