@@ -11,8 +11,10 @@ import EventoPreview from "@/components/modal/MiniModal";
 import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";
 import MonthView from "@/components/viewsCalendar/MonthView";
+import { useSession } from "../../../hooks/useSession";
 
 export default function DashboardTemporal() {
+  useSession();
   const [eventoEditar, setEventoEditar] = useState<MiniModal | null>(null);
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
