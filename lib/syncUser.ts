@@ -1,0 +1,43 @@
+'use server'
+import { apiPost, ApiError } from "./apiClient"
+
+export interface SyncResult {
+  isNewUser: boolean
+  nombre: string
+}
+ 
+interface SessionData {
+  isNewUser: boolean
+  nombre: string
+  correo: string
+  id: string
+  clerkUserId: string
+}
+ 
+
+export async function syncUser(): Promise <SyncResult | null>{
+      try {
+    const response = await apiPost<SessionData>('/api/auth/session', {})
+ 
+    if (!response.success || !response.data) {
+      console.error('[syncUser] Respuesta inesperada del servidor')
+      return null
+    }
+ 
+    const { isNewUser, nombre } = response.data
+ 
+    if (isNewUser) {
+      console.log(`[syncUser] Usuario nuevo registrado: ${nombre}`)
+    }
+ 
+    return { isNewUser, nombre }
+ 
+  } catch (error) {
+    if (error instanceof ApiError) {
+      console.error(`[syncUser] Error ${error.status}:`, error.message)
+    } else {
+      console.error('[syncUser] Error inesperado:', error)
+    }
+    return null
+  }
+}
