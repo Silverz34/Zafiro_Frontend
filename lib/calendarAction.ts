@@ -44,7 +44,7 @@ export async function fetchDailyActivities(targetDateIso: string):Promise<Google
       return null
     }
  
-    // La API intermedia devuelve { data: GoogleEvent[], meta: {...} }
+    // La API intermedia devuelve { data: GoogleEvent[]}
     // Antes Google devolvía { items: GoogleEvent[] }
     // Solo cambia de dónde sacamos el array — los componentes no se enteran
     return response.data.data ?? []
