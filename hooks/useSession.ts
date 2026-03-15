@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { syncUser } from '../lib/syncUser'
 
 export function useSession() {
   const { isLoaded, isSignedIn } = useAuth()
   const hasSynced = useRef(false)
+    const [ready, setReady] = useState(false)
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn || hasSynced.current) return
@@ -19,11 +20,16 @@ export function useSession() {
           console.warn('[useSession] No se pudo sincronizar el usuario')
           return
         }
+        setReady(true)
+
       })
       .catch((err) => {
         console.error('[useSession] Error en sync:', err)
         // Resetear para reintentar en el próximo render
         hasSynced.current = false
+        setReady(true)
+
       })
   }, [isLoaded, isSignedIn])
+   return { ready }
 }

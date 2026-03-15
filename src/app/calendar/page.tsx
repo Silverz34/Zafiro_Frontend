@@ -14,7 +14,7 @@ import MonthView from "@/components/viewsCalendar/MonthView";
 import { useSession } from "../../../hooks/useSession";
 
 export default function DashboardTemporal() {
-  useSession();
+  const { ready } = useSession();
   const [eventoEditar, setEventoEditar] = useState<MiniModal | null>(null);
   const [events, setEvents] = useState<GoogleEvent[] | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -28,6 +28,7 @@ export default function DashboardTemporal() {
 
 
   useEffect(() => {
+    if (!ready) return;
     const loadEvents = async () => {
       const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
       if (lastFetchedMonth !== currentMonthKey) {
