@@ -12,7 +12,7 @@ import DayView from "@/components/viewsCalendar/DayView";
 import WeekView from "@/components/viewsCalendar/WeekView";
 import MonthView from "@/components/viewsCalendar/MonthView";
 import { useSession } from "../../../hooks/useSession";
-import Loading from "@/components/iu/loading";
+
 
 
 export default function DashboardTemporal() {
@@ -45,7 +45,7 @@ export default function DashboardTemporal() {
     };
 
     loadEvents();
-  }, [currentDate, lastFetchedMonth]); 
+  }, [ready, currentDate, lastFetchedMonth]); 
 
   const renderCurrentView = () => {
     switch (currentView) {
