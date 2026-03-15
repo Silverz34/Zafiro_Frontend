@@ -1,6 +1,7 @@
 'use server'
 
-import { apiPatch, ApiError } from './apiClient'
+import { apiPatch} from './apiClient'
+import { ApiError } from './apiError'
 import { SchemaCrearActividad } from '../interfaces/Actividad'
 
 type CambiosActividad = Partial<{

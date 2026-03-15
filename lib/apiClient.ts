@@ -1,6 +1,8 @@
 'use server'
 import {auth} from '@clerk/nextjs/server'
 import { undefined } from 'zod';
+import { ApiError } from './apiError';
+
 const BASE = process.env.API_URL;
 
 export interface ApiResponse<T>{
@@ -9,16 +11,6 @@ export interface ApiResponse<T>{
     data: T
 }
 
-
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string
-  ) {
-    super(message)
-    this.name = 'ApiError'
-  }
-}
 
 async function builheaders(): Promise<HeadersInit>{
     const {getToken}= await auth();
@@ -64,14 +56,18 @@ async function request<T>(
 }
 
 //importacion de los metodos para el CRUD de actividad 
-export const apiGet = <T>(path: string) =>
-  request<T>('GET', path)
+export async function apiGet<T>(path: string): Promise<ApiResponse<T>> {
+  return request<T>('GET', path)
+}
  
-export const apiPost = <T>(path: string, body: unknown) =>
-  request<T>('POST', path, body)
+export async function apiPost<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
+  return request<T>('POST', path, body)
+}
  
-export const apiPatch = <T>(path: string, body: unknown) =>
-  request<T>('PATCH', path, body)
+export async function apiPatch<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
+  return request<T>('PATCH', path, body)
+}
  
-export const apiDelete = <T>(path: string) =>
-  request<T>('DELETE', path)
+export async function apiDelete<T>(path: string): Promise<ApiResponse<T>> {
+  return request<T>('DELETE', path)
+}

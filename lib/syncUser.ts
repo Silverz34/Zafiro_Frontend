@@ -1,5 +1,6 @@
 'use server'
-import { apiPost, ApiError } from "./apiClient"
+import { apiPost} from "./apiClient"
+import { ApiError } from "./apiError"
 
 export interface SyncResult {
   isNewUser: boolean

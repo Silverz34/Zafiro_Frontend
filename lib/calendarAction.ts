@@ -1,5 +1,6 @@
 'use server'
-import { apiGet, ApiError } from "./apiClient";
+import { apiGet} from "./apiClient";
+import { ApiError } from "./apiError";
 import { GoogleEvent } from "../interfaces/Evento";
 
 interface RangeResponse {
