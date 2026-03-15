@@ -1,72 +1,39 @@
 'use server';
 
-import { getGoogleToken } from "./googleAuth";
+import { apiPost, ApiError } from "./apiClient";
 import { SchemaCrearActividad } from "../interfaces/Actividad";
-import { generarRegla } from "../hooks/Ocurrencia";
+import { buildActivityPayload } from "./buildActivity";{}
 import { FormActividad } from "../interfaces/types/FormActividad";
 
-/**const PRIORIDAD_COLORES: Record <string, string> = {
-  Alta:  "#AB3535",
-  Media: "#E2761F",
-  Baja:  "#2FA941",
-};**/
+interface CreatedActivity {
+  id:      string
+  summary: string
+}
 
 export async function createActividad(form: FormActividad) {
     try{
-        const StartISO = form.isAllDay 
-        ? undefined : `${form.fecha}T${form.horaInicio}:00`; 
-
-        const endISO = form.isAllDay
-        ? undefined :  `${form.fecha}T${form.horaFin}:00`; 
-
-        const payload ={
-            summary: form.titulo,
-            start: form.isAllDay
-            ? {date: form.fecha} : {dateTime: StartISO, timeZone: "America/Mexico_City" },
-            end: form.isAllDay
-            ? {date: form.fecha} : {dateTime: endISO, timeZone: "America/Mexico_City" },
-
-            transparency: form.ocupacion === "transparent" ? "transparent" : undefined,
-
-            recurrence: generarRegla(
-                StartISO ?? `${form.fecha}T00:00:00`,
-                form.recurrencia
-            ),
-            remiders: form.reminder === "none"
-            ? {useDefault: false} : {
-                useDefault: false,
-                overrides: [{
-                    method: "popup", 
-                    minutes: parseInt(form.reminder),
-                }],
-            }
-        };
-
-        //validar con el squema de zod antes de enviar
-        const validate = SchemaCrearActividad.parse(payload);
-        const token = await getGoogleToken();
-       const res = await fetch(
-            "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-            {
-                method: "POST",
-                headers: {
-                Authorization:  `Bearer ${token}`,
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify(validate),
-            }
-        );
-
-        if(!res.ok){
-            const errorData = await res.json();
-            console.error("Error en Google calendar API: ", errorData);
-            throw new Error("Error al crear la actividad en Google Calendar");
+        const payload = buildActivityPayload(form)
+        const validated = SchemaCrearActividad.parse(payload)
+    
+        const response = await apiPost<CreatedActivity>(
+        '/api/calendar/activities',
+        validated
+        )
+    
+        if (!response.success) {
+        console.error('[createActividad] Error en API:', response.message)
+        return { success: false, error: response.message }
         }
-        const created = await res.json();
-        return { success: true, data: created };
-    } catch (error) {
-        console.error("Error en createActividad:", error);
-        return { success: false, error: "No se pudo crear la actividad" };
+    
+        return { success: true, data: response.data }
+ 
+  } catch (error) {
+    if (error instanceof ApiError) {
+      console.error(`[createActividad] Error ${error.status}:`, error.message)
+      return { success: false, error: error.message }
     }
+    console.error('[createActividad] Error inesperado:', error)
+    return { success: false, error: 'No se pudo crear la actividad' }
+  }
     
 }
