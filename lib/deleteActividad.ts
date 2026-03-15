@@ -1,29 +1,21 @@
 "use server";
-
-import { getGoogleToken } from "./googleAuth";
+import { apiDelete, ApiError } from "./apiClient";
 
 export async function deleteActividad(id: string) {
   try {
-    const token = await getGoogleToken();
-
-    const res = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (res.status !== 204) {
-      const errorData = await res.json();
-      console.error("Error en Google Calendar API:", errorData);
-      throw new Error("Error al eliminar la actividad");
-    }
-    return { success: true };
-
+    await apiDelete(`/api/activities/${id}`)
+    return { success: true }
+ 
   } catch (error) {
-    console.error("Error en deleteActividad:", error);
-    return { success: false, error: "No se pudo eliminar la actividad" };
+    if (error instanceof ApiError) {
+      if (error.status === 404) {
+        console.warn('[deleteActividad] Actividad no encontrada:', id)
+        return { success: true }
+      }
+      console.error(`[deleteActividad] Error ${error.status}:`, error.message)
+      return { success: false, error: error.message }
+    }
+    console.error('[deleteActividad] Error inesperado:', error)
+    return { success: false, error: 'No se pudo eliminar la actividad' }
   }
 }
