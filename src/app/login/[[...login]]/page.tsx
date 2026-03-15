@@ -1,8 +1,25 @@
+'use client'
+
 import Image from 'next/image';
 import { FondoHero } from '@/components/landing/Hero/fondo-hero';
-import { SignIn } from '@clerk/nextjs';
+import { SignIn,useAuth } from '@clerk/nextjs';
+import Loading from '@/components/iu/loading';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Loginpage() {
+  const {isLoaded, userId} = useAuth();
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(isLoaded && userId){
+      router.push('/calendar');
+    }
+  }, [isLoaded,userId,router]);
+
+  if(!isLoaded || userId){
+    return <Loading/>;
+  }
   return (
     <main className="relative min-h-screen w-full flex overflow-hidden bg-[#010112]">
       <div className="relative hidden lg:flex lg:w-1/2 items-center justify-center">

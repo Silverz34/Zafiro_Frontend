@@ -49,6 +49,7 @@
   --font-nunito: var(--font-nunito);
 }
 
+
 body {
   background-color: var(--background-base);
   color: var(--color-text);
