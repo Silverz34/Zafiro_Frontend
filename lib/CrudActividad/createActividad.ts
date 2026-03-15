@@ -1,9 +1,9 @@
 'use server';
 
-import { apiPost, ApiError } from "./apiClient";
-import { SchemaCrearActividad } from "../interfaces/Actividad";
-import { buildActivityPayload } from "./buildActivity";{}
-import { FormActividad } from "../interfaces/types/FormActividad";
+import { apiPost, ApiError } from "../apiClient";
+import { SchemaCrearActividad } from "../../interfaces/Actividad";
+import { buildActivityPayload } from "../buildActivity";{}
+import { FormActividad } from "../../interfaces/types/FormActividad";
 
 interface CreatedActivity {
   id:      string

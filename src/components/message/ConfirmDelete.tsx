@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteActividad } from "../../../lib/deleteActividad";
+import { deleteActividad } from "../../../lib/CrudActividad/deleteActividad";
 import { AlertDialog,  AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle} from "../ui/alert-dialog";
 
 

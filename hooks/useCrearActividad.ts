@@ -1,5 +1,5 @@
 import { toast }           from "sonner";
-import { createActividad } from "../lib/createActividad";
+import { createActividad } from "../lib/CrudActividad/createActividad";
 import type { FormActividad } from "../interfaces/types/FormActividad";
 
 interface CrearProps {
