@@ -14,6 +14,10 @@ interface UseModalProps {
   modo:           ModoModal;
 }
 
+function mapPrioridad(prioridad: PrioridadType): 'alta' | 'media' | 'baja' {
+  return prioridad.toLowerCase() as 'alta' | 'media' | 'baja'
+}
+
 export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: UseModalProps) {
   const [titulo,       setTitulo]       = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -88,6 +92,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
           reminders: reminder === "none"
             ? { useDefault: false }
             : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
+            
+          prioridadValor: mapPrioridad(prioridad),
         },
         setLoading
       );
