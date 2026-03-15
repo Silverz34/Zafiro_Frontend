@@ -1,34 +1,44 @@
-'use server';
+'use server'
 
-import { getGoogleToken } from "./googleAuth";
+import { apiPatch, ApiError } from './apiClient'
+import { SchemaCrearActividad } from '../interfaces/Actividad'
 
-export async function updateActividad(id: string, cambios: Record<string, unknown>) {
+type CambiosActividad = Partial<{
+  summary:        string
+  start:          { dateTime?: string; date?: string; timeZone?: string }
+  end:            { dateTime?: string; date?: string; timeZone?: string }
+  transparency:   'transparent' | 'opaque'
+  reminders:      { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
+  prioridadValor: 'baja' | 'media' | 'alta'
+}>
+
+
+export async function updateActividad(
+  id: string,
+  cambios: CambiosActividad
+) {
   try {
-    const token = await getGoogleToken();
+    // Validar solo los campos presentes — partial() hace todos opcionales
+    const validated = SchemaCrearActividad.partial().parse(cambios)
 
-    const res = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization:  `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cambios),
-      }
-    );
+    const response = await apiPatch(
+      `/api/activities/${id}`,
+      validated
+    )
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      console.error("Error en Google Calendar API:", errorData);
-      throw new Error("Error al actualizar la actividad");
+    if (!response.success) {
+      console.error('[updateActividad] Error en API:', response.message)
+      return { success: false, error: response.message }
     }
 
-    const updated = await res.json();
-    return { success: true, data: updated };
+    return { success: true, data: response.data }
 
   } catch (error) {
-    console.error("Error en updateActividad:", error);
-    return { success: false, error: "No se pudo actualizar la actividad" };
+    if (error instanceof ApiError) {
+      console.error(`[updateActividad] Error ${error.status}:`, error.message)
+      return { success: false, error: error.message }
+    }
+    console.error('[updateActividad] Error inesperado:', error)
+    return { success: false, error: 'No se pudo actualizar la actividad' }
   }
 }
