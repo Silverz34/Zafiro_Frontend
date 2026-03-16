@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { Plus, MoreVertical } from 'lucide-react';
+import ModalEtiqueta from '@/components/modal/ModalEtiqueta';
 
 export type Etiqueta = {
   id:     string;
@@ -20,6 +21,11 @@ const ETIQUETAS_DEFAULT: Etiqueta[] = [
 export default function Etiquetas() {
   const [etiquetas,  setEtiquetas]  = useState<Etiqueta[]>(ETIQUETAS_DEFAULT);
   const [activas,    setActivas]    = useState<string[]>(ETIQUETAS_DEFAULT.map(e => e.id));
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleCrearEtiqueta = (nueva: Etiqueta) => {
+    setEtiquetas(prev => [...prev, nueva]);
+    setActivas(prev => [...prev, nueva.id]); 
+   };
 
   const toggleEtiqueta = (id: string) => {
     setActivas(prev =>
@@ -31,7 +37,7 @@ export default function Etiquetas() {
     <div className="w-full px-1">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm text-white font-medium">Etiquetas</h3>
-        <button className="text-blue-500 hover:text-blue-400 transition-colors">
+        <button onClick={()=> setModalOpen(true)} className="text-blue-500 hover:text-blue-400 transition-colors">
           <Plus className="w-5 h-5" strokeWidth={2.5} />
         </button>
       </div>
@@ -63,6 +69,11 @@ export default function Etiquetas() {
           );
         })}
       </div>
+      <ModalEtiqueta
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCrear={handleCrearEtiqueta}
+      />
     </div>
   );
 }
