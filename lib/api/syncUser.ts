@@ -1,21 +1,16 @@
 'use server'
 
-import { apiPost } from './apiClient'
-
-export interface SyncResult {
-  isNewUser: boolean
-  nombre:    string
-}
+import { apiPost } from "./apiClient";
 
 interface SessionData {
-  isNewUser:   boolean
-  nombre:      string
-  correo:      string
-  id:          string
+  isNewUser: boolean
+  nombre: string
+  correo: string
+  id: string
   clerkUserId: string
 }
 
-export async function syncUser(): Promise<SyncResult | null> {
+export async function syncUser(): Promise<SessionData | null> {
   try {
     const response = await apiPost<SessionData>('/api/auth/session', {})
 
@@ -23,7 +18,7 @@ export async function syncUser(): Promise<SyncResult | null> {
       console.log('[SYNC_USER] Usuario sincronizado:', response.data.id)
       return response.data
     }
-
+    console.error('[SYNC_USER] Respuesta sin datos')
     return null
   } catch (error) {
     console.error('[SYNC_USER] Error:', error)

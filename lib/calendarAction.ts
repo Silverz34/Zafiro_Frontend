@@ -1,16 +1,16 @@
 'use server'
 
-import { apiGet } from './apiClient';
-import { ApiError } from './apiError';
+import { apiGet } from './api/apiClient';
+import { ApiError } from './api/apiError';
 import { GoogleEvent } from '../interfaces/Evento'
 
 function buildRange(targetDateIso: string): { from: string; to: string } {
   const targetDate = new Date(targetDateIso)
-  const year       = targetDate.getFullYear()
-  const month      = targetDate.getMonth()
+  const year = targetDate.getFullYear()
+  const month = targetDate.getMonth()
 
   const from = new Date(year, month, 1)
-  const to   = new Date(year, month + 1, 0)
+  const to = new Date(year, month + 1, 0)
 
   from.setDate(from.getDate() - 10)
   to.setDate(to.getDate() + 10)

@@ -1,15 +1,15 @@
 'use server'
 
-import { apiPatch} from './apiClient'
-import { ApiError } from './apiError'
-import { SchemaCrearActividad } from '../interfaces/Actividad'
+import { apiPatch } from '../api/apiClient'
+import { ApiError } from '../api/apiError'
+import { SchemaCrearActividad } from '../../interfaces/Actividad'
 
 type CambiosActividad = Partial<{
-  summary:        string
-  start:          { dateTime?: string; date?: string; timeZone?: string }
-  end:            { dateTime?: string; date?: string; timeZone?: string }
-  transparency:   'transparent' | 'opaque'
-  reminders:      { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
+  summary: string
+  start: { dateTime?: string; date?: string; timeZone?: string }
+  end: { dateTime?: string; date?: string; timeZone?: string }
+  transparency: 'transparent' | 'opaque'
+  reminders: { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
   prioridadValor: 'baja' | 'media' | 'alta'
 }>
 

@@ -1,12 +1,12 @@
 "use server";
-import { apiDelete} from "../apiClient";
-import { ApiError } from "../apiError";
+import { apiDelete } from "../api/apiClient";
+import { ApiError } from "../api/apiError";
 
 export async function deleteActividad(id: string) {
   try {
     await apiDelete(`/api/activities/${id}`)
     return { success: true }
- 
+
   } catch (error) {
     if (error instanceof ApiError) {
       if (error.status === 404) {
