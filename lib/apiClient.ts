@@ -26,9 +26,9 @@ async function builheaders(): Promise<HeadersInit>{
 }
 
 async function request<T>(
-    method: string,
-    path:string,
-    body?: unknown
+  method: string,
+  path:string,
+  body?: unknown
 ): Promise<ApiResponse<T>>{
     const headers= await builheaders();
     const res = await fetch( new URL(path, BASE).toString(),{
@@ -38,16 +38,16 @@ async function request<T>(
         cache: 'no-store',
     })
     if(res.status === 204){
-        return {success: true, data: undefined as T}
+      return {success: true, data: undefined as T}
     }
    
     let json: ApiResponse<T>
     try{
-        json = await res.json()
+      json = await res.json()
     }catch{
-        throw new ApiError(res.status, 'Error ${res.status}: respuesta no es json')
+      throw new ApiError(res.status, 'Error ${res.status}: respuesta no es json')
     }
-     if (!res.ok) {
+    if (!res.ok) {
     throw new ApiError(res.status, json.message ?? `Error ${res.status}`)
   }
  

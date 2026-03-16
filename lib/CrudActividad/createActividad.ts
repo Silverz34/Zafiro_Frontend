@@ -17,7 +17,7 @@ export async function createActividad(form: FormActividad) {
         const validated = SchemaCrearActividad.parse(payload)
     
         const response = await apiPost<CreatedActivity>(
-        '/api/calendar/activities',
+        '/api/activities',
         validated
         )
     
