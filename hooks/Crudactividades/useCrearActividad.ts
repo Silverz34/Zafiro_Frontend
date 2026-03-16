@@ -1,6 +1,6 @@
 import { toast }           from "sonner";
-import { createActividad } from "../lib/CrudActividad/createActividad";
-import type { FormActividad } from "../interfaces/types/FormActividad";
+import { createActividad } from "../../lib/CrudActividad/createActividad";
+import type { FormActividad } from "../../interfaces/types/FormActividad";
 
 interface CrearProps {
   onClose:   () => void;

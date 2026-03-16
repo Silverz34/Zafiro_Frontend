@@ -29,7 +29,7 @@ export async function fetchDailyActivities(
     // El backend devuelve: { success: true, data: GoogleEvent[], meta: {...} }
     // ApiResponse<T> mapea el campo "data" del body → response.data = GoogleEvent[]
     const response = await apiGet<GoogleEvent[]>(
-      `/api/calendar/activities/me/range?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+      `/api/activities/me`
     )
 
     if (!response.success) {
