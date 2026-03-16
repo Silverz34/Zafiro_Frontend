@@ -1,27 +1,24 @@
-import { useState, useEffect }       from "react";
-import { useCrearActividad }         from "./useCrearActividad";
-import { useEditarActividad }        from "./useEditarActividad";
+import { useState, useEffect } from "react";
+import { useCrearActividad } from "./Crudactividades/useCrearActividad";
+import { useEditarActividad } from "./Crudactividades/useEditarActividad";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
 import type { ModoModal, PrioridadType } from "./custom/modalconstantes";
-import type { MiniModal }            from "../interfaces/Preview";
-import type { TipoOcurrencia }       from "./Ocurrencia";
-import type { FormActividad }        from "../interfaces/types/FormActividad";
+import type { MiniModal } from "../interfaces/Preview";
+import type { TipoOcurrencia } from "./Ocurrencia";
+import type { FormActividad } from "../interfaces/types/FormActividad";
 
 interface UseModalProps {
-  onClose:        () => void;
-  onSuccess:      () => void;
+  onClose: () => void;
+  onSuccess: () => void;
   eventoInicial?: MiniModal | null;
-  modo:           ModoModal;
+  modo: ModoModal;
 }
 
 function mapPrioridad(prioridad: PrioridadType): 'alta' | 'media' | 'baja' {
   return prioridad.toLowerCase() as 'alta' | 'media' | 'baja'
 }
 
-// ---------------------------------------------------------------------------
-// LECTURA — extrae fecha/hora en timezone de Mexico City
-// Evita que new Date() interprete el ISO string en la zona local del navegador
-// ---------------------------------------------------------------------------
+
 function extractLocalDateString(isoString: string): string {
   if (!isoString) return "";
   const d = new Date(isoString);
@@ -30,9 +27,9 @@ function extractLocalDateString(isoString: string): string {
     timeZone: 'America/Mexico_City',
     year: 'numeric', month: '2-digit', day: '2-digit'
   }).formatToParts(d);
-  const year  = parts.find(p => p.type === 'year')?.value;
+  const year = parts.find(p => p.type === 'year')?.value;
   const month = parts.find(p => p.type === 'month')?.value;
-  const day   = parts.find(p => p.type === 'day')?.value;
+  const day = parts.find(p => p.type === 'day')?.value;
   return `${year}-${month}-${day}`;
 }
 
@@ -53,35 +50,30 @@ function toLocalDateString(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-// ---------------------------------------------------------------------------
-// ESCRITURA — construye ISO string con el offset real del navegador
-// "2026-03-15T10:00:00-06:00" en lugar de "2026-03-15T10:00:00" (sin offset)
-// Sin offset, PostgreSQL asume UTC y desplaza la hora 6h al leerla de vuelta
-// ---------------------------------------------------------------------------
 function toLocalISOString(fecha: string, hora: string): string {
-  const dt            = new Date(`${fecha}T${hora}:00`)
+  const dt = new Date(`${fecha}T${hora}:00`)
   const offsetMinutes = dt.getTimezoneOffset()
-  const sign          = offsetMinutes <= 0 ? '+' : '-'
-  const absOffset     = Math.abs(offsetMinutes)
-  const hh            = String(Math.floor(absOffset / 60)).padStart(2, '0')
-  const mm            = String(absOffset % 60).padStart(2, '0')
+  const sign = offsetMinutes <= 0 ? '+' : '-'
+  const absOffset = Math.abs(offsetMinutes)
+  const hh = String(Math.floor(absOffset / 60)).padStart(2, '0')
+  const mm = String(absOffset % 60).padStart(2, '0')
   return `${fecha}T${hora}:00${sign}${hh}:${mm}`
 }
 
 export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: UseModalProps) {
-  const [titulo,       setTitulo]       = useState("");
+  const [titulo, setTitulo] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showPicker,   setShowPicker]   = useState(false);
-  const [horaInicio,   setHoraInicio]   = useState("09:00");
-  const [horaFin,      setHoraFin]      = useState("10:00");
-  const [isAllDay,     setIsAllDay]     = useState(false);
-  const [recurrencia,  setRecurrencia]  = useState("none");
-  const [reminder,     setReminder]     = useState("10");
-  const [prioridad,    setPrioridad]    = useState<PrioridadType>("Media");
-  const [ocupacion,    setOcupacion]    = useState<"opaque" | "transparent">("opaque");
-  const [loading,      setLoading]      = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [horaInicio, setHoraInicio] = useState("09:00");
+  const [horaFin, setHoraFin] = useState("10:00");
+  const [isAllDay, setIsAllDay] = useState(false);
+  const [recurrencia, setRecurrencia] = useState("none");
+  const [reminder, setReminder] = useState("10");
+  const [prioridad, setPrioridad] = useState<PrioridadType>("Media");
+  const [ocupacion, setOcupacion] = useState<"opaque" | "transparent">("opaque");
+  const [loading, setLoading] = useState(false);
 
-  const { handleCrear }  = useCrearActividad({ onClose, onSuccess });
+  const { handleCrear } = useCrearActividad({ onClose, onSuccess });
   const { handleEditar } = useEditarActividad({ onClose, onSuccess });
 
   useEffect(() => {
@@ -89,7 +81,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       setTitulo(eventoInicial.summary ?? "");
       setIsAllDay(!eventoInicial.start.dateTime);
       if (eventoInicial.start.dateTime) {
-        const isoString    = eventoInicial.start.dateTime;
+        const isoString = eventoInicial.start.dateTime;
         const localDateStr = extractLocalDateString(isoString);
         // Date visual para el calendario — T12:00:00 evita ambigüedad de día
         setSelectedDate(new Date(`${localDateStr}T12:00:00`));
@@ -117,7 +109,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const handleHoraInicio = (val: string) => {
     setHoraInicio(val);
     if (val >= horaFin) {
-      const idx  = TIME_SLOTS.findIndex((s: TimeSlot) => s.value === val);
+      const idx = TIME_SLOTS.findIndex((s: TimeSlot) => s.value === val);
       const next = TIME_SLOTS[idx + 1];
       if (next) setHoraFin(next.value);
     }
@@ -136,18 +128,18 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
           start: isAllDay
             ? { date: fecha }
             : {
-                // Con offset → "2026-03-15T10:00:00-06:00"
-                // PostgreSQL guarda 16:00 UTC → al leer en México = 10:00am ✓
-                dateTime: toLocalISOString(fecha, horaInicio),
-                timeZone: "America/Mexico_City"
-              },
+              // Con offset → "2026-03-15T10:00:00-06:00"
+              // PostgreSQL guarda 16:00 UTC → al leer en México = 10:00am ✓
+              dateTime: toLocalISOString(fecha, horaInicio),
+              timeZone: "America/Mexico_City"
+            },
           end: isAllDay
             ? { date: fecha }
             : {
-                dateTime: toLocalISOString(fecha, horaFin),
-                timeZone: "America/Mexico_City"
-              },
-          transparency:   ocupacion,
+              dateTime: toLocalISOString(fecha, horaFin),
+              timeZone: "America/Mexico_City"
+            },
+          transparency: ocupacion,
           reminders: reminder === "none"
             ? { useDefault: false }
             : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
