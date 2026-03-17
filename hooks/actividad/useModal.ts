@@ -3,14 +3,14 @@ import { useCrearActividad } from "./useCrearActividad";
 import { useEditarActividad } from "./useEditarActividad";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
 import type { ModoModal, PrioridadType } from "../custom/modalconstantes";
-import type { MiniModal } from "../../interfaces/Preview";
 import type { TipoOcurrencia } from "../calendar/Ocurrencia";
 import type { FormActividad } from "../../interfaces/types/FormActividad";
+import type { CrearActividad } from "../../interfaces/Actividad";
 
 interface UseModalProps {
   onClose: () => void;
   onSuccess: () => void;
-  eventoInicial?: MiniModal | null;
+  eventoInicial?: CrearActividad | null;
   modo: ModoModal;
 }
 
@@ -72,6 +72,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const [prioridad, setPrioridad] = useState<PrioridadType>("Media");
   const [ocupacion, setOcupacion] = useState<"opaque" | "transparent">("opaque");
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState("");
+  const [idEtiqueta, setIdEtiqueta] = useState<number | undefined>(undefined);
 
   const { handleCrear } = useCrearActividad({ onClose, onSuccess });
   const { handleEditar } = useEditarActividad({ onClose, onSuccess });
@@ -80,6 +82,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     if (eventoInicial) {
       setTitulo(eventoInicial.summary ?? "");
       setIsAllDay(!eventoInicial.start.dateTime);
+      setDescription(eventoInicial.description ?? "");
       if (eventoInicial.start.dateTime) {
         const isoString = eventoInicial.start.dateTime;
         const localDateStr = extractLocalDateString(isoString);
@@ -93,6 +96,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       setOcupacion(eventoInicial.transparency ?? "opaque");
       const override = eventoInicial.reminders?.overrides?.[0];
       setReminder(override ? String(override.minutes) : "none");
+      setIdEtiqueta(eventoInicial.idEtiqueta);
+      
     } else {
       setTitulo("");
       setSelectedDate(new Date());
@@ -103,6 +108,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       setReminder("10");
       setOcupacion("opaque");
       setPrioridad("Media");
+      setDescription("");
+      setIdEtiqueta(undefined);
     }
   }, [eventoInicial]);
 
@@ -125,6 +132,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
         eventoInicial.id,
         {
           summary: titulo,
+          description: description,
           start: isAllDay
             ? { date: fecha }
             : {
@@ -144,6 +152,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
             ? { useDefault: false }
             : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
           prioridadValor: mapPrioridad(prioridad),
+          idEtiqueta: idEtiqueta
         },
         setLoading
       );
@@ -152,7 +161,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
         {
           titulo, fecha, horaInicio, horaFin, isAllDay,
           recurrencia: recurrencia as TipoOcurrencia,
-          reminder, ocupacion, prioridad,
+          reminder, ocupacion, prioridad,description, idEtiqueta 
         } as FormActividad,
         setLoading
       );
@@ -170,6 +179,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     prioridad, setPrioridad,
     ocupacion, setOcupacion,
     loading,
+    idEtiqueta, setIdEtiqueta,
+    description, setDescription,
     handleHoraInicio,
     handleGuardar,
   };

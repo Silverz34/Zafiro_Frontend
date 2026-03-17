@@ -26,8 +26,6 @@ export async function fetchDailyActivities(
   try {
     const { from, to } = buildRange(targetDateIso)
 
-    // El backend devuelve: { success: true, data: GoogleEvent[], meta: {...} }
-    // ApiResponse<T> mapea el campo "data" del body → response.data = GoogleEvent[]
     const response = await apiGet<GoogleEvent[]>(
       `/api/activities/me`
     )

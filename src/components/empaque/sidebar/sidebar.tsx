@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
                 </SignOutButton>
           </div>
         ) : (
-          <div className="animate-pulse flex items-center gap-3 bg-[#0b0c14] p-2 rounded-xl border border-gray-800">
+          <div className="flex items-center justify-between border border-blue-600 p-4 rounded-xl">
             <div className="w-10 h-10 bg-gray-800 rounded-full"></div>
             <div className="flex-1 space-y-2">
             </div>

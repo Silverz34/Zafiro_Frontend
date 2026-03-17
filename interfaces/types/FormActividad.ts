@@ -9,10 +9,12 @@ export interface FormActividad {
     fecha: string;
     horaInicio: string;
     horaFin: string;
+    description?: string;
 
     isAllDay: boolean;
     recurrencia: TipoOcurrencia;
     reminder: string;
     ocupacion: "opaque" | "transparent";
     prioridad: PrioridadType;
+    idEtiqueta?: number;
 }

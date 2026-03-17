@@ -13,6 +13,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
 import { TimePicker } from "../ui/time";
 import { MiniModal } from "../../../interfaces/Preview";
+import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { Tag, AlignLeft } from "lucide-react"; 
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -23,10 +26,13 @@ interface ModalProps {
 }
 
 export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInicial, modo }: ModalProps) {
+  const {etiquetas} = useEtiquetas();
   const {
     titulo, setTitulo,
     selectedDate, setSelectedDate,
     showPicker, setShowPicker,
+    description, setDescription, 
+    idEtiqueta, setIdEtiqueta,
     horaInicio,
     horaFin, setHoraFin,
     isAllDay, setIsAllDay,
@@ -79,6 +85,15 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                 text-2xl font-medium text-white placeholder:text-gray-600
                 px-0 rounded-none pb-2 h-auto transition-colors duration-200
               "
+            />
+          </div>
+          <div className="flex items-center gap-3 px-1">
+            <AlignLeft className="w-4 h-4 text-gray-500 shrink-0" />
+            <Input
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              placeholder="Añade una descripción (opcional)..."
+              className="bg-transparent border-0 focus-visible:ring-0 text-sm font-medium text-gray-300 placeholder:text-gray-600 px-0 h-auto shadow-none"
             />
           </div>
 
@@ -226,7 +241,43 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                 </SelectContent>
               </Select>
             </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                Etiqueta
+              </Label>
+              <Select 
+                value={idEtiqueta ? String(idEtiqueta) : "none"} 
+                onValueChange={(val) => setIdEtiqueta(val === "none" ? undefined : Number(val))}
+              >
+                <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                  <div className="flex items-center gap-2">
+                    <Tag className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                    <SelectValue placeholder="Sin etiqueta" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50 max-h-48 overflow-y-auto">
+                  
+                  <SelectItem value="none" className="text-gray-400 text-sm focus:bg-white/5 rounded-lg">
+                    Sin etiqueta
+                  </SelectItem>
+                  {etiquetas.map((e) => (
+                    <SelectItem 
+                      key={e.id} 
+                      value={String(e.id)}
+                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: e.color }} />
+                        {e.nombre}
+                      </div>
+                    </SelectItem>
+                  ))}
+
+                </SelectContent>
+              </Select>
+            </div>
           </div>
+          
 
           <div className="flex flex-col gap-2.5">
             <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
@@ -258,6 +309,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               })}
             </div>
           </div>
+          
 
         </div>
 

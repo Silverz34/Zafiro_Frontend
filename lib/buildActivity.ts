@@ -3,12 +3,14 @@ import type { FormActividad, PrioridadType } from '../interfaces/types/FormActiv
 
 export interface ActivityPayload {
   summary: string
+  description?: string
   start: { dateTime?: string; date?: string; timeZone?: string }
   end: { dateTime?: string; date?: string; timeZone?: string }
   transparency?: 'transparent' | 'opaque'
   recurrence?: string[]
   reminders?: { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
   prioridadValor?: 'baja' | 'media' | 'alta'
+  idEtiqueta?: number
   source: 'local'
 }
 
@@ -37,7 +39,7 @@ export function buildActivityPayload(form: FormActividad): ActivityPayload {
 
   const payload: ActivityPayload = {
     summary: form.titulo,
-
+    description: form.description,
     start: form.isAllDay
       ? { date: form.fecha }
       : { dateTime: startISO, timeZone: 'America/Mexico_City' },
@@ -61,6 +63,7 @@ export function buildActivityPayload(form: FormActividad): ActivityPayload {
       },
 
     prioridadValor: mapPrioridad(form.prioridad),
+    idEtiqueta: form.idEtiqueta,
     source: 'local',
   }
 

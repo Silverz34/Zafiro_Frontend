@@ -9,14 +9,15 @@ export const SchemaCrearActividad = z.object({
    summary: z.string().min(2, "El título es obligatorio"),
    start: GoogleSchema,
    end: GoogleSchema,
+   description: z.string().optional(),
    transparency: z.enum(["transparent", "opaque"]).optional(),
    recurrence: z.array(z.string()).optional(), 
     reminders: z.object({ 
         useDefault: z.boolean(),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
-    etiqueta: SchemaEtiqueta.optional(),
-    prioridad: extras_dict.optional(),
+    idEtiqueta: z.number().optional(),
+    prioridadValor: z.enum(["alta", "media", "baja"]).optional(),
     source: z.enum(["local", "google"]).optional(),
 });
 
