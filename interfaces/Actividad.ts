@@ -15,7 +15,7 @@ export const SchemaCrearActividad = z.object({
         useDefault: z.boolean(),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
-    //etiqueta: SchemaEtiqueta.optional(),
+    etiqueta: SchemaEtiqueta.optional(),
     prioridad: extras_dict.optional(),
     source: z.enum(["local", "google"]).optional(),
 });

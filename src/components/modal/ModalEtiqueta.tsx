@@ -17,7 +17,7 @@ import type { EtiquetaFrontend } from '../../../lib/CrudEtiquetas/getEtiqueta';
 interface ModalEtiquetaProps {
   isOpen:    boolean;
   onClose:   () => void;
-  onCrear:   (etiqueta: EtiquetaFrontend) => void;
+  onCrear:   (etiqueta: Omit<EtiquetaFrontend, 'id'>) => void;
   editar: EtiquetaFrontend | null;
   onEditar: (etiqueta: EtiquetaFrontend) => void;
 }
@@ -43,7 +43,7 @@ export default function ModalEtiqueta({ isOpen, onClose, onCrear, editar, onEdit
         if (modoEditar && editar) {
             onEditar?.({ ...editar, nombre: nombre.trim(), color: colorSeleccionado });
         } else {
-            onCrear({ id: crypto.randomUUID(), nombre: nombre.trim(), color: colorSeleccionado });
+           onCrear({ nombre: nombre.trim(), color: colorSeleccionado });
         }
         
         setNombre('');
