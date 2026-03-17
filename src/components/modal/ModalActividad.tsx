@@ -2,7 +2,7 @@
 
 import { HiX, HiOutlineCalendar, HiChevronDown } from "react-icons/hi";
 import { Undo2, Bell, Clock, BriefcaseBusiness } from "lucide-react";
-import { useModalActividad } from "../../../hooks/Crudactividades/useModal";
+import { useModalActividad } from "../../../hooks/actividad/useModal";
 import { PRIORIDADES, RECURRENCE_OPTIONS, REMINDER_OPTIONS, OCUPACION, formatDate } from "../../../hooks/custom/modalconstantes";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -241,14 +241,16 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                     onClick={() => setPrioridad(nivel)}
                     className={`
                       py-2.5 text-sm font-semibold rounded-xl border transition-all duration-200
-                      flex text-center gap-2
+                      flex items-center justify-center gap-2
                       ${active
                         ? `${bg} ${border} ${color}`
                         : "bg-[#111029] border-[#1e1d3a] text-gray-500 hover:border-[#2a2948] hover:text-gray-400"}
                     `}
                   >
                     <span
-                      className={`w-2 h-2 rounded-full transition-all duration-200 ${active}`}
+                      className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
+                        active ? "bg-current shadow-[0_0_8px_currentColor]" : "bg-gray-600"
+                      }`}
                     />
                     {nivel}
                   </button>

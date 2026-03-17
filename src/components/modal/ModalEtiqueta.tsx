@@ -12,14 +12,14 @@ import { Input }  from '@/components/ui/input';
 import { Label }  from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { COLORES_ETIQUETA } from '../empaque/sidebar/colores';
-import type { Etiqueta } from '../empaque/sidebar/EtiquetaCategoria';
+import type { EtiquetaFrontend } from '../../../lib/CrudEtiquetas/getEtiqueta';
 
 interface ModalEtiquetaProps {
   isOpen:    boolean;
   onClose:   () => void;
-  onCrear:   (etiqueta: Etiqueta) => void;
-  editar: Etiqueta | null;
-  onEditar: (etiqueta: Etiqueta) => void;
+  onCrear:   (etiqueta: EtiquetaFrontend) => void;
+  editar: EtiquetaFrontend | null;
+  onEditar: (etiqueta: EtiquetaFrontend) => void;
 }
 
 export default function ModalEtiqueta({ isOpen, onClose, onCrear, editar, onEditar }: ModalEtiquetaProps) {
@@ -29,7 +29,7 @@ export default function ModalEtiqueta({ isOpen, onClose, onCrear, editar, onEdit
 
     useEffect(() => {
         if (editar) {
-        setNombre(editar.label);
+        setNombre(editar.nombre);
         setColorSeleccionado(editar.color);
         } else {
         setNombre('');
@@ -41,9 +41,9 @@ export default function ModalEtiqueta({ isOpen, onClose, onCrear, editar, onEdit
         if (!nombre.trim()) return;
         
         if (modoEditar && editar) {
-            onEditar?.({ ...editar, label: nombre.trim(), color: colorSeleccionado });
+            onEditar?.({ ...editar, nombre: nombre.trim(), color: colorSeleccionado });
         } else {
-            onCrear({ id: crypto.randomUUID(), label: nombre.trim(), color: colorSeleccionado });
+            onCrear({ id: crypto.randomUUID(), nombre: nombre.trim(), color: colorSeleccionado });
         }
         
         setNombre('');

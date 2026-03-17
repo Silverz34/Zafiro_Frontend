@@ -3,10 +3,10 @@
 import { apiPatch } from "../api/apiClient";
 import { SchemaEtiqueta } from "../../interfaces/Etiquetas";
 
-export async function updateEtiqueta(id: string, datosFrontend: { label: string; color: string }) {
+export async function updateEtiqueta(id: string, datosFrontend: { nombre: string; color: string }) {
   try {
     const payload = {
-      etiqueta: datosFrontend.label,
+      nombre: datosFrontend.nombre,
       color: datosFrontend.color
     };
     const validated = SchemaEtiqueta.parse(payload);

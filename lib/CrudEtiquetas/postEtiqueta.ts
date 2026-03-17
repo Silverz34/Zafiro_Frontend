@@ -3,28 +3,38 @@
 import { apiPost } from "../api/apiClient";
 import { SchemaEtiqueta } from "../../interfaces/Etiquetas";
 import { ApiError } from "../api/apiError";
+import { EtiquetaFrontend } from "./getEtiqueta";
 
-export type etiquetas ={
-    id: string
-    label: string
-    color: string
-};
-
-export async function createEtiqueta(etiqueta: etiquetas) {
+export async function createEtiqueta(datosFrontend: Omit<EtiquetaFrontend, 'id'>) {
     try {
-        const validated = SchemaEtiqueta.parse(etiqueta)
-        const response = await apiPost<etiquetas>('/api/etiquetas', validated)
+        const payload = {
+            nombre: datosFrontend.nombre,
+            color: datosFrontend.color
+        };
+        const validated = SchemaEtiqueta.parse(payload);
+        const response = await apiPost<{ id: string, nombre: string, color: string }>('/api/tags', validated);
+        
         if (!response.success) {
-            console.error('[createEtiqueta] Error en API:', response.message)
-            return { success: false, error: response.message }
+            console.error('[createEtiqueta] Error en API:', response.message);
+            return { success: false, error: response.message };
         }
-        return { success: response.success, data: response.data }
+
+        let mapData: EtiquetaFrontend | undefined;
+        if (response.data) {
+            mapData = {
+                id: response.data.id,
+                nombre: response.data.nombre,
+                color: response.data.color
+            };
+        }
+
+        return { success: response.success, data: mapData };
     } catch (error) {
         if (error instanceof ApiError) {
-            console.error(`[createEtiqueta] Error ${error.status}:`, error.message)
-            return { success: false, error: error.message }
+            console.error(`[createEtiqueta] Error ${error.status}:`, error.message);
+            return { success: false, error: error.message };
         }
-        console.error('[createEtiqueta] Error inesperado:', error)
-        return { success: false, error: 'No se pudo crear la etiqueta' }
+        console.error('[createEtiqueta] Error inesperado:', error);
+        return { success: false, error: 'No se pudo crear la etiqueta' };
     }
 }

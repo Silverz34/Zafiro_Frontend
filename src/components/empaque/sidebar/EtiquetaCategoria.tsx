@@ -1,60 +1,36 @@
 
-'use client';
+'use client'
 
 import { useState } from 'react';
 import { Plus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import ModalEtiqueta from '@/components/modal/ModalEtiqueta';
-
-export type Etiqueta = {
-  id:     string;
-  label:  string;
-  color:  string; 
-};
-
-const ETIQUETAS_DEFAULT: Etiqueta[] = [
-  { id: '1', label: 'Trabajo',  color: '#C8934A' },
-  { id: '2', label: 'Escuela',  color: '#D94F8A' },
-  { id: '3', label: 'Artes',    color: '#3ABFAA' },
-  { id: '4', label: 'Estudio',  color: '#3B4FC8' },
-];
+import { useEtiquetas } from '../../../../hooks/useEtiquetas';
+import type { EtiquetaFrontend } from '../../../../lib/CrudEtiquetas/getEtiqueta';
 
 export default function Etiquetas() {
-  const [etiquetas,       setEtiquetas]       = useState<Etiqueta[]>(ETIQUETAS_DEFAULT);
-  const [activas,         setActivas]         = useState<string[]>(ETIQUETAS_DEFAULT.map(e => e.id));
-  const [modalAbierto,    setModalAbierto]    = useState(false);
-  const [etiquetaEditar,  setEtiquetaEditar]  = useState<Etiqueta | null>(null);
-  const [etiquetaBorrar,  setEtiquetaBorrar]  = useState<Etiqueta | null>(null);
+  const { etiquetas, loading, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetas();
+  const [activas, setActivas] = useState<string[]>([]);
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [etiquetaEditar, setEtiquetaEditar] = useState<EtiquetaFrontend | null>(null);
 
-  const handleCrear= (nueva: Etiqueta) => {
-    setEtiquetas(prev => [...prev, nueva]);
-    setActivas(prev => [...prev, nueva.id]); 
-   };
-
-  const toggleEtiqueta = (id: string) => {
-    setActivas(prev =>
-      prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
-    );
+  const handleCrear = async (nueva: any) => {
+    await agregarEtiqueta({ nombre: nueva.nombre, color: nueva.color });
   };
-   
-  const handleEditar = (actualizada: Etiqueta) => {
-    setEtiquetas(prev => prev.map(e => e.id === actualizada.id ? actualizada : e));
+
+  const handleEditar = async (actualizada: any) => {
+    await editarEtiqueta(actualizada.id, { nombre: actualizada.nombre, color: actualizada.color });
     setEtiquetaEditar(null);
   };
 
-  const handleEliminar = () => {
-    if (!etiquetaBorrar) return;
-    setEtiquetas(prev => prev.filter(e => e.id !== etiquetaBorrar.id));
-    setActivas(prev => prev.filter(id => id !== etiquetaBorrar.id));
-    setEtiquetaBorrar(null);
+  const handleEliminar = async (etiqueta: EtiquetaFrontend) => {
+    await borrarEtiqueta(etiqueta.id);
+    setActivas(prev => prev.filter(id => id !== etiqueta.id));
   };
 
-
+  const toggleEtiqueta = (id: string) => {
+    setActivas(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]);
+  };
 
   return (
     <div className="w-full px-1">
@@ -83,7 +59,7 @@ export default function Etiquetas() {
                 {isActive && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
               </button>
               <span className={`flex-1 ml-3 text-sm font-semibold text-white transition-opacity ${!isActive && 'opacity-60'}`}>
-                {etiqueta.label}
+                {etiqueta.nombre}
               </span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -103,7 +79,7 @@ export default function Etiquetas() {
                     Editar
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => setEtiquetaBorrar(etiqueta)}
+                    onClick={() => handleEliminar(etiqueta)}
                     className="flex items-center gap-2 cursor-pointer hover:bg-rose-500/10 text-rose-400 rounded-lg"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
