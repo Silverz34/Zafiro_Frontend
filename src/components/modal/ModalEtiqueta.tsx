@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -18,24 +18,38 @@ interface ModalEtiquetaProps {
   isOpen:    boolean;
   onClose:   () => void;
   onCrear:   (etiqueta: Etiqueta) => void;
+  editar: Etiqueta | null;
+  onEditar: (etiqueta: Etiqueta) => void;
 }
 
-export default function ModalEtiqueta({ isOpen, onClose, onCrear }: ModalEtiquetaProps) {
+export default function ModalEtiqueta({ isOpen, onClose, onCrear, editar, onEditar }: ModalEtiquetaProps) {
   const [nombre, setNombre] = useState('');
   const [colorSeleccionado, setColorSeleccionado] = useState<string>(COLORES_ETIQUETA[0]);
+  const modoEditar = !!editar;
 
-  const handleGuardar = () => {
-    if (!nombre.trim()) return;
+    useEffect(() => {
+        if (editar) {
+        setNombre(editar.label);
+        setColorSeleccionado(editar.color);
+        } else {
+        setNombre('');
+        setColorSeleccionado(COLORES_ETIQUETA[0]);
+        }
+    }, [editar]);
 
-    onCrear({
-      id:    crypto.randomUUID(),
-      label: nombre.trim(),
-      color: colorSeleccionado,
-    });
-    setNombre('');
-    setColorSeleccionado(COLORES_ETIQUETA[0]);
-    onClose();
-  };
+    const handleGuardar = () => {
+        if (!nombre.trim()) return;
+        
+        if (modoEditar && editar) {
+            onEditar?.({ ...editar, label: nombre.trim(), color: colorSeleccionado });
+        } else {
+            onCrear({ id: crypto.randomUUID(), label: nombre.trim(), color: colorSeleccionado });
+        }
+        
+        setNombre('');
+        setColorSeleccionado(COLORES_ETIQUETA[0]);
+        onClose();
+    };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -44,7 +58,7 @@ export default function ModalEtiqueta({ isOpen, onClose, onCrear }: ModalEtiquet
 
         <DialogHeader className="px-5 pt-4 pb-2">
           <DialogTitle className="text-white text-lg font-bold">
-            Nueva Etiqueta
+            {modoEditar ? 'Editar Etiqueta' : 'Nueva Etiqueta'}
           </DialogTitle>
         </DialogHeader>
 
@@ -107,7 +121,7 @@ export default function ModalEtiqueta({ isOpen, onClose, onCrear }: ModalEtiquet
             disabled={!nombre.trim()}
             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
           >
-            Crear
+            {modoEditar ? 'Guardar Cambios' : 'Crear'}
           </Button>
         </DialogFooter>
 
