@@ -1,16 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { fetchDailyActivities } from '../lib/calendarAction'
-import type { GoogleEvent } from '../interfaces/Evento'
+import { fetchDailyActivities } from '../../lib/calendarAction'
+import type { GoogleEvent } from '../../interfaces/Evento'
 
 interface UseCalendarEventsProps {
-  ready:       boolean
+  ready: boolean
   currentDate: Date
 }
 
 interface UseCalendarEventsReturn {
-  events:          GoogleEvent[]
+  events: GoogleEvent[]
   recargarEventos: () => void
 }
 
@@ -18,7 +18,7 @@ export function useCalendarEvents({
   ready,
   currentDate,
 }: UseCalendarEventsProps): UseCalendarEventsReturn {
-  const [events,           setEvents]           = useState<GoogleEvent[]>([])
+  const [events, setEvents] = useState<GoogleEvent[]>([])
   const [lastFetchedMonth, setLastFetchedMonth] = useState<string | null>(null)
 
   useEffect(() => {

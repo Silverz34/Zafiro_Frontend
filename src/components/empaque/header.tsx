@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useCalendarNavigation } from "../../../hooks/NavigationCalendar";
 import { HiMenu, HiChevronDown } from "react-icons/hi";
-import { ViewType } from '../../../hooks/calendar';
+import { ViewType } from '../../../hooks/calendar/calendar';
 
 import { useState, useEffect } from 'react';
 import { initiateGoogle, getGoogle } from '../../../lib/api/authGoogle/google';
@@ -12,51 +12,51 @@ interface CalendarHeaderProps {
   toggleSidebar: () => void;
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
-  currentView: ViewType;                  
+  currentView: ViewType;
   setCurrentView: (view: ViewType) => void;
   onOpenModal: () => void;
 }
 
-export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate, 
+export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
   currentView, setCurrentView, onOpenModal }: CalendarHeaderProps) {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
-  const[isLoading, setIsLoading]= useState<boolean>(true);
-  const { 
-    goToToday, 
-    goToPrevious, 
-    goToNext, 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const {
+    goToToday,
+    goToPrevious,
+    goToNext,
     handleYearChange,
-    formattedMonth, 
+    formattedMonth,
     currentYear,
-    yearsRange, 
+    yearsRange,
   } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
-  useEffect(()=>{
-    async function checkstatus(){
-      try{
-        const status= await getGoogle();
+  useEffect(() => {
+    async function checkstatus() {
+      try {
+        const status = await getGoogle();
         setIsConnected(status?.connected || false);
-      }catch (error){
+      } catch (error) {
         console.error('error al verificar el estado en google', error);
         setIsConnected(false);
-      }finally{
+      } finally {
         setIsLoading(false);
       }
     }
     checkstatus();
-  },[]);
+  }, []);
 
   //ejecuta la accion del boton 
-  const handleConnect = async () =>{
+  const handleConnect = async () => {
     setIsLoading(true);
     const response = await initiateGoogle();
-    if (response?.success && response.url){
+    if (response?.success && response.url) {
       window.location.href = response.url;
-    }else{
+    } else {
       console.error('fallo al obtner la url', response?.error);
       setIsLoading(false);
     }
-  } 
+  }
 
   return (
     <header className="bg-[#010112] fixed top-0 left-0 z-50 h-16 flex items-center justify-between lg:px-6 w-full">
@@ -79,7 +79,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
 
           <div className="hidden sm:flex items-center gap-4 ml-2">
             <div className="relative">
-              <select 
+              <select
                 value={currentYear}
                 onChange={handleYearChange}
                 className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none"
@@ -124,22 +124,22 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
           )}
         </div>
         <button onClick={onOpenModal}
-        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-4 rounded-lg flex items-center gap-1 transition-all shadow-md">
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-4 rounded-lg flex items-center gap-1 transition-all shadow-md">
           Crear <span className="text-lg leading-none ml-1">+</span>
         </button>
 
         <div className=" relative hidden md:block">
-          <select 
-           value={currentView}
-           onChange={(e) => setCurrentView(e.target.value as ViewType)}
-           className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
+          <select
+            value={currentView}
+            onChange={(e) => setCurrentView(e.target.value as ViewType)}
+            className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
             <option value="dia">Día</option>
             <option value="semana">Semana</option>
             <option value="mes">Mes</option>
 
           </select>
           <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-           <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />
+            <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />
           </div>
         </div>
       </div>

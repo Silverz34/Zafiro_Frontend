@@ -1,15 +1,15 @@
-import { generarRegla } from '../hooks/Ocurrencia'
+import { generarRegla } from '../hooks/calendar/Ocurrencia'
 import type { FormActividad, PrioridadType } from '../interfaces/types/FormActividad'
 
 export interface ActivityPayload {
-  summary:         string
-  start:           { dateTime?: string; date?: string; timeZone?: string }
-  end:             { dateTime?: string; date?: string; timeZone?: string }
-  transparency?:   'transparent' | 'opaque'
-  recurrence?:     string[]
-  reminders?:      { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
+  summary: string
+  start: { dateTime?: string; date?: string; timeZone?: string }
+  end: { dateTime?: string; date?: string; timeZone?: string }
+  transparency?: 'transparent' | 'opaque'
+  recurrence?: string[]
+  reminders?: { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
   prioridadValor?: 'baja' | 'media' | 'alta'
-  source:          'local'
+  source: 'local'
 }
 
 function mapPrioridad(prioridad: PrioridadType): 'alta' | 'media' | 'baja' {
@@ -17,12 +17,12 @@ function mapPrioridad(prioridad: PrioridadType): 'alta' | 'media' | 'baja' {
 }
 
 function toLocalISOString(fecha: string, hora: string): string {
-  const dt            = new Date(`${fecha}T${hora}:00`)
+  const dt = new Date(`${fecha}T${hora}:00`)
   const offsetMinutes = dt.getTimezoneOffset()
-  const sign          = offsetMinutes <= 0 ? '+' : '-'
-  const absOffset     = Math.abs(offsetMinutes)
-  const hh            = String(Math.floor(absOffset / 60)).padStart(2, '0')
-  const mm            = String(absOffset % 60).padStart(2, '0')
+  const sign = offsetMinutes <= 0 ? '+' : '-'
+  const absOffset = Math.abs(offsetMinutes)
+  const hh = String(Math.floor(absOffset / 60)).padStart(2, '0')
+  const mm = String(absOffset % 60).padStart(2, '0')
   return `${fecha}T${hora}:00${sign}${hh}:${mm}`
 }
 
@@ -56,9 +56,9 @@ export function buildActivityPayload(form: FormActividad): ActivityPayload {
     reminders: form.reminder === 'none'
       ? { useDefault: false }
       : {
-          useDefault: false,
-          overrides: [{ method: 'popup', minutes: parseInt(form.reminder) }],
-        },
+        useDefault: false,
+        overrides: [{ method: 'popup', minutes: parseInt(form.reminder) }],
+      },
 
     prioridadValor: mapPrioridad(form.prioridad),
     source: 'local',
