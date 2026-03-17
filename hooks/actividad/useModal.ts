@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useCrearActividad } from "./Crudactividades/useCrearActividad";
-import { useEditarActividad } from "./Crudactividades/useEditarActividad";
+import { useCrearActividad } from "./useCrearActividad";
+import { useEditarActividad } from "./useEditarActividad";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
-import type { ModoModal, PrioridadType } from "./custom/modalconstantes";
-import type { MiniModal } from "../interfaces/Preview";
-import type { TipoOcurrencia } from "./calendar/Ocurrencia";
-import type { FormActividad } from "../interfaces/types/FormActividad";
+import type { ModoModal, PrioridadType } from "../custom/modalconstantes";
+import type { MiniModal } from "../../interfaces/Preview";
+import type { TipoOcurrencia } from "../calendar/Ocurrencia";
+import type { FormActividad } from "../../interfaces/types/FormActividad";
 
 interface UseModalProps {
   onClose: () => void;

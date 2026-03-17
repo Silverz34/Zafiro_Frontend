@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCalendarNavigation } from "../../../hooks/NavigationCalendar";
+import { useCalendarNavigation } from '../../../hooks/calendar/NavigationCalendar';
 import { HiMenu, HiChevronDown } from "react-icons/hi";
 import { ViewType } from '../../../hooks/calendar/calendar';
 

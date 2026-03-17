@@ -1,33 +1,33 @@
 'use client'
 
-import { HiX, HiOutlineCalendar, HiChevronDown} from "react-icons/hi";
-import { Undo2, Bell,Clock,BriefcaseBusiness  } from "lucide-react";
-import { useModalActividad } from "../../../hooks/useModal";
+import { HiX, HiOutlineCalendar, HiChevronDown } from "react-icons/hi";
+import { Undo2, Bell, Clock, BriefcaseBusiness } from "lucide-react";
+import { useModalActividad } from "../../../hooks/Crudactividades/useModal";
 import { PRIORIDADES, RECURRENCE_OPTIONS, REMINDER_OPTIONS, OCUPACION, formatDate } from "../../../hooks/custom/modalconstantes";
-import {Dialog, DialogContent, DialogHeader,DialogTitle} from "@/components/ui/dialog";
-import { Button }   from "@/components/ui/button";
-import { Input }    from "@/components/ui/input";
-import { Label }    from "@/components/ui/label";
-import { Switch }   from "@/components/ui/switch";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
-import { TimePicker} from "../ui/time";
+import { TimePicker } from "../ui/time";
 import { MiniModal } from "../../../interfaces/Preview";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  modo: "crear" | "editar";        
-  eventoInicial?:  MiniModal | null;  
+  modo: "crear" | "editar";
+  eventoInicial?: MiniModal | null;
 }
 
-export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInicial, modo}: ModalProps) {
+export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInicial, modo }: ModalProps) {
   const {
     titulo, setTitulo,
     selectedDate, setSelectedDate,
     showPicker, setShowPicker,
-    horaInicio,  
+    horaInicio,
     horaFin, setHoraFin,
     isAllDay, setIsAllDay,
     recurrencia, setRecurrencia,
@@ -37,8 +37,8 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
     loading,
     handleHoraInicio,
     handleGuardar,
-  } = useModalActividad({ onClose, onSuccess, eventoInicial,modo });
-  
+  } = useModalActividad({ onClose, onSuccess, eventoInicial, modo });
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -66,7 +66,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
             </button>
           </div>
         </DialogHeader>
-        
+
         <div className="px-6 py-5 flex flex-col gap-5 overflow-y-auto max-h-[72vh] scrollbar-thin scrollbar-thumb-[#2a2948] scrollbar-track-transparent">
           <div className="group">
             <Input
@@ -126,7 +126,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               </div>
               {showPicker && (
                 <div className="absolute left-10 mt-10 z-50  rounded-xl overflow-hidden border border-blue-600">
-                  <MiniCalendar 
+                  <MiniCalendar
                     selectedDate={selectedDate}
                     onSelectDate={d => {
                       setSelectedDate(d);
@@ -142,7 +142,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                     <span className="text-[11px] text-white w-10 text-right shrink-0 font-medium">
                       Inicio
                     </span>
-                    <TimePicker 
+                    <TimePicker
                       value={horaInicio}
                       onChange={(handleHoraInicio)}
                     />
@@ -152,79 +152,79 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                     <span className="text-[11px] w-10 text-right shrink-0 font-medium">
                       Fin
                     </span>
-                    <TimePicker value={horaFin} onChange={setHoraFin} minTime={horaInicio}/>
-                  </div>               
+                    <TimePicker value={horaFin} onChange={setHoraFin} minTime={horaInicio} />
+                  </div>
                 </>
               )}
             </div>
           </div>
 
           <div className="flex flex-col gap-3 px-4">
-              <div className="flex flex-col gap-2">
-                <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
-                  Repetición
-                </Label>
-                
-                  <Select value={recurrencia} onValueChange={setRecurrencia}>
-                    <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
-                      <div className="flex items-center gap-2">
-                        <Undo2 className="w-3.5 h-3.5 text-gray-500 shrink-0" />
-                        <SelectValue />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
-                      {RECURRENCE_OPTIONS.map(o => (
-                        <SelectItem key={o.value} value={o.value}
-                          className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
-                          {o.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
-                  Aviso
-                </Label>
-                
-                <Select value={reminder} onValueChange={setReminder}>
-                  <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
-                    <div className="flex items-center gap-2">
-                      <Bell className="w-3.5 h-3.5 text-gray-500 shrink-0" />
-                      <SelectValue />
-                    </div>
-                  </SelectTrigger>
-                    <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
-                      {REMINDER_OPTIONS.map(o => (
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                Repetición
+              </Label>
+
+              <Select value={recurrencia} onValueChange={setRecurrencia}>
+                <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                  <div className="flex items-center gap-2">
+                    <Undo2 className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                    <SelectValue />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                  {RECURRENCE_OPTIONS.map(o => (
                     <SelectItem key={o.value} value={o.value}
                       className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
                       {o.label}
                     </SelectItem>
-                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
-                  Ocupación
-                </Label>
-                
-                  <Select value={ocupacion}  onValueChange={(val) => setOcupacion(val as "opaque" | "transparent")}>
-                    <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
-                      <div className="flex items-center gap-2">
-                        <BriefcaseBusiness className="w-3.5 h-3.5 text-gray-500 shrink-0" />
-                        <SelectValue />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
-                      {OCUPACION.map(o => (
-                        <SelectItem key={o.value} value={o.value}
-                          className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
-                          {o.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                Aviso
+              </Label>
+
+              <Select value={reminder} onValueChange={setReminder}>
+                <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                  <div className="flex items-center gap-2">
+                    <Bell className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                    <SelectValue />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                  {REMINDER_OPTIONS.map(o => (
+                    <SelectItem key={o.value} value={o.value}
+                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
+                      {o.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
+                Ocupación
+              </Label>
+
+              <Select value={ocupacion} onValueChange={(val) => setOcupacion(val as "opaque" | "transparent")}>
+                <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
+                  <div className="flex items-center gap-2">
+                    <BriefcaseBusiness className="w-3.5 h-3.5 text-gray-500 shrink-0" />
+                    <SelectValue />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50">
+                  {OCUPACION.map(o => (
+                    <SelectItem key={o.value} value={o.value}
+                      className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
+                      {o.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -233,7 +233,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               Prioridad
             </Label>
             <div className="grid grid-cols-3 gap-2">
-              {PRIORIDADES.map(({ nivel, color, bg, border}) => {
+              {PRIORIDADES.map(({ nivel, color, bg, border }) => {
                 const active = prioridad === nivel;
                 return (
                   <button
@@ -276,10 +276,10 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                 text-white text-sm font-semibold h-9 px-5 rounded-lg transition-all duration-150
               "
             >
-             {loading
-              ? modo === "editar" ? "Actualizando..." : "Guardando..."
-              : modo === "editar" ? "Actualizar"      : "Guardar"}
-          
+              {loading
+                ? modo === "editar" ? "Actualizando..." : "Guardando..."
+                : modo === "editar" ? "Actualizar" : "Guardar"}
+
             </Button>
           </div>
         </div>
