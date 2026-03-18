@@ -60,6 +60,24 @@ function toLocalISOString(fecha: string, hora: string): string {
   return `${fecha}T${hora}:00${sign}${hh}:${mm}`
 }
 
+function parsePrioridadValor(prioridad?: string): PrioridadType {
+  if (!prioridad) return "Media";
+  if (prioridad.toLowerCase() === "alta") return "Alta";
+  if (prioridad.toLowerCase() === "baja") return "Baja";
+  return "Media";
+}
+
+function parseRecurrence(recurrenceArgs?: string[]): TipoOcurrencia {
+  if (!recurrenceArgs || recurrenceArgs.length === 0) return "none";
+  const rrule = recurrenceArgs[0];
+  if (rrule.includes("FREQ=DAILY")) return "daily";
+  if (rrule.includes("FREQ=WEEKLY")) {
+    if (rrule.includes("BYDAY=MO,TU,WE,TH,FR")) return "weekdays";
+    return "weekly";
+  }
+  return "none";
+}
+
 export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: UseModalProps) {
   const [titulo, setTitulo] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -67,10 +85,10 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const [horaInicio, setHoraInicio] = useState("09:00");
   const [horaFin, setHoraFin] = useState("10:00");
   const [isAllDay, setIsAllDay] = useState(false);
-  const [recurrencia, setRecurrencia] = useState("none");
+  const [recurrence, setRecurrence] = useState("none");
   const [reminder, setReminder] = useState("10");
   const [prioridad, setPrioridad] = useState<PrioridadType>("Media");
-  const [ocupacion, setOcupacion] = useState<"opaque" | "transparent">("opaque");
+  const [transparency, setTransparency] = useState<"opaque" | "transparent">("opaque");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
   const [idEtiqueta, setIdEtiqueta] = useState<number | undefined>(undefined);
@@ -79,6 +97,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const { handleEditar } = useEditarActividad({ onClose, onSuccess });
 
   useEffect(() => {
+    console.log("DATOS QUE LLEGAN AL MODAL:", eventoInicial);
     if (eventoInicial) {
       setTitulo(eventoInicial.summary ?? "");
       setIsAllDay(!eventoInicial.start.dateTime);
@@ -86,30 +105,32 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       if (eventoInicial.start.dateTime) {
         const isoString = eventoInicial.start.dateTime;
         const localDateStr = extractLocalDateString(isoString);
-        // Date visual para el calendario — T12:00:00 evita ambigüedad de día
+
         setSelectedDate(new Date(`${localDateStr}T12:00:00`));
         setHoraInicio(extractLocalTimeString(isoString));
       }
       if (eventoInicial.end.dateTime) {
         setHoraFin(extractLocalTimeString(eventoInicial.end.dateTime));
       }
-      setOcupacion(eventoInicial.transparency ?? "opaque");
+      setTransparency(eventoInicial.transparency ?? "opaque");
       const override = eventoInicial.reminders?.overrides?.[0];
       setReminder(override ? String(override.minutes) : "none");
       setIdEtiqueta(eventoInicial.idEtiqueta);
+      setPrioridad(parsePrioridadValor(eventoInicial.prioridadValor));
+      setRecurrence(parseRecurrence(eventoInicial.recurrence));
       
     } else {
       setTitulo("");
+      setDescription("");
+      setIdEtiqueta(undefined);
       setSelectedDate(new Date());
       setHoraInicio("09:00");
       setHoraFin("10:00");
       setIsAllDay(false);
-      setRecurrencia("none");
+      setRecurrence("none");
       setReminder("10");
-      setOcupacion("opaque");
+      setTransparency("opaque");
       setPrioridad("Media");
-      setDescription("");
-      setIdEtiqueta(undefined);
     }
   }, [eventoInicial]);
 
@@ -126,18 +147,17 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     if (!titulo.trim()) return;
 
     const fecha = toLocalDateString(selectedDate);
+    const idParaActualizar = (eventoInicial as any)?.localId || eventoInicial?.id;
 
     if (modo === "editar" && eventoInicial?.id) {
       await handleEditar(
-        eventoInicial.id,
+       idParaActualizar,
         {
           summary: titulo,
           description: description,
           start: isAllDay
             ? { date: fecha }
             : {
-              // Con offset → "2026-03-15T10:00:00-06:00"
-              // PostgreSQL guarda 16:00 UTC → al leer en México = 10:00am ✓
               dateTime: toLocalISOString(fecha, horaInicio),
               timeZone: "America/Mexico_City"
             },
@@ -147,12 +167,18 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
               dateTime: toLocalISOString(fecha, horaFin),
               timeZone: "America/Mexico_City"
             },
-          transparency: ocupacion,
+          transparency: transparency,
           reminders: reminder === "none"
             ? { useDefault: false }
             : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
           prioridadValor: mapPrioridad(prioridad),
-          idEtiqueta: idEtiqueta
+          idEtiqueta: idEtiqueta,
+          recurrence: recurrence === "none" ? [] : [
+            recurrence === "daily" ? "RRULE:FREQ=DAILY" :
+            recurrence === "weekdays" ? "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR" :
+            recurrence === "weekly" ? "RRULE:FREQ=WEEKLY" :
+            recurrence === "monthly" ? "RRULE:FREQ=MONTHLY" : "RRULE:FREQ=YEARLY"
+          ]
         },
         setLoading
       );
@@ -160,8 +186,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       await handleCrear(
         {
           titulo, fecha, horaInicio, horaFin, isAllDay,
-          recurrencia: recurrencia as TipoOcurrencia,
-          reminder, ocupacion, prioridad,description, idEtiqueta 
+          recurrence: recurrence as TipoOcurrencia,
+          reminder, transparency, prioridad,description, idEtiqueta 
         } as FormActividad,
         setLoading
       );
@@ -174,10 +200,10 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     showPicker, setShowPicker,
     horaInicio, horaFin, setHoraFin,
     isAllDay, setIsAllDay,
-    recurrencia, setRecurrencia,
+    recurrence, setRecurrence,
     reminder, setReminder,
     prioridad, setPrioridad,
-    ocupacion, setOcupacion,
+    transparency, setTransparency,
     loading,
     idEtiqueta, setIdEtiqueta,
     description, setDescription,

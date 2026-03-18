@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { ViewType } from "./calendar/calendar";
+import { ViewType } from "./calendar";
 
 export function useCalendarNavigation(currentDate: Date, setCurrentDate: (date: Date) => void, currentView: ViewType) {
 

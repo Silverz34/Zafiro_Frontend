@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { fetchDailyActivities } from '../../lib/calendarAction'
-import type { GoogleEvent } from '../../interfaces/Evento'
+import type { Actividad } from '../../interfaces/Actividad'
 
 interface UseCalendarEventsProps {
   ready: boolean
@@ -10,7 +10,7 @@ interface UseCalendarEventsProps {
 }
 
 interface UseCalendarEventsReturn {
-  events: GoogleEvent[]
+  events: Actividad[]
   recargarEventos: () => void
 }
 
@@ -18,7 +18,7 @@ export function useCalendarEvents({
   ready,
   currentDate,
 }: UseCalendarEventsProps): UseCalendarEventsReturn {
-  const [events, setEvents] = useState<GoogleEvent[]>([])
+  const [events, setEvents] = useState<Actividad[]>([])
   const [lastFetchedMonth, setLastFetchedMonth] = useState<string | null>(null)
 
   useEffect(() => {

@@ -12,9 +12,9 @@ export interface FormActividad {
     description?: string;
 
     isAllDay: boolean;
-    recurrencia: TipoOcurrencia;
+    recurrence: TipoOcurrencia;
     reminder: string;
-    ocupacion: "opaque" | "transparent";
+    transparency: "opaque" | "transparent";
     prioridad: PrioridadType;
     idEtiqueta?: number;
 }

@@ -36,10 +36,10 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
     horaInicio,
     horaFin, setHoraFin,
     isAllDay, setIsAllDay,
-    recurrencia, setRecurrencia,
+    recurrence, setRecurrence,
     reminder, setReminder,
     prioridad, setPrioridad,
-    ocupacion, setOcupacion,
+    transparency, setTransparency,
     loading,
     handleHoraInicio,
     handleGuardar,
@@ -180,7 +180,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                 Repetición
               </Label>
 
-              <Select value={recurrencia} onValueChange={setRecurrencia}>
+              <Select value={recurrence} onValueChange={setRecurrence}>
                 <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
                   <div className="flex items-center gap-2">
                     <Undo2 className="w-3.5 h-3.5 text-gray-500 shrink-0" />
@@ -224,7 +224,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                 Ocupación
               </Label>
 
-              <Select value={ocupacion} onValueChange={(val) => setOcupacion(val as "opaque" | "transparent")}>
+              <Select value={transparency} onValueChange={(val) => setTransparency(val as "opaque" | "transparent")}>
                 <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
                   <div className="flex items-center gap-2">
                     <BriefcaseBusiness className="w-3.5 h-3.5 text-gray-500 shrink-0" />

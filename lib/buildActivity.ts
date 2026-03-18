@@ -52,7 +52,7 @@ export function buildActivityPayload(form: FormActividad): ActivityPayload {
 
     recurrence: generarRegla(
       startISO ?? `${form.fecha}T00:00:00`,
-      form.recurrencia
+      form.recurrence
     ),
 
     reminders: form.reminder === 'none'

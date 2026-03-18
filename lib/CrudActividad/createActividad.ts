@@ -3,7 +3,7 @@
 import { apiPost } from "../api/apiClient";
 import { ApiError } from "../api/apiError";
 import { SchemaCrearActividad } from "../../interfaces/Actividad";
-import { buildActivityPayload } from "../buildActivity"; { }
+import { buildActivityPayload } from "../buildActivity"; 
 import { FormActividad } from "../../interfaces/types/FormActividad";
 
 interface CreatedActivity {
