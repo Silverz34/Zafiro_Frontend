@@ -37,7 +37,7 @@ export function useEtiquetas(){
        
     };
 
-    const editarEtiqueta = async (id: string, datos: Omit<EtiquetaFrontend, 'id'>) => {
+    const editarEtiqueta = async (id: number, datos: Omit<EtiquetaFrontend, 'id'>) => {
         setEtiquetas(prev => prev.map(e => e.id === id ? { ...e, ...datos } : e));
         const respuesta = await updateEtiqueta(id, datos);
         if (!respuesta.success) {
@@ -45,7 +45,7 @@ export function useEtiquetas(){
         }
     };
 
-    const borrarEtiqueta = async (id: string) => {
+    const borrarEtiqueta = async (id: number) => {
         setEtiquetas(prev => prev.filter(e => e.id !== id));
         await deleteEtiqueta(id);
     };
