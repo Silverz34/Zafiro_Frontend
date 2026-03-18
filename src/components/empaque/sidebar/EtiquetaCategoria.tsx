@@ -9,7 +9,7 @@ import { useEtiquetas } from '../../../../hooks/useEtiquetas';
 import type { EtiquetaFrontend } from '../../../../lib/CrudEtiquetas/getEtiqueta';
 
 export default function Etiquetas() {
-  const { etiquetas, loading, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetas();
+  const { etiquetas, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetas();
   const [activas, setActivas] = useState<string[]>([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [etiquetaEditar, setEtiquetaEditar] = useState<EtiquetaFrontend | null>(null);
@@ -69,7 +69,7 @@ export default function Etiquetas() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="bg-[#0d0c1e] border border-[#1e1d3a] text-white rounded-xl min-w-[130px]"
+                  className="bg-[#0d0c1e] border border-[#1e1d3a] text-white rounded-xl min-w-32.5"
                 >
                   <DropdownMenuItem
                     onClick={() => { setEtiquetaEditar(etiqueta); setModalAbierto(true); }}

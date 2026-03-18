@@ -5,7 +5,7 @@ import { reminderSchema } from "./Remiders";
 
 
 export const SchemaCrearActividad = z.object({
-   id: z.string().optional(),
+   id: z.string(),
    summary: z.string().min(2, "El título es obligatorio"),
    start: GoogleSchema,
    end: GoogleSchema,

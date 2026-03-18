@@ -12,7 +12,7 @@ export async function createEtiqueta(datosFrontend: Omit<EtiquetaFrontend, 'id'>
             color: datosFrontend.color
         };
         const validated = SchemaEtiqueta.parse(payload);
-        const response = await apiPost<{ id: number, nombre: string, color: string }>('/api/tags', validated);
+        const response = await apiPost<{ id: string, nombre: string, color: string }>('/api/tags', validated);
         
         if (!response.success) {
             console.error('[createEtiqueta] Error en API:', response.message);

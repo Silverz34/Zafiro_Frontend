@@ -1,7 +1,7 @@
 import { apiDelete } from "../api/apiClient";
 import { ApiError } from "../api/apiError";
 
-export async function deleteEtiqueta(id: number) {
+export async function deleteEtiqueta(id: string) {
   try {
     await apiDelete(`/api/tags/${id}`);
     return { success: true };

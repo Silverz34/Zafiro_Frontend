@@ -3,7 +3,7 @@
 import { apiGet } from "../api/apiClient";
 
 export type EtiquetaFrontend = {
-  id: number;
+  id: string;
   nombre: string;
   color: string;
 };

@@ -3,7 +3,7 @@
 import { apiPatch } from "../api/apiClient";
 import { SchemaEtiqueta } from "../../interfaces/Etiquetas";
 
-export async function updateEtiqueta(id: number, datosFrontend: { nombre: string; color: string }) {
+export async function updateEtiqueta(id: string, datosFrontend: { nombre: string; color: string }) {
   try {
     const payload = {
       nombre: datosFrontend.nombre,
