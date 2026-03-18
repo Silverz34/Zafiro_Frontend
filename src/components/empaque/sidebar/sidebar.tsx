@@ -3,6 +3,7 @@ import MiniCalendar from './MiniCalendar';
 import Prioridad from './EtiquetasPrioridad';
 import { useUser, SignOutButton } from '@clerk/nextjs';
 import { FiLogOut } from "react-icons/fi";
+import Etiquetas from './EtiquetaCategoria';
 
 interface SidebarProps {
   isOpen: boolean;         
@@ -21,8 +22,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-500">
         <MiniCalendar/>
         <Prioridad />
-        <Prioridad/>
-        <Prioridad/>
+        <Etiquetas/>
       </div>
 
       <div className="p-3 border-t border-blue-600">
@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
                 </SignOutButton>
           </div>
         ) : (
-          <div className="animate-pulse flex items-center gap-3 bg-[#0b0c14] p-2 rounded-xl border border-gray-800">
+          <div className="flex items-center justify-between border border-blue-600 p-4 rounded-xl">
             <div className="w-10 h-10 bg-gray-800 rounded-full"></div>
             <div className="flex-1 space-y-2">
             </div>

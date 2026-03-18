@@ -1,49 +1,51 @@
-"use server";
-import { getGoogleToken } from "./googleAuth";
+'use server'
 
-export async function fetchDailyActivities(targetDateIso: string) {
-  try {
-    const token = await getGoogleToken();
-    const targetDate = new Date(targetDateIso);
+import { apiGet } from './api/apiClient';
+import { ApiError } from './api/apiError';
+import { Actividad } from '../interfaces/Actividad'
 
-    const year = targetDate.getFullYear();
-    const month = targetDate.getMonth();
+function buildRange(targetDateIso: string): { from: string; to: string } {
+  const targetDate = new Date(targetDateIso)
+  const year = targetDate.getFullYear()
+  const month = targetDate.getMonth()
 
-    const timeMin = new Date(year, month, 1);
-    const timeMax = new Date(year, month + 1, 0)
+  const from = new Date(year, month, 1)
+  const to = new Date(year, month + 1, 0)
 
-    timeMin.setDate(timeMin.getDate()-10);
-    timeMax.setDate(timeMax.getDate() + 10 );
-    timeMin.setHours(0,0,0,0);
-    timeMax.setHours(23,59,59,999);
+  from.setDate(from.getDate() - 10)
+  to.setDate(to.getDate() + 10)
+  from.setHours(0, 0, 0, 0)
+  to.setHours(23, 59, 59, 999)
 
-    const googleApiUrl = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
-    
-    googleApiUrl.searchParams.append("timeMin", timeMin.toISOString());
-    googleApiUrl.searchParams.append("timeMax", timeMax.toISOString());
-
-    googleApiUrl.searchParams.append("singleEvents", "true"); 
-    googleApiUrl.searchParams.append("orderBy", "startTime"); 
-    googleApiUrl.searchParams.append("maxResults", "1000");
-    
-    const res = await fetch(googleApiUrl.toString(), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      cache: "no-store"
-    });
-
-    if (!res.ok) {
-      throw new Error("Error al consultar la API de Google");
-    }
-
-    const data = await res.json();
-    return data.items;
-
-  } catch (error) {
-    console.error("Error obteniendo los eventos del calendario:", error);
-    return null;
-  }
+  return { from: from.toISOString(), to: to.toISOString() }
 }
 
+export async function fetchDailyActivities(
+  targetDateIso: string
+): Promise<Actividad[] | null> {
+  try {
+    const { from, to } = buildRange(targetDateIso)
+
+    const response = await apiGet<Actividad[]>(
+      `/api/activities/me`
+    )
+
+    if (!response.success) {
+      console.error('[fetchDailyActivities] Respuesta fallida')
+      return null
+    }
+
+    // Log para verificar que llegan actividades
+    console.log(`[fetchDailyActivities] Actividades recibidas: ${response.data?.length ?? 0}`)
+
+    return response.data ?? []
+
+  } catch (error) {
+    if (error instanceof ApiError) {
+      console.error(`[fetchDailyActivities] Error ${error.status}:`, error.message)
+    } else {
+      console.error('[fetchDailyActivities] Error inesperado:', error)
+    }
+    return null
+  }
+}

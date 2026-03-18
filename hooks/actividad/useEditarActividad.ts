@@ -1,8 +1,8 @@
-import { toast }            from "sonner";
-import { updateActividad }  from "../lib/updateActividad";
+import { toast } from "sonner";
+import { updateActividad } from "../../lib/CrudActividad/updateActividad";
 
 interface EditarProps {
-  onClose:   () => void;
+  onClose: () => void;
   onSuccess: () => void;
 }
 

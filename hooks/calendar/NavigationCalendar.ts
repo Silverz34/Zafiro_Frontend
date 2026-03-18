@@ -9,17 +9,17 @@ export function useCalendarNavigation(currentDate: Date, setCurrentDate: (date: 
 
   const goToPrevious = useCallback(() => {
     const newDate = new Date(currentDate);
-    if(currentView === 'dia'){
-      newDate.setDate(currentDate.getDate()- 1);
-    }else if (currentView === 'semana'){
-      newDate.setDate(currentDate.getDate()-7);
-    }else if (currentView == 'mes'){
-      newDate.setMonth(currentDate.getMonth()-1);
+    if (currentView === 'dia') {
+      newDate.setDate(currentDate.getDate() - 1);
+    } else if (currentView === 'semana') {
+      newDate.setDate(currentDate.getDate() - 7);
+    } else if (currentView == 'mes') {
+      newDate.setMonth(currentDate.getMonth() - 1);
     }
     setCurrentDate(newDate);
   }, [currentDate, setCurrentDate, currentView]);
 
-  const goToNext= useCallback(() => {
+  const goToNext = useCallback(() => {
     const newDate = new Date(currentDate);
     if (currentView === 'dia') {
       newDate.setDate(currentDate.getDate() + 1);
