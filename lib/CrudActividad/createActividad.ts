@@ -7,7 +7,6 @@ import { buildActivityPayload } from "../buildActivity";
 import { FormActividad } from "../../interfaces/types/FormActividad";
 
 interface CreatedActivity {
-  id: string
   summary: string
 }
 

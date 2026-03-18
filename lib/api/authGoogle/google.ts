@@ -20,7 +20,7 @@ export async function initiateGoogle() {
     const response = await apiGet<{url: string; userId: string}>(
       '/api/integrations/google/connect'
     )
-
+    
     if (response.success && response.data?.url) {
       return { success: true, url: response.data.url }
     }
