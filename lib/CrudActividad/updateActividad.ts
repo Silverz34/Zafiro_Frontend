@@ -4,12 +4,9 @@ import { apiPatch } from '../api/apiClient'
 import { ApiError } from '../api/apiError'
 import { SchemaCrearActividad, type CrearActividad } from '../../interfaces/Actividad'
 
-type CambiosActividad = Partial<CrearActividad>
-
-
 export async function updateActividad(
   id: string,
-  cambios: CambiosActividad
+  cambios: Partial<CrearActividad>
 ) {
   try {
     // Validar solo los campos presentes — partial() hace todos opcionales
