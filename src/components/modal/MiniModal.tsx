@@ -1,9 +1,10 @@
 'use client'
 
 import { HiX, HiOutlineCalendar, HiOutlineBell } from "react-icons/hi";
-import { BriefcaseBusiness, Pencil, Trash2 } from "lucide-react";
+import { BriefcaseBusiness, Pencil, Trash2, Tag } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { MiniModal } from "../../../interfaces/Preview";
+import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import ConfirmDelete from "../message/ConfirmDelete";
 import { useState } from "react";
 
@@ -54,6 +55,10 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
   const fecha       = formatearFecha(evento.start.dateTime, evento.start.date);
   const esLibre     = evento.transparency === "transparent";
   const reminder    = evento.reminders?.overrides?.[0];
+
+  const etiquetaInfo = (evento as any).etiqueta;
+  const prioridadStr = (evento as any).prioridad?.valor || evento.prioridadValor;
+  const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
 
   return (
     <Dialog open={!!evento} onOpenChange={onClose}>
@@ -141,9 +146,24 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
               {esLibre ? "Libre" : "Ocupado"}
             </span>
           </div>
+
+          {etiquetaInfo && (
+            <div className="flex items-center gap-3">
+              <Tag className="w-4 h-4 text-blue-400 shrink-0" />
+              <div 
+                className="flex items-center gap-2 px-2.5 py-1 rounded-full border border-gray-700/50 bg-[#111029]"
+              >
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: etiquetaInfo.color }} />
+                <span className="text-xs font-medium text-gray-300">{etiquetaInfo.nombre}</span>
+              </div>
+            </div>
+          )}
         </div>
-        {/*esto tendra relevancia mas tarde*/}
-        <div className="h-1.5 w-full bg-blue-600" />
+      
+        <div 
+          className="h-1.5 w-full" 
+          style={{ backgroundColor: prioridadObj ? prioridadObj.hexColor : '#2563eb' }} 
+        />
       </DialogContent>
       <ConfirmDelete
         open={showConfirm}

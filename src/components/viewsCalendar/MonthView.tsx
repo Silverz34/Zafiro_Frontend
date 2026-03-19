@@ -43,18 +43,10 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             if (!event.id) return;
-                                            onEventClick({
-                                                id: event.id,
-                                                summary: event.summary,
-                                                start: event.start,
-                                                end: event.end,
-                                                transparency: (event as any).transparency,
-                                                reminders: (event as any).reminders,
-                                                idEtiqueta: (event as any).etiqueta.id,
-                                                prioridadValor: (event as any).prioridad.id,
-                                                description: (event as any).description,
-                                                recurrence: (event as any).recurrence 
-                                            });
+                                            const eventoOriginal = events.find((orig) => orig.id === event.id);
+                                            if (eventoOriginal) {
+                                                onEventClick(eventoOriginal);
+                                            }
                                         }}
                                         className="bg-blue-600/20 border border-blue-500 text-blue-100 text-[10px] px-1.5 py-1 rounded truncate shadow-sm transition-all hover:bg-blue-600/40"
                                     >

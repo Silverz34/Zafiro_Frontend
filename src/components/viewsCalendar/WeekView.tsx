@@ -56,18 +56,10 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                       onClick={(e) => {
                         e.stopPropagation();
                         if (!event.id) return;
-                        onEventClick({
-                          id: event.id,
-                          summary: event.summary,
-                          start: event.start,
-                          end: event.end,
-                          transparency: (event as any).transparency,
-                          reminders: (event as any).reminders,
-                          idEtiqueta: (event as any).etiqueta.id,
-                          prioridadValor: (event as any).prioridad.id,
-                          description: (event as any).description,
-                          recurrence: (event as any).recurrence 
-                        });
+                        const eventoOriginal = events.find((orig) => orig.id === event.id);
+                        if (eventoOriginal) {
+                          onEventClick(eventoOriginal);
+                        }
                       }}
 
                       className="absolute left-1 right-1 bg-blue-600/20 border border-blue-500 rounded-md p-1.5 

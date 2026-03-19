@@ -1,6 +1,6 @@
 import { TipoOcurrencia } from "../../hooks/calendar/Ocurrencia";
 
-export type PrioridadType = "Alta" | "Media" | "Baja";
+export type PrioridadType = "alta" | "media" | "baja";
 
 //datos para el formulario que despues seran validados antes de enviar por el esquema de zod
 export interface FormActividad {

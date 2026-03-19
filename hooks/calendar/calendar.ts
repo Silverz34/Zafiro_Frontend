@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { GoogleEvent } from "../../interfaces/Evento";
+import { lecturaActividad } from "../../interfaces/Preview";
 
 export type ViewType = 'dia' | 'semana' | 'mes';
 
-export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view: ViewType) {
+export function CalendarLogic(currentDate: Date, rawEvents: lecturaActividad[], view: ViewType) {
     const days = useMemo(() => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();

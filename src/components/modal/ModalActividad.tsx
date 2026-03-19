@@ -292,7 +292,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                     onClick={() => setPrioridad(nivel)}
                     className={`
                       py-2.5 text-sm font-semibold rounded-xl border transition-all duration-200
-                      flex items-center justify-center gap-2
+                      flex items-center justify-center gap-2 capitalize
                       ${active
                         ? `${bg} ${border} ${color}`
                         : "bg-[#111029] border-[#1e1d3a] text-gray-500 hover:border-[#2a2948] hover:text-gray-400"}

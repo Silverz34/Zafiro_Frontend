@@ -1,11 +1,11 @@
-export type PrioridadType = "Alta" | "Media" | "Baja";
+export type PrioridadType = "alta" | "media" | "baja";
 
 export type ModoModal= "crear" | "editar";
 
 export const PRIORIDADES = [
-  { nivel: "Baja"  as PrioridadType, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/40" },
-  { nivel: "Media" as PrioridadType, color: "text-amber-400",   bg: "bg-amber-500/10",   border: "border-amber-500/40"   },
-  { nivel: "Alta"  as PrioridadType, color: "text-rose-400",    bg: "bg-rose-500/10",    border: "border-rose-500/40"    },
+  { nivel: "baja"  as PrioridadType, color: "text-white", bg: "bg-[#2FA941]", border: "border-[#2FA941]", hexColor: "#2FA941" },
+  { nivel: "media" as PrioridadType, color: "text-white",   bg: "bg-[#E2761F]",   border: "border-[#E2761F]", hexColor: "#E2761F"   },
+  { nivel: "alta"  as PrioridadType, color: "text-white",    bg: "bg-[#AB3535]",    border: "border-[#AB3535]", hexColor: "#AB3535"    },
 ];
 
 export const RECURRENCE_OPTIONS = [

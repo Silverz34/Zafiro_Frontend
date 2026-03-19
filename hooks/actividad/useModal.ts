@@ -61,10 +61,10 @@ function toLocalISOString(fecha: string, hora: string): string {
 }
 
 function parsePrioridadValor(prioridad?: string): PrioridadType {
-  if (!prioridad) return "Media";
-  if (prioridad.toLowerCase() === "alta") return "Alta";
-  if (prioridad.toLowerCase() === "baja") return "Baja";
-  return "Media";
+  if (!prioridad) return "media";
+  if (prioridad.toLowerCase() === "alta") return "alta";
+  if (prioridad.toLowerCase() === "baja") return "baja";
+  return "media";
 }
 
 function parseRecurrence(recurrenceArgs?: string[]): TipoOcurrencia {
@@ -87,7 +87,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const [isAllDay, setIsAllDay] = useState(false);
   const [recurrence, setRecurrence] = useState("none");
   const [reminder, setReminder] = useState("10");
-  const [prioridad, setPrioridad] = useState<PrioridadType>("Media");
+  const [prioridad, setPrioridad] = useState<PrioridadType>("media");
   const [transparency, setTransparency] = useState<"opaque" | "transparent">("opaque");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
@@ -99,6 +99,9 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   useEffect(() => {
     console.log("DATOS QUE LLEGAN AL MODAL:", eventoInicial);
     if (eventoInicial) {
+      const valorPrioridad = eventoInicial.prioridadValor || (eventoInicial as any).prioridad?.valor;
+      
+      setPrioridad(parsePrioridadValor(valorPrioridad));
       setTitulo(eventoInicial.summary ?? "");
       setIsAllDay(!eventoInicial.start.dateTime);
       setDescription(eventoInicial.description ?? "");
@@ -115,8 +118,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       setTransparency(eventoInicial.transparency ?? "opaque");
       const override = eventoInicial.reminders?.overrides?.[0];
       setReminder(override ? String(override.minutes) : "none");
-      setIdEtiqueta(eventoInicial.idEtiqueta);
-      setPrioridad(parsePrioridadValor(eventoInicial.prioridadValor));
+      setIdEtiqueta(eventoInicial.idEtiqueta ?? (eventoInicial as any).etiqueta?.id);
       setRecurrence(parseRecurrence(eventoInicial.recurrence));
       
     } else {
@@ -130,7 +132,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
       setRecurrence("none");
       setReminder("10");
       setTransparency("opaque");
-      setPrioridad("Media");
+      setPrioridad("media");
     }
   }, [eventoInicial]);
 
