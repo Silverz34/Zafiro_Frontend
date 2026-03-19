@@ -1,11 +1,13 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
+import { useEtiquetas } from "../../../hooks/useEtiquetas";
 
 export default function MonthView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
 
     const { days, getProcessed } = CalendarLogic(currentDate, events, 'mes');
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    const { etiquetas } = useEtiquetas();
 
     return (
         <div className="flex flex-col h-full bg-[#100F1D] rounded-xl border border-gray-800 overflow-hidden text-white">
