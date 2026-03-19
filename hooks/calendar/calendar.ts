@@ -64,7 +64,8 @@ export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view:
                     top: `${startHour * 64}px`,
                     height: `${duration * 64}px`,
                 },
-                formattedTime: start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                formattedTime: start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                endTime: end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
         });
     }
