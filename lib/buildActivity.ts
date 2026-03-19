@@ -1,18 +1,7 @@
 import { generarRegla } from '../hooks/calendar/Ocurrencia'
 import type { FormActividad, PrioridadType } from '../interfaces/types/FormActividad'
+import type { CrearActividad } from '../interfaces/Actividad'
 
-export interface ActivityPayload {
-  summary: string
-  description?: string
-  start: { dateTime?: string; date?: string; timeZone?: string }
-  end: { dateTime?: string; date?: string; timeZone?: string }
-  transparency?: 'transparent' | 'opaque'
-  recurrence?: string[]
-  reminders?: { useDefault: boolean; overrides?: { method: 'popup'; minutes: number }[] }
-  prioridadValor?: 'baja' | 'media' | 'alta'
-  idEtiqueta?: number
-  source: 'local'
-}
 
 function mapPrioridad(prioridad: PrioridadType): 'alta' | 'media' | 'baja' {
   return prioridad.toLowerCase() as 'alta' | 'media' | 'baja'
@@ -28,7 +17,7 @@ function toLocalISOString(fecha: string, hora: string): string {
   return `${fecha}T${hora}:00${sign}${hh}:${mm}`
 }
 
-export function buildActivityPayload(form: FormActividad): ActivityPayload {
+export function buildActivityPayload(form: FormActividad): CrearActividad {
   const startISO = form.isAllDay
     ? undefined
     : toLocalISOString(form.fecha, form.horaInicio)
@@ -37,7 +26,7 @@ export function buildActivityPayload(form: FormActividad): ActivityPayload {
     ? undefined
     : toLocalISOString(form.fecha, form.horaFin)
 
-  const payload: ActivityPayload = {
+  const payload: CrearActividad = {
     summary: form.titulo,
     description: form.description,
     start: form.isAllDay

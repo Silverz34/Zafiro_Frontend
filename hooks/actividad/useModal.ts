@@ -5,12 +5,12 @@ import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
 import type { ModoModal, PrioridadType } from "../custom/modalconstantes";
 import type { TipoOcurrencia } from "../calendar/Ocurrencia";
 import type { FormActividad } from "../../interfaces/types/FormActividad";
-import type { CrearActividad } from "../../interfaces/Actividad";
+import type { MiniModal } from "../../interfaces/Preview";
 
 interface UseModalProps {
   onClose: () => void;
   onSuccess: () => void;
-  eventoInicial?: CrearActividad | null;
+  eventoInicial?: MiniModal | null;
   modo: ModoModal;
 }
 

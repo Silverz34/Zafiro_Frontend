@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { GoogleEvent } from "../../interfaces/Evento";
 
 export type ViewType = 'dia' | 'semana' | 'mes';
+
 export function CalendarLogic(currentDate: Date, rawEvents: GoogleEvent[], view: ViewType) {
     const days = useMemo(() => {
         const year = currentDate.getFullYear();

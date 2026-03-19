@@ -2,7 +2,7 @@
 
 import { apiGet } from './api/apiClient';
 import { ApiError } from './api/apiError';
-import { Actividad } from '../interfaces/Actividad'
+import { lecturaActividad } from '../interfaces/Preview'
 
 function buildRange(targetDateIso: string): { from: string; to: string } {
   const targetDate = new Date(targetDateIso)
@@ -22,11 +22,11 @@ function buildRange(targetDateIso: string): { from: string; to: string } {
 
 export async function fetchDailyActivities(
   targetDateIso: string
-): Promise<Actividad[] | null> {
+): Promise<lecturaActividad[] | null> {
   try {
     const { from, to } = buildRange(targetDateIso)
 
-    const response = await apiGet<Actividad[]>(
+    const response = await apiGet<lecturaActividad[]>(
       `/api/activities/me`
     )
 

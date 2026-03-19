@@ -3,9 +3,8 @@ import { GoogleSchema } from "./Evento";
 import { SchemaEtiqueta, extras_dict } from "./Etiquetas";
 import { reminderSchema } from "./Remiders";
 
-
+//de creacion de una actividad 
 export const SchemaCrearActividad = z.object({
-   id: z.string(),
    summary: z.string().min(2, "El título es obligatorio"),
    start: GoogleSchema,
    end: GoogleSchema,

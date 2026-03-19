@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { fetchDailyActivities } from '../../lib/calendarAction'
-import type { Actividad } from '../../interfaces/Actividad'
+import type { lecturaActividad } from '../../interfaces/Preview'
 
 interface UseCalendarEventsProps {
   ready: boolean
@@ -10,7 +10,7 @@ interface UseCalendarEventsProps {
 }
 
 interface UseCalendarEventsReturn {
-  events: Actividad[]
+  events: lecturaActividad[]
   recargarEventos: () => void
 }
 
@@ -18,7 +18,7 @@ export function useCalendarEvents({
   ready,
   currentDate,
 }: UseCalendarEventsProps): UseCalendarEventsReturn {
-  const [events, setEvents] = useState<Actividad[]>([])
+  const [events, setEvents] = useState<lecturaActividad[]>([])
   const [lastFetchedMonth, setLastFetchedMonth] = useState<string | null>(null)
 
   useEffect(() => {

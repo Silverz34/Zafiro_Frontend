@@ -34,10 +34,10 @@ export async function initiateGoogle() {
 //status de la conexion, no se para que sirve pero asi esta la endpoit 
 export async function getGoogle(){
     try{
-        const response = await apiGet<GoogleConnectionStatus>(
-            '/api/integrations/google/status'
-        )
-        return response.data
+      const response = await apiGet<GoogleConnectionStatus>(
+        '/api/integrations/google/status'
+      )
+      return response.data
     }
     catch(error){
         console.error('[GOOGLE_STATUS] Error:', error)
