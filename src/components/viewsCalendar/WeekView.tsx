@@ -2,6 +2,7 @@
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
 import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 
 export default function WeekView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
   const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'semana');
@@ -48,7 +49,10 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                   {processedEvents.map(event => {
                     const tag = etiquetas.find((e) => e.id === (event as any).idEtiqueta);
                     const dynamicCardStyle = tag ? { backgroundColor: `${tag.color}33`, borderColor: tag.color } : {};
-                    const dynamicBarStyle = tag ? { backgroundColor: tag.color } : {};
+                    
+                    const prioridadStr = (event as any).prioridad?.valor || (event as any).prioridadValor;
+                    const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
+                    const dynamicBarStyle = prioridadObj ? { backgroundColor: prioridadObj.hexColor } : (tag ? { backgroundColor: tag.color } : {});
 
                     return (
                     <div
