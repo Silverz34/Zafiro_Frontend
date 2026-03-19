@@ -59,9 +59,14 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                         onEventClick({
                           id: event.id,
                           summary: event.summary,
-                          start: event.start, end: event.end,
+                          start: event.start,
+                          end: event.end,
                           transparency: (event as any).transparency,
                           reminders: (event as any).reminders,
+                          idEtiqueta: (event as any).etiqueta.id,
+                          prioridadValor: (event as any).prioridad.id,
+                          description: (event as any).description,
+                          recurrence: (event as any).recurrence 
                         });
                       }}
 

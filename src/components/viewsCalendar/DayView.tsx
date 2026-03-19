@@ -52,6 +52,10 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                                         end: event.end,
                                         transparency: (event as any).transparency,
                                         reminders: (event as any).reminders,
+                                        idEtiqueta: (event as any).etiqueta.id,
+                                        prioridadValor: (event as any).prioridad.id,
+                                        description: (event as any).description,
+                                        recurrence: (event as any).recurrence    
                                     });
                                 }}
                                 className=" absolute left-2 right-4 bg-blue-600/20 border-l-4 border-blue-500 rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10 flex flex-col"

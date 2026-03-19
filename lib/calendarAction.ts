@@ -35,6 +35,14 @@ export async function fetchDailyActivities(
       return null
     }
 
+    //log para ver los datos del json que llegan
+    console.log(`[fetchDailyActivities] Actividades recibidas: ${response.data?.length ?? 0}`)
+    if (response.data && response.data.length > 0) {
+      console.log(" MOCHILA COMPLETA DE LA PRIMERA ACTIVIDAD:");
+      console.log(JSON.stringify(response.data[0], null, 2)); 
+    }
+    // -
+
     // Log para verificar que llegan actividades
     console.log(`[fetchDailyActivities] Actividades recibidas: ${response.data?.length ?? 0}`)
 
