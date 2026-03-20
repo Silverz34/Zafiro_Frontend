@@ -1,4 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
+
 
 const isPublicRoute = createRouteMatcher([
   '/',
@@ -6,9 +8,24 @@ const isPublicRoute = createRouteMatcher([
   '/register(.*)',
 ])
 
+const onboardingRoutes = createRouteMatcher(['/onboarding'])
 export default clerkMiddleware(async (auth, req) => {
+  const { userId, sessionClaims } = await auth()
   if (!isPublicRoute(req)) {
     await auth.protect()
+  }
+
+  if (userId){
+    const onboardingComplete = sessionClaims?.metadata?.onboardingCompleto === true
+    const catching = onboardingRoutes(req)
+    if (!onboardingComplete && !catching && !isPublicRoute(req)) {
+      const onboardingUrl = new URL('/onboarding', req.url)
+      return NextResponse.redirect(onboardingUrl)
+    }
+    if (onboardingComplete && catching) {
+      const dashboardUrl = new URL('/calendar', req.url) 
+      return NextResponse.redirect(dashboardUrl)
+    }
   }
 })
 
