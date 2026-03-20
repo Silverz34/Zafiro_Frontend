@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { fetchDailyActivities } from '../../lib/calendarAction'
+import { fetchDailyActivities } from '../../lib/CrudActividad/calendarAction'
 import type { lecturaActividad } from '../../interfaces/Preview'
 
 interface UseCalendarEventsProps {
@@ -34,7 +34,6 @@ export function useCalendarEvents({
         setLastFetchedMonth(monthKey)
       }
     }
-
     load()
   }, [ready, currentDate, lastFetchedMonth])
 
