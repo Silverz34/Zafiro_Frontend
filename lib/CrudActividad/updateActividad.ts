@@ -9,7 +9,7 @@ export async function updateActividad(
   cambios: Partial<CrearActividad>
 ) {
   try {
-    // Validar solo los campos presentes — partial() hace todos opcionales
+    // Validar solo los campos presentes partial() hace todos opcionales
     const validated = SchemaCrearActividad.partial().parse(cambios)
 
     const response = await apiPatch(
