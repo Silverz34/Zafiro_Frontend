@@ -1,13 +1,20 @@
+import { X } from "lucide-react";
 import { z } from "zod";
 
+//creacion de ajustes 
 export const SchemaAjustes = z.object({
-  id: z.string().uuid(),
-  id_usuario: z.string().uuid(),
   ocupacion: z.string(),
   hora_inicio: z.number(),
   hora_fin: z.number(),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime(),
+})
+
+//lectura
+export const SchemaAjust = z.object({
+  id: z.string().uuid(),
+  ocupacion: z.string(),
+  hora_inicio: z.number(),
+  hora_fin: z.number(),
 })
 
 export type Ajustes = z.infer<typeof SchemaAjustes>
+export type Ajustlectura= z.infer<typeof SchemaAjust>
