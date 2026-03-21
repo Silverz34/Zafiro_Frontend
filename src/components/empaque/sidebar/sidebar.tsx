@@ -21,7 +21,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
     >
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-500">
         <MiniCalendar/>
-        <Prioridad />
+        <Prioridad selectedPriorities={[]} onToggle={() => {}}/>
         <Etiquetas/>
       </div>
 
