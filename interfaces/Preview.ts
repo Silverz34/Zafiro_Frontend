@@ -7,7 +7,7 @@ export const PreviewSchema = GEventSchema.extend({
   recurrence: z.array(z.string()).optional(), 
   transparency: z.enum(["transparent", "opaque"]).optional(),
   reminders: z.object({ 
-    useDefault: z.boolean(),
+    useDefault: z.boolean().default(false),
     overrides: z.array(reminderSchema).optional() 
   }).optional(),
   idEtiqueta: z.number().optional(),
