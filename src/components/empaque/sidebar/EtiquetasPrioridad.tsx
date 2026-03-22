@@ -9,10 +9,10 @@ const PRIORITIES = [
 
 interface PrioridadProps{
   selectedPriorities: PrioridadType[];
-  onToggle: (priority: PrioridadType) => void;
+  onTogglePriority: (priority: PrioridadType) => void;
 }
 
-export default function Prioridad({selectedPriorities, onToggle}: PrioridadProps) {
+export default function Prioridad({selectedPriorities, onTogglePriority}: PrioridadProps) {
 
   return (
     <div className="w-full max-w-60 p-1 rounded-xl">
@@ -24,7 +24,7 @@ export default function Prioridad({selectedPriorities, onToggle}: PrioridadProps
           return (
             <button
               key={priority.id}
-              onClick={() => onToggle(priority.id as PrioridadType)}
+              onClick={() => onTogglePriority(priority.id as PrioridadType)}
               className={`
                 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-semibold text-white
                 ${priority.bgColor}

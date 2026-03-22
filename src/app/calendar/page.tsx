@@ -12,6 +12,7 @@ import WeekView from "@/components/viewsCalendar/WeekView";
 import MonthView from "@/components/viewsCalendar/MonthView";
 import type { MiniModal } from "../../../interfaces/Preview";
 import { useCalendarEvents } from "../../../hooks/calendar/useCalendarEvent";
+import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
 
 export default function DashboardTemporal() {
   const { ready } = useSession();
@@ -22,20 +23,45 @@ export default function DashboardTemporal() {
   const [miniModal, setMiniModal] = useState<MiniModal | null>(null);
 
   const { events, recargarEventos } = useCalendarEvents({ ready, currentDate });
+  const [selectedPriorities, setSelectedPriorities] = useState<PrioridadType[]>(['alta', 'media', 'baja']);
+  const [etiquetasActivas, setEtiquetasActivas] = useState<string[]>([]);
+
+  const eventosFiltrados = events.filter(evento => {
+    const pasaEtiqueta = etiquetasActivas.length === 0 || etiquetasActivas.includes(String(evento.idEtiqueta));
+    const prioridadCruda = evento.prioridadValor || (evento as any).prioridad?.valor || "media";
+    const prioridadNormalizada = prioridadCruda.toLowerCase();
+    const pasaPrioridad = selectedPriorities.length === 0 || 
+      selectedPriorities.some(p => p.toLowerCase() === prioridadNormalizada);
+    return pasaEtiqueta && pasaPrioridad;
+  });
+
+  
+  const togglePriority = (priority: PrioridadType) => {
+    setSelectedPriorities(prev => 
+      prev.includes(priority) ? prev.filter(p => p !== priority) : [...prev, priority]
+    );
+  };
+
+  const toggleEtiqueta = (id: string) => {
+    setEtiquetasActivas(prev => 
+      prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]
+    );
+  };
+
 
   const renderCurrentView = () => {
     switch (currentView) {
       case 'dia':
-        return <DayView currentDate={currentDate} events={events}
+        return <DayView currentDate={currentDate} events={eventosFiltrados}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
       case 'semana':
-        return <WeekView currentDate={currentDate} events={events}
+        return <WeekView currentDate={currentDate} events={eventosFiltrados}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
       case 'mes':
-        return <MonthView currentDate={currentDate} events={events}
+        return <MonthView currentDate={currentDate} events={eventosFiltrados}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
       default:
-        return <WeekView currentDate={currentDate} events={events}
+        return <WeekView currentDate={currentDate} events={eventosFiltrados}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
     }
   };
@@ -46,6 +72,10 @@ export default function DashboardTemporal() {
         currentDate={currentDate} setCurrentDate={setCurrentDate}
         currentView={currentView} setCurrentView={setCurrentView}
         onOpenModal={() => setIsModalOpen(true)}
+        selectedPriorities={selectedPriorities}
+        onTogglePriority={togglePriority}
+        etiquetasActivas={etiquetasActivas}
+        onToggleEtiqueta={toggleEtiqueta}
       >
         <div className="pt-12 h-full">
           {renderCurrentView()}

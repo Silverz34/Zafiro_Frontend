@@ -4,14 +4,19 @@ import Prioridad from './EtiquetasPrioridad';
 import { useUser, SignOutButton } from '@clerk/nextjs';
 import { FiLogOut } from "react-icons/fi";
 import Etiquetas from './EtiquetaCategoria';
+import type { PrioridadType } from '../../../../hooks/custom/modalconstantes';
 
 interface SidebarProps {
-  isOpen: boolean;         
+  isOpen: boolean;   
+ selectedPriorities: PrioridadType[];
+  onTogglePriority: (priority: PrioridadType) => void;
+  etiquetasActivas: string[];
+  onToggleEtiqueta: (id: string) => void;   
 }
 
-export default function Sidebar({ isOpen }: SidebarProps) {
+export default function Sidebar({ isOpen, selectedPriorities, onTogglePriority, 
+  etiquetasActivas, onToggleEtiqueta }: SidebarProps) {
   const { user, isLoaded } = useUser();
-
   return (
     <aside 
       className={`
@@ -21,8 +26,8 @@ export default function Sidebar({ isOpen }: SidebarProps) {
     >
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-500">
         <MiniCalendar/>
-        <Prioridad selectedPriorities={[]} onToggle={() => {}}/>
-        <Etiquetas/>
+        <Prioridad selectedPriorities={selectedPriorities} onTogglePriority={onTogglePriority}/>
+        <Etiquetas activas={etiquetasActivas} onToggleEtiqueta={onToggleEtiqueta}/>
       </div>
 
       <div className="p-3 border-t border-blue-600">
