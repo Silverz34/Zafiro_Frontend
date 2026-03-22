@@ -12,7 +12,7 @@ export const SchemaCrearActividad = z.object({
    transparency: z.enum(["transparent", "opaque"]).optional(),
    recurrence: z.array(z.string()).optional(), 
     reminders: z.object({ 
-        useDefault: z.boolean(),
+        useDefault: z.boolean().default(false),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
     idEtiqueta: z.number().optional(),
