@@ -13,8 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import MiniCalendar from "@/components/empaque/sidebar/MiniCalendar";
 import { TimePicker } from "../ui/time";
 import { MiniModal } from "../../../interfaces/Preview";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
-import { Tag, AlignLeft } from "lucide-react"; 
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
+import { Tag, AlignLeft } from "lucide-react";
 
 
 interface ModalProps {
@@ -26,12 +26,12 @@ interface ModalProps {
 }
 
 export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInicial, modo }: ModalProps) {
-  const {etiquetas} = useEtiquetas();
+  const { etiquetas } = useEtiquetas();
   const {
     titulo, setTitulo,
     selectedDate, setSelectedDate,
     showPicker, setShowPicker,
-    description, setDescription, 
+    description, setDescription,
     idEtiqueta, setIdEtiqueta,
     horaInicio,
     horaFin, setHoraFin,
@@ -245,8 +245,8 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
                 Etiqueta
               </Label>
-              <Select 
-                value={idEtiqueta ? String(idEtiqueta) : "none"} 
+              <Select
+                value={idEtiqueta ? String(idEtiqueta) : "none"}
                 onValueChange={(val) => setIdEtiqueta(val === "none" ? undefined : Number(val))}
               >
                 <SelectTrigger className="w-full bg-[#111029] border-blue-600 text-gray-200 text-sm h-9 rounded-lg transition-colors">
@@ -256,13 +256,13 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                   </div>
                 </SelectTrigger>
                 <SelectContent className="bg-[#111029] border-blue-600 text-white rounded-xl shadow-xl shadow-black/50 max-h-48 overflow-y-auto">
-                  
+
                   <SelectItem value="none" className="text-gray-400 text-sm focus:bg-white/5 rounded-lg">
                     Sin etiqueta
                   </SelectItem>
                   {etiquetas.map((e) => (
-                    <SelectItem 
-                      key={e.id} 
+                    <SelectItem
+                      key={e.id}
                       value={String(e.id)}
                       className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg cursor-pointer"
                     >
@@ -277,7 +277,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               </Select>
             </div>
           </div>
-          
+
 
           <div className="flex flex-col gap-2.5">
             <Label className="text-[11px] font-semibold text-white uppercase tracking-wider ml-0.5">
@@ -299,9 +299,8 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
                     `}
                   >
                     <span
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
-                        active ? "bg-current shadow-[0_0_8px_currentColor]" : "bg-gray-600"
-                      }`}
+                      className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${active ? "bg-current shadow-[0_0_8px_currentColor]" : "bg-gray-600"
+                        }`}
                     />
                     {nivel}
                   </button>
@@ -309,7 +308,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               })}
             </div>
           </div>
-          
+
 
         </div>
 

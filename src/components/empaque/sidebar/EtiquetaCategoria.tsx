@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Plus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import ModalEtiqueta from '@/components/modal/ModalEtiqueta';
-import { useEtiquetas } from '../../../../hooks/useEtiquetas';
+import { useEtiquetas } from '../../../../hooks/user/useEtiquetas';
 import type { EtiquetaFrontend } from '../../../../lib/CrudEtiquetas/getEtiqueta';
 
 export default function Etiquetas() {
@@ -52,7 +52,7 @@ export default function Etiquetas() {
                 backgroundColor: isActive ? etiqueta.color : `${etiqueta.color}55`,
               }}
             >
-             <button
+              <button
                 onClick={() => toggleEtiqueta(etiqueta.id)}
                 className="flex items-center justify-center w-5 h-5 rounded-full bg-white/80 border border-blue-600 shrink-0 transition-all"
               >
@@ -91,7 +91,7 @@ export default function Etiquetas() {
           );
         })}
       </div>
-       <ModalEtiqueta
+      <ModalEtiqueta
         isOpen={modalAbierto}
         onClose={() => { setModalAbierto(false); setEtiquetaEditar(null); }}
         onCrear={handleCrear}

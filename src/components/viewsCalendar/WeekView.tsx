@@ -1,7 +1,7 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 
 export default function WeekView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
@@ -49,32 +49,32 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                   {processedEvents.map(event => {
                     const tag = etiquetas.find((e) => e.id === (event as any).idEtiqueta);
                     const dynamicCardStyle = tag ? { backgroundColor: `${tag.color}33`, borderColor: tag.color } : {};
-                    
+
                     const prioridadStr = (event as any).prioridad?.valor || (event as any).prioridadValor;
                     const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
                     const dynamicBarStyle = prioridadObj ? { backgroundColor: prioridadObj.hexColor } : (tag ? { backgroundColor: tag.color } : {});
 
                     return (
-                    <div
-                      key={event.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!event.id) return;
-                        const eventoOriginal = events.find((orig) => orig.id === event.id);
-                        if (eventoOriginal) {
-                          onEventClick(eventoOriginal);
-                        }
-                      }}
+                      <div
+                        key={event.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!event.id) return;
+                          const eventoOriginal = events.find((orig) => orig.id === event.id);
+                          if (eventoOriginal) {
+                            onEventClick(eventoOriginal);
+                          }
+                        }}
 
-                      className="absolute left-1 right-1 bg-blue-600/20 border border-blue-500 rounded-md p-1.5 
+                        className="absolute left-1 right-1 bg-blue-600/20 border border-blue-500 rounded-md p-1.5 
                         overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10" style={{ ...event.positionStyle, ...dynamicCardStyle }}>
-                      <p className="text-xs font-semibold text-blue-100 line-clamp-1">{event.summary}</p>
-                      <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime} - {event.endTime}</p>
-                      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-blue-600" style={dynamicBarStyle}/>
-                    </div>
-                  );
-                })}
-                  
+                        <p className="text-xs font-semibold text-blue-100 line-clamp-1">{event.summary}</p>
+                        <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime} - {event.endTime}</p>
+                        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-blue-600" style={dynamicBarStyle} />
+                      </div>
+                    );
+                  })}
+
                 </div>
               );
             })}

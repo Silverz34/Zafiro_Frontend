@@ -1,7 +1,7 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 
 export default function DayView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
@@ -11,7 +11,7 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
     const targetDate = days[0] || currentDate;
     const processedEvents = getProcessed(targetDate);
     const dayName = dayNames[targetDate.getDay()];
-   
+
 
     return (
         <div className="flex flex-col h-full bg-[#100F1D] rounded-xl border border-gray-800 overflow-hidden text-white">
@@ -53,24 +53,24 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                             const dynamicCardStyle = { ...event.positionStyle, ...bgStyle, ...borderStyle };
 
                             return (
-                            <div
-                                key={event.id}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (!event.id) return;
-                                    const eventoOriginal = events.find((orig) => orig.id === event.id);
-                                    if (eventoOriginal) {
-                                        onEventClick(eventoOriginal);
-                                    }
-                                }}
-                                className="absolute left-2 right-4 bg-blue-600/20 border-l-4 border-blue-500 
+                                <div
+                                    key={event.id}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (!event.id) return;
+                                        const eventoOriginal = events.find((orig) => orig.id === event.id);
+                                        if (eventoOriginal) {
+                                            onEventClick(eventoOriginal);
+                                        }
+                                    }}
+                                    className="absolute left-2 right-4 bg-blue-600/20 border-l-4 border-blue-500 
                                 rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10 flex flex-col"
-                                style={dynamicCardStyle}
-                            >
-                                <p className="text-sm font-bold text-blue-100">{event.summary}</p>
-                                <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime}</p>
-                            </div>
-                        );
+                                    style={dynamicCardStyle}
+                                >
+                                    <p className="text-sm font-bold text-blue-100">{event.summary}</p>
+                                    <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime}</p>
+                                </div>
+                            );
                         })}
                     </div>
 

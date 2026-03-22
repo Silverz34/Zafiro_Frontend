@@ -1,7 +1,7 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 
 export default function MonthView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
 

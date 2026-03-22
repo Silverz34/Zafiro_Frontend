@@ -2,7 +2,7 @@
 import { apiPost } from "./apiClient";
 import { Ajustes, SchemaAjustes } from "../../interfaces/ajustes";
 
-interface AjustesPayload{
+export interface AjustesPayload{
     ocupacion: string;
     hora_inicio: number;
     hora_fin: number;
