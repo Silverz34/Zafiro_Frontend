@@ -14,7 +14,7 @@ interface Dashboard {
   setCurrentView: (view: ViewType) => void;
   onOpenModal: () => void;
 
-  selectedPriorities: PrioridadType[]; 
+  prioriDesactivadas: PrioridadType[]; 
   onTogglePriority: (priority: PrioridadType) => void;
   etiquetasDesactivadas: string[];
   onToggleEtiqueta: (id: string) => void;
@@ -22,7 +22,7 @@ interface Dashboard {
 
 export default function DashboardLayout({ children, currentDate, 
   setCurrentDate, currentView, setCurrentView, onOpenModal, 
-  selectedPriorities, onTogglePriority, etiquetasDesactivadas, onToggleEtiqueta }: Dashboard) {
+  prioriDesactivadas, onTogglePriority, etiquetasDesactivadas, onToggleEtiqueta }: Dashboard) {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const toggleSidebar = (): void => {
     setIsSidebarOpen((prev) => !prev);
@@ -31,7 +31,7 @@ export default function DashboardLayout({ children, currentDate,
   return (
     <div className="flex h-screen w-full bg-[#010112] text-white overflow-hidden">
       <Sidebar isOpen={isSidebarOpen}
-        selectedPriorities={selectedPriorities}
+        prioriDesactivadas={prioriDesactivadas}
         onTogglePriority={onTogglePriority}
         etiquetasDesactivadas={etiquetasDesactivadas}
         onToggleEtiqueta={onToggleEtiqueta}

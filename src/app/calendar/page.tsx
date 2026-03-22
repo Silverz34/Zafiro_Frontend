@@ -23,11 +23,11 @@ export default function DashboardTemporal() {
   const [miniModal, setMiniModal] = useState<MiniModal | null>(null);
 
   const { events, recargarEventos } = useCalendarEvents({ ready, currentDate });
-  const [selectedPriorities, setSelectedPriorities] = useState<PrioridadType[]>(['alta', 'media', 'baja']);
+  const [prioridadesDesactivadas, setPrioridadesDesactivadas] = useState<PrioridadType[]>([]);
   const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
   
   const togglePriority = (priority: PrioridadType) => {
-    setSelectedPriorities(prev => 
+    setPrioridadesDesactivadas(prev => 
       prev.includes(priority) ? prev.filter(p => p !== priority) : [...prev, priority]
     );
   };
@@ -42,8 +42,7 @@ export default function DashboardTemporal() {
     const pasaEtiqueta = !etiquetasDesactivadas.includes(String(evento.idEtiqueta));
     const prioridadCruda = evento.prioridadValor || (evento as any).prioridad?.valor || "media";
     const prioridadNormalizada = prioridadCruda.toLowerCase();
-    const pasaPrioridad = selectedPriorities.length === 0 || 
-    selectedPriorities.some(p => p.toLowerCase() === prioridadNormalizada);
+    const pasaPrioridad = !prioridadesDesactivadas.some(p => p.toLowerCase() === prioridadNormalizada);
 
     return pasaEtiqueta && pasaPrioridad;
   });
@@ -71,7 +70,7 @@ export default function DashboardTemporal() {
         currentDate={currentDate} setCurrentDate={setCurrentDate}
         currentView={currentView} setCurrentView={setCurrentView}
         onOpenModal={() => setIsModalOpen(true)}
-        selectedPriorities={selectedPriorities}
+        prioriDesactivadas={prioridadesDesactivadas}
         onTogglePriority={togglePriority}
         etiquetasDesactivadas={etiquetasDesactivadas}
         onToggleEtiqueta={toggleEtiqueta}

@@ -2,17 +2,17 @@
 import type { PrioridadType } from "../../../../hooks/custom/modalconstantes";
 
 const PRIORITIES = [
-  { id: 'Alta', label: 'Alta', bgColor: 'bg-[#AB3535]' },    
-  { id: 'Media', label: 'Media', bgColor: 'bg-[#E2761F]' },  
-  { id: 'Baja', label: 'Baja', bgColor: 'bg-[#2FA941]' },    
+  { id: 'alta', label: 'Alta', bgColor: 'bg-[#AB3535]' },    
+  { id: 'media', label: 'Media', bgColor: 'bg-[#E2761F]' },  
+  { id: 'baja', label: 'Baja', bgColor: 'bg-[#2FA941]' },    
 ] as const;
 
 interface PrioridadProps{
-  selectedPriorities: PrioridadType[];
+  prioriDesactivadas: PrioridadType[];
   onTogglePriority: (priority: PrioridadType) => void;
 }
 
-export default function Prioridad({selectedPriorities, onTogglePriority}: PrioridadProps) {
+export default function Prioridad({prioriDesactivadas, onTogglePriority}: PrioridadProps) {
 
   return (
     <div className="w-full max-w-60 p-1 rounded-xl">
@@ -20,7 +20,7 @@ export default function Prioridad({selectedPriorities, onTogglePriority}: Priori
       
       <div className="space-y-3">
         {PRIORITIES.map((priority) => {
-          const isActive = selectedPriorities.includes(priority.id as PrioridadType);
+          const isActive = !prioriDesactivadas.includes(priority.id as PrioridadType);
           return (
             <button
               key={priority.id}

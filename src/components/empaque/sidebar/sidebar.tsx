@@ -8,13 +8,13 @@ import type { PrioridadType } from '../../../../hooks/custom/modalconstantes';
 
 interface SidebarProps {
   isOpen: boolean;   
- selectedPriorities: PrioridadType[];
+  prioriDesactivadas: PrioridadType[];
   onTogglePriority: (priority: PrioridadType) => void;
- etiquetasDesactivadas: string[];
- onToggleEtiqueta: (id: string) => void; 
+  etiquetasDesactivadas: string[];
+  onToggleEtiqueta: (id: string) => void; 
 }
 
-export default function Sidebar({ isOpen, selectedPriorities, onTogglePriority, 
+export default function Sidebar({ isOpen, prioriDesactivadas, onTogglePriority, 
   etiquetasDesactivadas, onToggleEtiqueta }: SidebarProps) {
   const { user, isLoaded } = useUser();
   return (
@@ -26,7 +26,7 @@ export default function Sidebar({ isOpen, selectedPriorities, onTogglePriority,
     >
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-500">
         <MiniCalendar/>
-        <Prioridad selectedPriorities={selectedPriorities} onTogglePriority={onTogglePriority}/>
+        <Prioridad prioriDesactivadas={prioriDesactivadas} onTogglePriority={onTogglePriority}/>
         <Etiquetas desactivadas={etiquetasDesactivadas} onToggleEtiqueta={onToggleEtiqueta}/>
       </div>
 
