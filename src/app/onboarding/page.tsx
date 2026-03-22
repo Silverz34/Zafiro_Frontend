@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useAjustes } from "../../../hooks/user/useAjustes";
-import {Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger,SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label }  from "@/components/ui/label";
+import { GraduationCap, Briefcase, Clock, Sparkles } from "lucide-react";
 import Image from "next/image";
-import { GraduationCap, Briefcase, Clock} from "lucide-react";
 
 const OCUPACIONES = [
   {
@@ -30,13 +30,22 @@ const HORAS = Array.from({ length: 24 }, (_, i) => ({
   label: i === 0 ? "12:00 am" : i < 12 ? `${i}:00 am` : i === 12 ? "12:00 pm" : `${i - 12}:00 pm`,
 }));
 
+
+const getHorasFin = (inicio: number) => {
+  const slots: typeof HORAS = [];
+  for (let i = 1; i < 24; i++) {
+    slots.push(HORAS[(inicio + i) % 24]);
+  }
+  return slots;
+};
+
 export default function CompletarPerfil() {
   const { isLoaded, isSignedIn } = useAuth();
   const { guardarAjustes, isLoading, error } = useAjustes();
 
   const [ocupacion,   setOcupacion]   = useState("estudiante");
-  const [horaInicio,  setHoraInicio]  = useState<number>(8);
-  const [horaFin,     setHoraFin]     = useState<number>(22);
+  const [horaInicio,  setHoraInicio]  = useState<number>(22);
+  const [horaFin,     setHoraFin]     = useState<number>(6);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,14 +63,14 @@ export default function CompletarPerfil() {
 
       <Card className="w-full max-w-md bg-[#0d0c1e]/90 border border-[#1e1d3a] rounded-2xl shadow-2xl shadow-blue-950/40 backdrop-blur-sm relative z-10">
         <CardHeader className="px-7 pt-6 pb-2 text-center">
-           <div className="flex items-center justify-center gap-2">
-              <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
-            </div>
+          <div className="flex justify-center mb-3">
+            <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
+          </div>
           <CardTitle className="text-2xl font-bold text-white">
             Configura tu Agenda
           </CardTitle>
           <CardDescription className="text-gray-400 text-sm mt-1">
-             Cuéntanos un poco sobre ti 
+            Cuéntanos un poco sobre ti para personalizar tu experiencia
           </CardDescription>
         </CardHeader>
 
@@ -100,11 +109,10 @@ export default function CompletarPerfil() {
                 })}
               </div>
             </div>
-
             <div className="flex flex-col gap-2">
               <Label className="text-sm text-gray-400 flex items-center gap-2">
                 <Clock className="w-3.5 h-3.5" />
-                Horario de trabajo
+                Horario de sueño
               </Label>
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1.5">
@@ -122,7 +130,7 @@ export default function CompletarPerfil() {
                       sideOffset={6}
                       className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
                     >
-                      {HORAS.filter(h => h.value < horaFin).map(h => (
+                      {HORAS.map(h => (
                         <SelectItem key={h.value} value={String(h.value)}>
                           {h.label}
                         </SelectItem>
@@ -146,7 +154,7 @@ export default function CompletarPerfil() {
                       sideOffset={6}
                       className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
                     >
-                      {HORAS.filter(h => h.value > horaInicio).map(h => (
+                      {getHorasFin(horaInicio).map(h => (
                         <SelectItem key={h.value} value={String(h.value)}>
                           {h.label}
                         </SelectItem>
