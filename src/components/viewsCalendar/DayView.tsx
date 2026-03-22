@@ -3,6 +3,7 @@ import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
 import { useEtiquetas } from "../../../hooks/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
+import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 
 export default function DayView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');
@@ -11,7 +12,13 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
     const targetDate = days[0] || currentDate;
     const processedEvents = getProcessed(targetDate);
     const dayName = dayNames[targetDate.getDay()];
+    const colorSemaforo = calcularSemaforo(processedEvents);
    
+    const bgClass = 
+      colorSemaforo === 'rojo' ? 'bg-[#AB3535] border-b border-[#8A2525]' :
+      colorSemaforo === 'naranja' ? 'bg-[#E2761F] border-b border-[#C16215]' :
+      colorSemaforo === 'verde' ? 'bg-[#2FA941] border-b border-[#228531]' :
+      'bg-[#0b0a14] border-b border-gray-800';
 
     return (
         <div className="flex flex-col h-full bg-[#100F1D] rounded-xl border border-gray-800 overflow-hidden text-white">
@@ -21,9 +28,12 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                     GMT
                 </div>
 
-                <div className="flex-1 flex flex-col items-center justify-center py-3">
+                <div className={`flex-1 flex flex-col items-center justify-center py-3 transition-colors duration-300 ${bgClass}`}>
                     <span className="text-lg font-semibold text-gray-300 tracking-wider">{dayName}</span>
-                    <span className={`text-2xl mt-1 w-10 h-10 flex items-center justify-center rounded-full ${targetDate.toDateString() === new Date().toDateString() ? 'bg-blue-600 font-bold text-white shadow-lg shadow-blue-900/50' : 'text-gray-100'
+                    <span className={`text-2xl mt-1 w-10 h-10 flex items-center justify-center rounded-full ${
+                        targetDate.toDateString() === new Date().toDateString() 
+                            ? (colorSemaforo === 'normal' ? 'bg-blue-600 font-bold text-white shadow-lg shadow-blue-900/50' : 'bg-white/25 font-bold text-white') 
+                            : 'text-gray-100'
                         }`}>
                         {targetDate.getDate()}
                     </span>

@@ -1,8 +1,8 @@
 'use server'
 
-import { apiGet } from './api/apiClient';
-import { ApiError } from './api/apiError';
-import { lecturaActividad } from '../interfaces/Preview'
+import { apiGet } from '../api/apiClient';
+import { ApiError } from '../api/apiError';
+import { lecturaActividad } from '../../interfaces/Preview'
 
 function buildRange(targetDateIso: string): { from: string; to: string } {
   const targetDate = new Date(targetDateIso)
@@ -34,14 +34,6 @@ export async function fetchDailyActivities(
       console.error('[fetchDailyActivities] Respuesta fallida')
       return null
     }
-
-    //log para ver los datos del json que llegan
-    console.log(`[fetchDailyActivities] Actividades recibidas: ${response.data?.length ?? 0}`)
-    if (response.data && response.data.length > 0) {
-      console.log(" MOCHILA COMPLETA DE LA PRIMERA ACTIVIDAD:");
-      console.log(JSON.stringify(response.data[0], null, 2)); 
-    }
-    // -
 
     // Log para verificar que llegan actividades
     console.log(`[fetchDailyActivities] Actividades recibidas: ${response.data?.length ?? 0}`)

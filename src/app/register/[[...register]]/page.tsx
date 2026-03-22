@@ -3,7 +3,7 @@
 import { SignUp , useAuth} from '@clerk/nextjs';
 import Image from 'next/image';
 import { FondoHero } from '@/components/landing/Hero/fondo-hero';
-import Loading from '@/components/iu/loading';
+import Loading from '@/components/modal/loading';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
