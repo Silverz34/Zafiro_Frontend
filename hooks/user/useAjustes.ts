@@ -28,6 +28,6 @@ export function useAjustes() {
     guardarAjustes,
     isLoading,
     error,
-    setError // Por si necesitas limpiar el error manualmente desde la vista
+    setError 
   };
 }
