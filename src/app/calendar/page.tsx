@@ -4,7 +4,7 @@ import DashboardLayout from "@/components/empaque/empaque";
 import { useState } from 'react';
 import { ViewType } from "../../../hooks/calendar/calendar";
 import { useSession } from "../../../hooks/useSession";
-import Loading from "@/components/iu/loading";
+import Loading from "@/components/modal/loading";
 import ModalActividad from "@/components/modal/ModalActividad";
 import EventoPreview from "@/components/modal/MiniModal";
 import DayView from "@/components/viewsCalendar/DayView";

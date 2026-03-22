@@ -3,6 +3,7 @@ import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
 import { useEtiquetas } from "../../../hooks/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
+import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 
 export default function WeekView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
   const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'semana');
@@ -15,14 +16,32 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
         <div className="w-16 border-r border-gray-800 shrink-0 flex items-center justify-center text-xs text-white font-bold bg-blue-600">
           GMT
         </div>
-        <div className="flex-1 grid grid-cols-7">
-          {days.map((date, index) => (
-            <div key={index} className="flex flex-col items-center justify-center py-2 border-r border-gray-800">
-              <span className="text-sm font-semibold text-white">{dayNames[index]}</span>
-              <span className={`text-xl mt-1 w-8 h-8 flex items-center justify-center rounded-full ${date.toDateString() === new Date().toDateString() ? 'bg-blue-600 font-bold text-white' : 'text-gray-300'
-                }`}> {date.getDate()}</span>
-            </div>
-          ))}
+       <div className="flex-1 grid grid-cols-7">
+          {days.map((date, index) => {
+            const eventosDelDia = getProcessed(date);
+            const colorSemaforo = calcularSemaforo(eventosDelDia);
+            const bgClass = 
+              colorSemaforo === 'rojo' ? 'bg-[#AB3535] border-r border-[#8A2525]' :
+              colorSemaforo === 'naranja' ? 'bg-[#E2761F] border-r border-[#C16215]' :
+              colorSemaforo === 'verde' ? 'bg-[#2FA941] border-r border-[#228531]' :
+              'border-r border-gray-800';
+            const isToday = date.toDateString() === new Date().toDateString();
+            return (
+              <div 
+                key={index} 
+                className={`flex flex-col items-center justify-center py-2 transition-colors duration-300 ${bgClass}`}
+              >
+                <span className="text-sm font-semibold text-white">{dayNames[index]}</span>
+                <span className={`text-xl mt-1 w-8 h-8 flex items-center justify-center rounded-full ${
+                  isToday 
+                    ? (colorSemaforo === 'normal' ? 'bg-blue-600 font-bold text-white' : 'bg-white/25 font-bold text-white') 
+                    : 'text-gray-100'
+                }`}> 
+                  {date.getDate()}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
