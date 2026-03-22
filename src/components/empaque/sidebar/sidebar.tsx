@@ -10,12 +10,12 @@ interface SidebarProps {
   isOpen: boolean;   
  selectedPriorities: PrioridadType[];
   onTogglePriority: (priority: PrioridadType) => void;
-  etiquetasActivas: string[];
-  onToggleEtiqueta: (id: string) => void;   
+ etiquetasDesactivadas: string[];
+ onToggleEtiqueta: (id: string) => void; 
 }
 
 export default function Sidebar({ isOpen, selectedPriorities, onTogglePriority, 
-  etiquetasActivas, onToggleEtiqueta }: SidebarProps) {
+  etiquetasDesactivadas, onToggleEtiqueta }: SidebarProps) {
   const { user, isLoaded } = useUser();
   return (
     <aside 
@@ -27,7 +27,7 @@ export default function Sidebar({ isOpen, selectedPriorities, onTogglePriority,
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin scrollbar-thumb-gray-500">
         <MiniCalendar/>
         <Prioridad selectedPriorities={selectedPriorities} onTogglePriority={onTogglePriority}/>
-        <Etiquetas activas={etiquetasActivas} onToggleEtiqueta={onToggleEtiqueta}/>
+        <Etiquetas desactivadas={etiquetasDesactivadas} onToggleEtiqueta={onToggleEtiqueta}/>
       </div>
 
       <div className="p-3 border-t border-blue-600">

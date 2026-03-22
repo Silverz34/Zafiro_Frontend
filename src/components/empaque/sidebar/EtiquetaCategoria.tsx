@@ -10,11 +10,11 @@ import type { EtiquetaFrontend } from '../../../../lib/CrudEtiquetas/getEtiqueta
 
 
 interface EtiquetaProp{
-  activas: string[];
+  desactivadas: string[];
   onToggleEtiqueta: (id: string) => void;
 }
 
-export default function Etiquetas({activas, onToggleEtiqueta}: EtiquetaProp) {
+export default function Etiquetas({desactivadas, onToggleEtiqueta}: EtiquetaProp) {
 
   const { etiquetas, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetas();
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -49,7 +49,7 @@ export default function Etiquetas({activas, onToggleEtiqueta}: EtiquetaProp) {
 
       <div className="space-y-2.5">
         {etiquetas.map((etiqueta) => {
-          const isActive = activas.includes(etiqueta.id);
+          const isActive = !desactivadas.includes(String(etiqueta.id));
           return (
             <div
               key={etiqueta.id}
@@ -59,7 +59,7 @@ export default function Etiquetas({activas, onToggleEtiqueta}: EtiquetaProp) {
               }}
             >
              <button
-                onClick={() => onToggleEtiqueta(etiqueta.id)}
+                onClick={() => onToggleEtiqueta(String(etiqueta.id))}
                 className="flex items-center justify-center w-5 h-5 rounded-full bg-white/80 border border-blue-600 shrink-0 transition-all"
               >
                 {isActive && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}

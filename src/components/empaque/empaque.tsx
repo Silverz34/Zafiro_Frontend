@@ -16,13 +16,13 @@ interface Dashboard {
 
   selectedPriorities: PrioridadType[]; 
   onTogglePriority: (priority: PrioridadType) => void;
-  etiquetasActivas: string[];
+  etiquetasDesactivadas: string[];
   onToggleEtiqueta: (id: string) => void;
 }
 
 export default function DashboardLayout({ children, currentDate, 
   setCurrentDate, currentView, setCurrentView, onOpenModal, 
-  selectedPriorities, onTogglePriority, etiquetasActivas, onToggleEtiqueta }: Dashboard) {
+  selectedPriorities, onTogglePriority, etiquetasDesactivadas, onToggleEtiqueta }: Dashboard) {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const toggleSidebar = (): void => {
     setIsSidebarOpen((prev) => !prev);
@@ -33,8 +33,9 @@ export default function DashboardLayout({ children, currentDate,
       <Sidebar isOpen={isSidebarOpen}
         selectedPriorities={selectedPriorities}
         onTogglePriority={onTogglePriority}
-        etiquetasActivas={etiquetasActivas}
-        onToggleEtiqueta={onToggleEtiqueta} />
+        etiquetasDesactivadas={etiquetasDesactivadas}
+        onToggleEtiqueta={onToggleEtiqueta}
+      />
       <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
         <CalendarHeader toggleSidebar={toggleSidebar} currentDate={currentDate} setCurrentDate={setCurrentDate}
           currentView={currentView} setCurrentView={setCurrentView} onOpenModal={onOpenModal} />

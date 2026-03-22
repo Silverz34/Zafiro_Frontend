@@ -24,17 +24,7 @@ export default function DashboardTemporal() {
 
   const { events, recargarEventos } = useCalendarEvents({ ready, currentDate });
   const [selectedPriorities, setSelectedPriorities] = useState<PrioridadType[]>(['alta', 'media', 'baja']);
-  const [etiquetasActivas, setEtiquetasActivas] = useState<string[]>([]);
-
-  const eventosFiltrados = events.filter(evento => {
-    const pasaEtiqueta = etiquetasActivas.length === 0 || etiquetasActivas.includes(String(evento.idEtiqueta));
-    const prioridadCruda = evento.prioridadValor || (evento as any).prioridad?.valor || "media";
-    const prioridadNormalizada = prioridadCruda.toLowerCase();
-    const pasaPrioridad = selectedPriorities.length === 0 || 
-      selectedPriorities.some(p => p.toLowerCase() === prioridadNormalizada);
-    return pasaEtiqueta && pasaPrioridad;
-  });
-
+  const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
   
   const togglePriority = (priority: PrioridadType) => {
     setSelectedPriorities(prev => 
@@ -43,11 +33,20 @@ export default function DashboardTemporal() {
   };
 
   const toggleEtiqueta = (id: string) => {
-    setEtiquetasActivas(prev => 
+    setEtiquetasDesactivadas(prev => 
       prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]
     );
   };
 
+  const eventosFiltrados = events.filter(evento => {
+    const pasaEtiqueta = !etiquetasDesactivadas.includes(String(evento.idEtiqueta));
+    const prioridadCruda = evento.prioridadValor || (evento as any).prioridad?.valor || "media";
+    const prioridadNormalizada = prioridadCruda.toLowerCase();
+    const pasaPrioridad = selectedPriorities.length === 0 || 
+    selectedPriorities.some(p => p.toLowerCase() === prioridadNormalizada);
+
+    return pasaEtiqueta && pasaPrioridad;
+  });
 
   const renderCurrentView = () => {
     switch (currentView) {
@@ -74,7 +73,7 @@ export default function DashboardTemporal() {
         onOpenModal={() => setIsModalOpen(true)}
         selectedPriorities={selectedPriorities}
         onTogglePriority={togglePriority}
-        etiquetasActivas={etiquetasActivas}
+        etiquetasDesactivadas={etiquetasDesactivadas}
         onToggleEtiqueta={toggleEtiqueta}
       >
         <div className="pt-12 h-full">
