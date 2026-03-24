@@ -22,7 +22,7 @@ export default function Home() {
       </header>
 
       <main className="grow flex flex-col items-center w-full max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="relative w-full text-center py-20 overflow-hidden">
+        <section className="relative w-full text-center py-40 overflow-hidden">
           <FondoHero />
           <h1 className="text-6xl md:text-7xl font-bold mb-4 tracking-tight font-nunito z-1">
             ZAFIRO
@@ -36,12 +36,40 @@ export default function Home() {
             </Link>
           </div>
         </section>
-
-        <section className="w-full md:h-100 bg-linear-to-r from-blue-600 rounded-2xl shadow-2xl mb-24 relative overflow-hidden group">
-          <div className="justify-center text-center">
-            <h1>Aun no se que colocar aqui, tal vez una frase chida</h1>
+       
+        <section className="w-full border border-blue-600 rounded-2xl shadow-2xl mb-24 relative overflow-hidden p-8 md:p-16">
+          <div className="max-w-7xl mx-auto space-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center p-8 rounded-xl">
+              <div className="text-left space-y-6">
+                <h2 className="text-4xl font-bold text-slate-300 tracking-tight">Sincronización <span className="text-blue-600">Total</span></h2>
+                <p className="text-lg text-white leading-relaxed">
+                  Zafiro se enlaza con tu cuenta de Google Calendar en segundos para importar tus eventos existentes. 
+                  Olvídate de capturar la misma información dos veces; Zafiro mantiene tu agenda sincronizada bidireccionalmente y en tiempo real.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    {num: '1', title: 'Conecta tu cuenta', desc: 'Integración segura en un par de clics.'},
+                    {num: '2', title: 'Visualiza tu carga', desc: 'Detecta saturación instantáneamente.'},
+                    {num: '3', title: 'Crea sugerencias', desc: 'Algoritmo que optimiza tu tiempo.'},
+                    {num: '4', title: 'Reagendado automático', desc: 'Recalcula tu agenda en segundos.'}
+                  ].map((step, idx) => (
+                    <div key={idx} className="flex items-center gap-4 text-slate-900">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold">{step.num}</span>
+                      <div>
+                        <p className="font-semibold text-white">{step.title}</p>
+                        <p className="text-sm text-slate-600">{step.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex justify-center md:justify-end">
+                <Image src="/calendar.png" alt="Ilustración isométrica detallada de un calendario con sincronización en la nube y iconos flotantes" width={500} height={500} className="w-auto h-[350px] object-contain" />
+              </div>
+            </div>
           </div>
         </section>
+  
 
         <section className="w-full mb-24">
           <div className="mb-12">

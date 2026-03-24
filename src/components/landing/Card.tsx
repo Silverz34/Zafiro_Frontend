@@ -7,7 +7,7 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon, title, desc }: FeatureCardProps) {
   return (
-    <div className="p-6 rounded-2xl border bg-[#100F1D]/50 hover:bg-[#171733] border-blue-600 transition-all duration-300 group">
+    <div className="p-6 rounded-2xl border bg-[#100F1D]/50 hover:bg-[#3B57AB] border-blue-600 transition-all duration-300 group">
       <div className="mb-4 p-3 bg-slate-900/50 w-fit rounded-lg group-hover:scale-110 transition-transform">
         {icon}
       </div>
