@@ -1,6 +1,6 @@
 'use server'
 
-import { apiGet } from "../apiClient"
+import { apiDelete, apiGet } from "../apiClient"
 
 interface GoogleConnectionStatus {
   connected: boolean
@@ -49,8 +49,8 @@ export async function getGoogle(){
 export async function disconnectGoogle() {
   try {
     //enpoit para desconectar con google
-    const response = await apiGet('/api/integrations/google/disconnect')
-    return { success: response.success }
+    const response = await apiDelete<GoogleConnectionStatus>('/api/integrations/google/disconnect')
+    return { success: response.success, data: response.data }
   } catch (error) {
     console.error('[GOOGLE_DISCONNECT] Error:', error)
     return { success: false, error: 'Error al desconectar Google' }

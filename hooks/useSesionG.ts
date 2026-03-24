@@ -6,7 +6,6 @@ export function useGoogleSync(){
     const [isConnected, setConnected] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(true);
     
-
     useEffect(() => {
     async function checkStatus() {
       setLoading(true);
