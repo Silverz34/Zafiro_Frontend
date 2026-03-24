@@ -44,3 +44,15 @@ export async function getGoogle(){
         return null
     }
 }
+
+
+export async function disconnectGoogle() {
+  try {
+    //enpoit para desconectar con google
+    const response = await apiGet('/api/integrations/google/disconnect')
+    return { success: response.success }
+  } catch (error) {
+    console.error('[GOOGLE_DISCONNECT] Error:', error)
+    return { success: false, error: 'Error al desconectar Google' }
+  }
+}
