@@ -48,12 +48,12 @@ export function buildActivityPayload(form: FormActividad): CrearActividad {
       ? { useDefault: false }
       : {
         useDefault: false,
-        overrides: [{ method: 'popup', minutes: parseInt(form.reminder) }],
+        overrides: [{ method: 'email', minutes: parseInt(form.reminder) }],
       },
 
     prioridadValor: mapPrioridad(form.prioridad),
     idEtiqueta: form.idEtiqueta,
-    source: 'local',
+    source: 'google',
   }
 
   return payload

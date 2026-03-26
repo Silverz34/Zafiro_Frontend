@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import { useCalendarNavigation } from '../../../hooks/calendar/NavigationCalendar';
-import { HiMenu, HiChevronDown } from "react-icons/hi";
+import { HiMenu } from "react-icons/hi";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/useSesionG';
@@ -30,6 +31,32 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
     yearsRange,
   } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
+  useEffect(() => {
+    async function checkstatus() {
+      try {
+        const status = await getGoogle();
+        setIsConnected(status?.connected || false);
+      } catch (error) {
+        console.error('error al verificar el estado en google', error);
+        setIsConnected(false);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    checkstatus();
+  }, []);
+
+  const handleConnect = async () => {
+    setIsLoading(true);
+    const response = await initiateGoogle();
+    if (response?.success && response.url) {
+      window.location.href = response.url;
+    } else {
+      console.error('fallo al obtner la url', response?.error);
+      setIsLoading(false);
+    }
+  }
+
   return (
     <header className="bg-[#010112] fixed top-0 left-0 z-50 h-16 flex items-center justify-between lg:px-6 w-full">
 
@@ -50,21 +77,26 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
           </div>
 
           <div className="hidden sm:flex items-center gap-4 ml-2">
-            <div className="relative">
-              <select
-                value={currentYear}
-                onChange={handleYearChange}
-                className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none"
+            <Select
+              value={String(currentYear)}
+              onValueChange={(v) => handleYearChange({ target: { value: v } } as React.ChangeEvent<HTMLSelectElement>)}
+            >
+              <SelectTrigger className="bg-[#010112] border border-blue-600 text-white text-sm rounded-lg h-[34px] w-[90px] px-3 focus:ring-0 focus:ring-offset-0 hover:bg-gray-800 transition-colors">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                side="bottom"
+                sideOffset={6}
+                className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
               >
                 {yearsRange.map(year => (
-                  <option key={year} value={year}>{year}</option>
+                  <SelectItem key={year} value={String(year)} className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
+                    {year}
+                  </SelectItem>
                 ))}
-              </select>
-
-              <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />
-              </div>
-            </div>
+              </SelectContent>
+            </Select>
 
             <span className="text-lg font-semibold tracking-wide text-gray-100">
               {formattedMonth}
@@ -96,19 +128,22 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
           Crear <span className="text-lg leading-none ml-1">+</span>
         </button>
 
-        <div className=" relative hidden md:block">
-          <select
-            value={currentView}
-            onChange={(e) => setCurrentView(e.target.value as ViewType)}
-            className=" bg-[#010112] border border-blue-600 text-white text-sm rounded-lg pl-3 pr-8 py-1.5 outline-none cursor-pointer hover:bg-gray-800 transition-colors appearance-none">
-            <option value="dia">Día</option>
-            <option value="semana">Semana</option>
-            <option value="mes">Mes</option>
-
-          </select>
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-            <HiChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 w-4 h-4" />
-          </div>
+        <div className="hidden md:block">
+          <Select value={currentView} onValueChange={(v) => setCurrentView(v as ViewType)}>
+            <SelectTrigger className="bg-[#010112] border border-blue-600 text-white text-sm rounded-lg h-[34px] w-[100px] px-3 focus:ring-0 focus:ring-offset-0 hover:bg-gray-800 transition-colors">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent
+              position="popper"
+              side="bottom"
+              sideOffset={6}
+              className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
+            >
+              <SelectItem value="dia"    className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Día</SelectItem>
+              <SelectItem value="semana" className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Semana</SelectItem>
+              <SelectItem value="mes"    className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Mes</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

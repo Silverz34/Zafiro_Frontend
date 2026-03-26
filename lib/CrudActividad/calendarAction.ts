@@ -29,7 +29,11 @@ export async function fetchDailyActivities(
     const response = await apiGet<lecturaActividad[]>(
       `/api/activities/me`
     )
-
+    
+    console.log("=== DATOS CRUDOS DEL BACKEND ===");
+    console.log(JSON.stringify(response, null, 2)); 
+    console.log("================================");
+    
     if (!response.success) {
       console.error('[fetchDailyActivities] Respuesta fallida')
       return null
