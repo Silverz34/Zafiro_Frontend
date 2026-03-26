@@ -31,31 +31,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
     yearsRange,
   } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
-  useEffect(() => {
-    async function checkstatus() {
-      try {
-        const status = await getGoogle();
-        setIsConnected(status?.connected || false);
-      } catch (error) {
-        console.error('error al verificar el estado en google', error);
-        setIsConnected(false);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    checkstatus();
-  }, []);
 
-  const handleConnect = async () => {
-    setIsLoading(true);
-    const response = await initiateGoogle();
-    if (response?.success && response.url) {
-      window.location.href = response.url;
-    } else {
-      console.error('fallo al obtner la url', response?.error);
-      setIsLoading(false);
-    }
-  }
 
   return (
     <header className="bg-[#010112] fixed top-0 left-0 z-50 h-16 flex items-center justify-between lg:px-6 w-full">
