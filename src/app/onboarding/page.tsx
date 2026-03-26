@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label }  from "@/components/ui/label";
-import { GraduationCap, Briefcase, Clock, Sparkles } from "lucide-react";
+import { GraduationCap, Briefcase, Clock} from "lucide-react";
 import Image from "next/image";
 
 const OCUPACIONES = [
@@ -40,17 +40,21 @@ const getHorasFin = (inicio: number) => {
 };
 
 export default function CompletarPerfil() {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isLoaded, isSignedIn, userId } = useAuth();
   const { guardarAjustes, isLoading, error } = useAjustes();
-
   const [ocupacion,   setOcupacion]   = useState("estudiante");
   const [horaInicio,  setHoraInicio]  = useState<number>(22);
   const [horaFin,     setHoraFin]     = useState<number>(6);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const exito = await guardarAjustes({ ocupacion, hora_inicio: horaInicio, hora_fin: horaFin });
-    if (exito) window.location.href = "/agenda";
+    if (!userId) return;
+    const exito = await guardarAjustes({ 
+      id: userId, 
+      ocupacion, 
+      hora_inicio: horaInicio, 
+      hora_fin: horaFin});
+    if (exito) window.location.href = "/calendar";
   };
 
   if (!isLoaded || !isSignedIn) return null;

@@ -3,6 +3,7 @@ import { z } from "zod";
 
 //creacion de ajustes 
 export const SchemaAjustes = z.object({
+  id: z.string(),
   ocupacion: z.string(),
   hora_inicio: z.number(),
   hora_fin: z.number(),
@@ -10,7 +11,7 @@ export const SchemaAjustes = z.object({
 
 //lectura
 export const SchemaAjust = z.object({
-  id: z.string().uuid(),
+  id: z.string,
   ocupacion: z.string(),
   hora_inicio: z.number(),
   hora_fin: z.number(),
