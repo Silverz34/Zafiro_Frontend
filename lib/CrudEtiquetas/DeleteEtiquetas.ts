@@ -1,5 +1,5 @@
-import { apiDelete } from "../api/apiClient";
-import { ApiError } from "../api/apiError";
+import { apiDelete } from "../sincronizacion/apiClient";
+import { ApiError } from "../sincronizacion/apiError";
 
 export async function deleteEtiqueta(id: string) {
   try {

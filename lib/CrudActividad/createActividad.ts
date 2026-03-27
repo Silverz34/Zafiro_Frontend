@@ -1,7 +1,7 @@
 'use server';
 
-import { apiPost } from "../api/apiClient";
-import { ApiError } from "../api/apiError";
+import { apiPost } from "../sincronizacion/apiClient";
+import { ApiError } from "../sincronizacion/apiError";
 import { SchemaCrearActividad } from "../../interfaces/Actividad";
 import { buildActivityPayload } from "../buildActivity"; 
 import { FormActividad } from "../../interfaces/types/FormActividad";

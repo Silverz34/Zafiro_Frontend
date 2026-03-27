@@ -1,6 +1,6 @@
 'use server'
 
-import { apiGet } from "../api/apiClient";
+import { apiGet } from "../sincronizacion/apiClient";
 
 export type EtiquetaFrontend = {
   id: string;

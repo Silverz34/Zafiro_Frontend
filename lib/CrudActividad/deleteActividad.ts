@@ -1,6 +1,6 @@
 "use server";
-import { apiDelete } from "../api/apiClient";
-import { ApiError } from "../api/apiError";
+import { apiDelete } from "../sincronizacion/apiClient";
+import { ApiError } from "../sincronizacion/apiError";
 
 export async function deleteActividad(id: string) {
   try {

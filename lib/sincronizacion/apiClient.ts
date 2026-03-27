@@ -15,7 +15,6 @@ export interface ApiResponse<T> {
 async function builheaders(): Promise<HeadersInit> {
   const { getToken } = await auth();
   const token = await getToken()
-
   if (!token) {
     throw new ApiError(401, 'sin sesion activa - token no disponible')
   }
@@ -45,6 +44,7 @@ async function request<T>(
   try {
     json = await res.json()
   } catch {
+
     throw new ApiError(res.status, `Error ${res.status}: respuesta no es json`)
   }
   if (!res.ok) {
@@ -60,11 +60,11 @@ export async function apiGet<T>(path: string): Promise<ApiResponse<T>> {
   return request<T>('GET', path)
 }
 
-export async function apiPost<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
+export async function apiPost<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
   return request<T>('POST', path, body)
 }
 
-export async function apiPatch<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
+export async function apiPatch<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
   return request<T>('PATCH', path, body)
 }
 

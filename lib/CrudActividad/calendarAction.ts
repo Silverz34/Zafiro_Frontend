@@ -1,7 +1,7 @@
 'use server'
 
-import { apiGet } from '../api/apiClient';
-import { ApiError } from '../api/apiError';
+import { apiGet } from '../sincronizacion/apiClient';
+import { ApiError } from '../sincronizacion/apiError';
 import { lecturaActividad } from '../../interfaces/Preview'
 
 function buildRange(targetDateIso: string): { from: string; to: string } {
@@ -29,19 +29,12 @@ export async function fetchDailyActivities(
     const response = await apiGet<lecturaActividad[]>(
       `/api/activities/me`
     )
-    
-    console.log("=== DATOS CRUDOS DEL BACKEND ===");
-    console.log(JSON.stringify(response, null, 2)); 
-    console.log("================================");
-    
+
+
     if (!response.success) {
       console.error('[fetchDailyActivities] Respuesta fallida')
       return null
     }
-
-    // Log para verificar que llegan actividades
-    console.log(`[fetchDailyActivities] Actividades recibidas: ${response.data?.length ?? 0}`)
-
     return response.data ?? []
 
   } catch (error) {

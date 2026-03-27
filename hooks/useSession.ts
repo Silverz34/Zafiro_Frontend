@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
-import { syncUser } from '../lib/api/syncUser'
+import { syncUser } from '../lib/sincronizacion/syncUser'
 
 const MAX_RETRIES = 3
 const RETRY_DELAY = 5000
