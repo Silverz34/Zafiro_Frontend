@@ -15,7 +15,6 @@ export interface ApiResponse<T> {
 async function builheaders(): Promise<HeadersInit> {
   const { getToken } = await auth();
   const token = await getToken()
- console.log(token)
   if (!token) {
     throw new ApiError(401, 'sin sesion activa - token no disponible')
   }
