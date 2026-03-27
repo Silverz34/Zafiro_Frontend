@@ -53,7 +53,7 @@ export function buildActivityPayload(form: FormActividad): CrearActividad {
 
     prioridadValor: mapPrioridad(form.prioridad),
     idEtiqueta: form.idEtiqueta,
-    source: 'local',
+    source: 'google',
   }
 
   return payload

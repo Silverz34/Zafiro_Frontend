@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { syncUser } from '../lib/api/syncUser'
 
 const MAX_RETRIES = 3
-const RETRY_DELAY = 1500
+const RETRY_DELAY = 5000
 
 export function useSession() {
   const { isLoaded, isSignedIn } = useAuth()
@@ -25,19 +25,17 @@ export function useSession() {
 
       if (result) {
         setReady(true)
-        return
+        return ready
       }
 
       if (retryCount.current < MAX_RETRIES) {
         retryCount.current += 1
         setTimeout(attemptSync, RETRY_DELAY)
-        return
+        return false
       }
 
       router.replace('/login')
     }
-
-    attemptSync()
   }, [isLoaded, isSignedIn, router])
 
   return { ready }

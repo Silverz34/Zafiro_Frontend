@@ -29,6 +29,8 @@ export async function fetchDailyActivities(
     const response = await apiGet<lecturaActividad[]>(
       `/api/activities/me`
     )
+
+    
     if (!response.success) {
       console.error('[fetchDailyActivities] Respuesta fallida')
       return null
