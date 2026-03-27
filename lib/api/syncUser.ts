@@ -12,7 +12,7 @@ interface SessionData {
 
 export async function syncUser(): Promise<SessionData | null> {
   try {
-    const response = await apiPost<SessionData>('/api/auth/session', {})
+    const response = await apiPost<SessionData>('/api/auth/session')
 
     if (response.success && response.data) {
       console.log('[SYNC_USER] Usuario sincronizado:', response.data.id)
