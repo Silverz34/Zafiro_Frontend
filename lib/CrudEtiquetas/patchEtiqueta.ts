@@ -1,6 +1,6 @@
 
 
-import { apiPatch } from "../api/apiClient";
+import { apiPatch } from "../sincronizacion/apiClient";
 import { SchemaEtiqueta } from "../../interfaces/Etiquetas";
 
 export async function updateEtiqueta(id: string, datosFrontend: { nombre: string; color: string }) {

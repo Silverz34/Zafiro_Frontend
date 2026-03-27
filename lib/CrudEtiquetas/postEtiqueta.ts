@@ -1,8 +1,8 @@
 'use server'
 
-import { apiPost } from "../api/apiClient";
+import { apiPost } from "../sincronizacion/apiClient";
 import { SchemaEtiqueta } from "../../interfaces/Etiquetas";
-import { ApiError } from "../api/apiError";
+import { ApiError } from "../sincronizacion/apiError";
 import { EtiquetaFrontend } from "./getEtiqueta";
 
 export async function createEtiqueta(datosFrontend: Omit<EtiquetaFrontend, 'id'>) {

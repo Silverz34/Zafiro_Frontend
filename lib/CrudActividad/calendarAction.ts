@@ -1,7 +1,7 @@
 'use server'
 
-import { apiGet } from '../api/apiClient';
-import { ApiError } from '../api/apiError';
+import { apiGet } from '../sincronizacion/apiClient';
+import { ApiError } from '../sincronizacion/apiError';
 import { lecturaActividad } from '../../interfaces/Preview'
 
 function buildRange(targetDateIso: string): { from: string; to: string } {
@@ -30,7 +30,7 @@ export async function fetchDailyActivities(
       `/api/activities/me`
     )
 
-    
+
     if (!response.success) {
       console.error('[fetchDailyActivities] Respuesta fallida')
       return null

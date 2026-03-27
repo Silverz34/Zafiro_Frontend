@@ -1,5 +1,5 @@
 import { useState, useEffect, use } from "react";
-import { initiateGoogle, getGoogle, disconnectGoogle } from "../lib/api/authGoogle/google";
+import { initiateGoogle, getGoogle, disconnectGoogle } from "../lib/sincronizacion/authGoogle/google";
 
 export function useGoogleSync(){
  

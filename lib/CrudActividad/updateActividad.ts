@@ -1,7 +1,7 @@
 'use server'
 
-import { apiPatch } from '../api/apiClient'
-import { ApiError } from '../api/apiError'
+import { apiPatch } from '../sincronizacion/apiClient'
+import { ApiError } from '../sincronizacion/apiError'
 import { SchemaCrearActividad, type CrearActividad } from '../../interfaces/Actividad'
 
 export async function updateActividad(
