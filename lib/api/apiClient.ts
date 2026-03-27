@@ -20,7 +20,7 @@ async function builheaders(): Promise<HeadersInit> {
     throw new ApiError(401, 'sin sesion activa - token no disponible')
   }
   return {
-    Authorization: `Bearer ${token}`,
+    'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   }
 }
@@ -45,7 +45,7 @@ async function request<T>(
   try {
     json = await res.json()
   } catch {
-    throw new ApiError(res.status, 'Error ${res.status}: respuesta no es json')
+    throw new ApiError(res.status, `Error ${res.status}: respuesta no es json`)
   }
   if (!res.ok) {
     throw new ApiError(res.status, json.message ?? `Error ${res.status}`)
