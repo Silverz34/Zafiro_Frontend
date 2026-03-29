@@ -53,30 +53,17 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
           </div>
 
           <div className="hidden sm:flex items-center gap-4 ml-2">
-            <Select
-              value={String(currentYear)}
-              onValueChange={(v) => handleYearChange({ target: { value: v } } as React.ChangeEvent<HTMLSelectElement>)}
-            >
-              <SelectTrigger className="bg-[#010112] border border-blue-600 text-white text-sm rounded-lg h-[34px] w-[90px] px-3 focus:ring-0 focus:ring-offset-0 hover:bg-gray-800 transition-colors">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent
-                position="popper"
-                side="bottom"
-                sideOffset={6}
-                className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
-              >
-                {yearsRange.map(year => (
-                  <SelectItem key={year} value={String(year)} className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
-                    {year}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
             <span className="text-lg font-semibold tracking-wide text-gray-100">
               {formattedMonth}
             </span>
+            <span className="text-lg font-semibold tracking-wide text-gray-100">
+              {currentYear}
+            </span>
+            
+            {/*Boton para la logica del algoritmo  */}
+            <button className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
+              Ordenar Calendario
+            </button>
           </div>
         </div>
       </div>
