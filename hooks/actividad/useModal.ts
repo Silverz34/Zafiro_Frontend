@@ -3,9 +3,10 @@ import { useCrearActividad } from "./useCrearActividad";
 import { useEditarActividad } from "./useEditarActividad";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
 import type { ModoModal, PrioridadType } from "../custom/modalconstantes";
-import type { TipoOcurrencia } from "../calendar/Ocurrencia";
 import type { FormActividad } from "../../interfaces/types/FormActividad";
 import type { MiniModal } from "../../interfaces/Preview";
+import { generarRegla, type TipoOcurrencia } from "../calendar/Ocurrencia";
+
 
 interface UseModalProps {
   onClose: () => void;
@@ -99,7 +100,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   useEffect(() => {
     if (eventoInicial) {
       const valorPrioridad = eventoInicial.prioridadValor || (eventoInicial as any).prioridad?.valor;
-      
+  
       setPrioridad(parsePrioridadValor(valorPrioridad));
       setTitulo(eventoInicial.summary ?? "");
       setIsAllDay(!eventoInicial.start.dateTime);
@@ -151,6 +152,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     const idParaActualizar = (eventoInicial as any)?.localId || eventoInicial?.id;
 
     if (modo === "editar" && eventoInicial?.id) {
+      const startISO = isAllDay ? undefined : toLocalISOString(fecha, horaInicio);
+      const fechaInicioParaRegla = startISO ?? `${fecha}T00:00:00`;
       await handleEditar(
        idParaActualizar,
         {
@@ -159,7 +162,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
           start: isAllDay
             ? { date: fecha }
             : {
-              dateTime: toLocalISOString(fecha, horaInicio),
+              dateTime: startISO,
               timeZone: "America/Mexico_City"
             },
           end: isAllDay
@@ -171,15 +174,10 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
           transparency: transparency,
           reminders: reminder === "none"
             ? { useDefault: false }
-            : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
+            : { useDefault: false, overrides: [{ method: "email", minutes: parseInt(reminder) }] },
           prioridadValor: mapPrioridad(prioridad),
           idEtiqueta: idEtiqueta,
-          recurrence: recurrence === "none" ? [] : [
-            recurrence === "daily" ? "RRULE:FREQ=DAILY" :
-            recurrence === "weekdays" ? "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR" :
-            recurrence === "weekly" ? "RRULE:FREQ=WEEKLY" :
-            recurrence === "monthly" ? "RRULE:FREQ=MONTHLY" : "RRULE:FREQ=YEARLY"
-          ]
+          recurrence: generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia) || []
         },
         setLoading
       );
