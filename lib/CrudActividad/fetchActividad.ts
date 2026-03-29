@@ -12,7 +12,8 @@ export async function fetchDailyActivities(
     const timestamp = Date.now();
     // Hacemos la petición a tu API de Google
     const response = await apiGet<lecturaActividad[]>(
-      `/api/integrations/google/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&_t=${timestamp}`
+      `/api/integrations/google/events?timeMin=${
+        encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&_t=${timestamp}`
     );
 
     //no muestra nadaaaaaaa ahhhhhh
@@ -22,6 +23,11 @@ export async function fetchDailyActivities(
       console.error('[fetchDailyActivities] Respuesta fallida', response);
       return null;
     }
+    
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+
     console.warn('[fetchDailyActivities] La API no devolvió un arreglo válido:', response.data);
     return [];
 
