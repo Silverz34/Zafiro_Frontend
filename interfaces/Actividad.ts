@@ -17,7 +17,7 @@ export const SchemaCrearActividad = z.object({
     }).optional(),
     idEtiqueta: z.number().optional(),
     prioridadValor: z.enum(["alta", "media", "baja"]).optional(),
-    source: z.enum(["local", "google"]).optional(),
+    source: z.literal('local').optional(),
 });
 
 export const SchemaActividad = SchemaCrearActividad.extend({

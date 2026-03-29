@@ -2,6 +2,7 @@
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
+import { Repeat } from "lucide-react";
 
 export default function MonthView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
 
@@ -59,10 +60,11 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                                 onEventClick(eventoOriginal);
                                             }
                                         }}
-                                        className="bg-blue-600/20 border border-blue-500 text-blue-100 text-[10px] px-1.5 py-1 rounded truncate shadow-sm transition-all hover:bg-blue-600/40"
+                                        className={`flex items-center gap-1 border text-[10px] px-1.5 py-1 rounded truncate shadow-sm transition-all ${event.isAllDay ? 'bg-blue-600/60 border-blue-400 text-white font-medium hover:bg-blue-600/80 mr-1 ml-1' : 'bg-blue-600/20 border-blue-500 text-blue-100 hover:bg-blue-600/40'}`}
                                     >
-                                        <span className="font-semibold mr-1">{event.formattedTime}</span>
-                                        {event.summary}
+                                        {!event.isAllDay && <span className="font-semibold">{event.formattedTime}</span>}
+                                        {event.recurringEventId && <Repeat className="w-2.5 h-2.5 shrink-0 opacity-70" />}
+                                        <span className="truncate">{event.summary}</span>
                                     </div>
                                 ))}
                             </div>

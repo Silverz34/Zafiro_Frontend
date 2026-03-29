@@ -13,7 +13,7 @@ export const PreviewSchema = GEventSchema.extend({
   idEtiqueta: z.number().optional(),
   description: z.string().optional(),
   prioridadValor: z.enum(["alta", "media", "baja"]).optional(),
-  source: z.enum(["local", "google"]).optional(),
+  source: z.literal("local").optional(),
 });
 
 export const SchemaActividad = PreviewSchema.extend({
