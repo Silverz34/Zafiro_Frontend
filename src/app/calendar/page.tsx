@@ -3,7 +3,7 @@
 import DashboardLayout from "@/components/empaque/empaque";
 import { useState } from 'react';
 import { ViewType } from "../../../hooks/calendar/calendar";
-import { useSession } from "../../../hooks/useSession";
+import { useSession } from "../../../hooks/conexion/useSession";
 import Loading from "@/components/modal/loading";
 import ModalActividad from "@/components/modal/ModalActividad";
 import EventoPreview from "@/components/modal/MiniModal";
@@ -25,15 +25,15 @@ export default function DashboardTemporal() {
   const { events, recargarEventos } = useCalendarEvents({ ready, currentDate });
   const [prioridadesDesactivadas, setPrioridadesDesactivadas] = useState<PrioridadType[]>([]);
   const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
-  
+
   const togglePriority = (priority: PrioridadType) => {
-    setPrioridadesDesactivadas(prev => 
+    setPrioridadesDesactivadas(prev =>
       prev.includes(priority) ? prev.filter(p => p !== priority) : [...prev, priority]
     );
   };
 
   const toggleEtiqueta = (id: string) => {
-    setEtiquetasDesactivadas(prev => 
+    setEtiquetasDesactivadas(prev =>
       prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]
     );
   };

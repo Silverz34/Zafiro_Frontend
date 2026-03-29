@@ -6,7 +6,7 @@ import { HiMenu } from "react-icons/hi";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
-import { useGoogleSync } from '../../../hooks/useSesionG';
+import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
@@ -19,7 +19,7 @@ interface CalendarHeaderProps {
 
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
   currentView, setCurrentView, onOpenModal }: CalendarHeaderProps) {
-  
+
   const { isConnected, isLoading, toggleSync } = useGoogleSync();
   const {
     goToToday,
@@ -83,16 +83,16 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
 
       <div className="flex items-center gap-3">
         <div className="hidden sm:flex items-center gap-3 mr-2">
-          
+
           <span className={`text-sm font-medium transition-colors ${isConnected ? 'text-green-400' : 'text-gray-400'}`}>
             {isConnected ? 'Sincronizado' : 'Google Calendar'}
           </span>
-      
-          <Switch 
-            checked={isConnected} 
-            onCheckedChange={toggleSync} 
+
+          <Switch
+            checked={isConnected}
+            onCheckedChange={toggleSync}
             disabled={isLoading}
-            className="data-[state=checked]:bg-green-500" 
+            className="data-[state=checked]:bg-green-500"
           />
 
           {isLoading && (
@@ -115,9 +115,9 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
               sideOffset={6}
               className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
             >
-              <SelectItem value="dia"    className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Día</SelectItem>
+              <SelectItem value="dia" className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Día</SelectItem>
               <SelectItem value="semana" className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Semana</SelectItem>
-              <SelectItem value="mes"    className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Mes</SelectItem>
+              <SelectItem value="mes" className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Mes</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -1,12 +1,12 @@
 import { useState, useEffect, use } from "react";
-import { initiateGoogle, getGoogle, disconnectGoogle } from "../lib/sincronizacion/authGoogle/google";
+import { initiateGoogle, getGoogle, disconnectGoogle } from "../../lib/sincronizacion/authGoogle/google";
 
-export function useGoogleSync(){
- 
-    const [isConnected, setConnected] = useState<boolean>(false);
-    const [isLoading, setLoading] = useState<boolean>(true);
-    
-    useEffect(() => {
+export function useGoogleSync() {
+
+  const [isConnected, setConnected] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
     async function checkStatus() {
       setLoading(true);
       try {
@@ -23,7 +23,7 @@ export function useGoogleSync(){
   }, []);
   const toggleSync = async (checked: boolean) => {
     setLoading(true);
-    
+
     if (!checked) {
       const response = await disconnectGoogle();
       if (response?.success) {
