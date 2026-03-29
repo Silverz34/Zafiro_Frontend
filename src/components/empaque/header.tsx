@@ -25,10 +25,8 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
     goToToday,
     goToPrevious,
     goToNext,
-    handleYearChange,
     formattedMonth,
     currentYear,
-    yearsRange,
   } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
 
@@ -59,7 +57,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
             <span className="text-lg font-semibold tracking-wide text-gray-100">
               {currentYear}
             </span>
-            
+
             {/*Boton para la logica del algoritmo  */}
             <button className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
               Ordenar Calendario
