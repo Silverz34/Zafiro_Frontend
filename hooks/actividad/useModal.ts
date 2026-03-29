@@ -97,7 +97,6 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const { handleEditar } = useEditarActividad({ onClose, onSuccess });
 
   useEffect(() => {
-    console.log("DATOS QUE LLEGAN AL MODAL:", eventoInicial);
     if (eventoInicial) {
       const valorPrioridad = eventoInicial.prioridadValor || (eventoInicial as any).prioridad?.valor;
       
