@@ -21,11 +21,8 @@ function buildRange(targetDateIso: string): { from: string; to: string } {
 }
 
 export async function fetchDailyActivities(
-  targetDateIso: string
 ): Promise<lecturaActividad[] | null> {
   try {
-    const { from, to } = buildRange(targetDateIso)
-
     const response = await apiGet<lecturaActividad[]>(
       `/api/activities/me`
     )

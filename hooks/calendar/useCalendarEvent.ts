@@ -22,13 +22,12 @@ export function useCalendarEvents({
   const [lastFetchedMonth, setLastFetchedMonth] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!ready) return
 
     const monthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`
     if (lastFetchedMonth === monthKey) return
 
     const load = async () => {
-      const data = await fetchDailyActivities(currentDate.toISOString())
+      const data = await fetchDailyActivities()
       if (data) {
         setEvents(data)
         setLastFetchedMonth(monthKey)
