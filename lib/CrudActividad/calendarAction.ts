@@ -4,21 +4,6 @@ import { apiGet } from '../sincronizacion/apiClient';
 import { ApiError } from '../sincronizacion/apiError';
 import { lecturaActividad } from '../../interfaces/Preview'
 
-function buildRange(targetDateIso: string): { from: string; to: string } {
-  const targetDate = new Date(targetDateIso)
-  const year = targetDate.getFullYear()
-  const month = targetDate.getMonth()
-
-  const from = new Date(year, month, 1)
-  const to = new Date(year, month + 1, 0)
-
-  from.setDate(from.getDate() - 10)
-  to.setDate(to.getDate() + 10)
-  from.setHours(0, 0, 0, 0)
-  to.setHours(23, 59, 59, 999)
-
-  return { from: from.toISOString(), to: to.toISOString() }
-}
 
 export async function fetchDailyActivities(
 ): Promise<lecturaActividad[] | null> {
@@ -26,8 +11,6 @@ export async function fetchDailyActivities(
     const response = await apiGet<lecturaActividad[]>(
       `/api/activities/me`
     )
-
-
     if (!response.success) {
       console.error('[fetchDailyActivities] Respuesta fallida')
       return null
