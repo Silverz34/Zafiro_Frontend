@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { saveAjustes, AjustesPayload } from '../../lib/api/saveAjustes';
-
+import { saveAjustes } from '../../lib/api/saveAjustes';
+import type { Ajustes } from '../../interfaces/ajustes';
 export function useAjustes() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const guardarAjustes = async (payload: AjustesPayload) => {
+
+  const guardarAjustes = async (payload: Ajustes) => {
     setIsLoading(true);
     setError(null);
-
     try {
       const success = await saveAjustes(payload);
       if (!success) {

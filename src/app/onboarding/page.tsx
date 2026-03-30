@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useAjustes } from "../../../hooks/user/useAjustes";
 import { HORARIOS_COMPLETOS, obtenerHorasFin } from "../../../hooks/utils/timeUtils";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -28,6 +28,7 @@ const OCUPACIONES = [
 
 export default function CompletarPerfil() {
   const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
   const { guardarAjustes, isLoading, error } = useAjustes();
   const [ocupacion,   setOcupacion]   = useState("estudiante");
   const [hora_inicio,  setHoraInicio]  = useState<string>("22:00");
@@ -40,9 +41,9 @@ export default function CompletarPerfil() {
       hora_inicio: hora_inicio, 
       hora_fin: hora_fin,       
     });
-
     if (exito) {
-      await window.location.assign("/calendar");
+      await user?.reload(); 
+      window.location.assign("/calendar");
     }
   };
 
