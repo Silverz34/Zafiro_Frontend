@@ -14,6 +14,7 @@ export const PreviewSchema = GEventSchema.extend({
   description: z.string().optional(),
   prioridadValor: z.enum(["alta", "media", "baja"]).optional(),
   source: z.literal("local").optional(),
+  
 });
 
 export const SchemaActividad = PreviewSchema.extend({

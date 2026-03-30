@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { GoogleEvent } from "../../interfaces/Evento";
 import { lecturaActividad } from "../../interfaces/Preview";
 
 export type ViewType = 'dia' | 'semana' | 'mes';
@@ -113,4 +112,4 @@ export function CalendarLogic(currentDate: Date, rawEvents: lecturaActividad[], 
     }
     
     return { days, hours, getProcessed };
-};
+};
