@@ -4,8 +4,8 @@ import { Ajustes, SchemaAjustes } from "../../interfaces/ajustes";
 
 export interface AjustesPayload{
     ocupacion: string;
-    horaInicio: string;
-    horaFin: string;
+    hora_inicio: string;
+    hora_fin: string;
 }
 export async function saveAjustes(ajustes: AjustesPayload) {
     try {

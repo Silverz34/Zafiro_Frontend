@@ -30,15 +30,15 @@ export default function CompletarPerfil() {
   const { isLoaded, isSignedIn } = useAuth();
   const { guardarAjustes, isLoading, error } = useAjustes();
   const [ocupacion,   setOcupacion]   = useState("estudiante");
-  const [horaInicio,  setHoraInicio]  = useState<string>("22:00");
-  const [horaFin,     setHoraFin]     = useState<string>("06:00");
+  const [hora_inicio,  setHoraInicio]  = useState<string>("22:00");
+  const [hora_fin,     setHoraFin]     = useState<string>("06:00");
 
  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const exito = await guardarAjustes({
       ocupacion,
-      horaInicio: horaInicio, 
-      horaFin: horaFin,       
+      hora_inicio: hora_inicio, 
+      hora_fin: hora_fin,       
     });
 
     if (exito) {
@@ -111,7 +111,7 @@ export default function CompletarPerfil() {
                 <div className="flex flex-col gap-1.5">
                   <span className="text-xs text-gray-500 pl-1">Inicio</span>
                   <Select
-                    value={horaInicio}
+                    value={hora_inicio}
                     onValueChange={(v) => setHoraInicio(v)}
                   >
                     <SelectTrigger className="w-full bg-[#171733] border-[#1e1d3a] text-white focus:ring-blue-600 rounded-xl h-[52px] text-sm font-medium">
@@ -135,7 +135,7 @@ export default function CompletarPerfil() {
                 <div className="flex flex-col gap-1.5">
                   <span className="text-xs text-gray-500 pl-1">Fin</span>
                   <Select
-                    value={horaFin}
+                    value={hora_fin}
                     onValueChange={(v) => setHoraFin(v)}
                   >
                     <SelectTrigger className="w-full bg-[#171733] border-[#1e1d3a] text-white focus:ring-blue-600 rounded-xl h-[52px] text-sm font-medium">
@@ -147,7 +147,7 @@ export default function CompletarPerfil() {
                       sideOffset={6}
                       className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
                     >
-                      {obtenerHorasFin(horaInicio).map(h => (
+                      {obtenerHorasFin(hora_inicio).map(h => (
                         <SelectItem key={h.value} value={h.value}>
                           {h.label}
                         </SelectItem>
