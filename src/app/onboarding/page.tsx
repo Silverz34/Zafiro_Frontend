@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useAjustes } from "../../../hooks/user/useAjustes";
+import { HORARIOS_COMPLETOS, obtenerHorasFin } from "../../../hooks/utils/timeUtils";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -25,36 +26,24 @@ const OCUPACIONES = [
   },
 ];
 
-const HORAS = Array.from({ length: 24 }, (_, i) => ({
-  value: i,
-  label: i === 0 ? "12:00 am" : i < 12 ? `${i}:00 am` : i === 12 ? "12:00 pm" : `${i - 12}:00 pm`,
-}));
-
-
-const getHorasFin = (inicio: number) => {
-  const slots: typeof HORAS = [];
-  for (let i = 1; i < 24; i++) {
-    slots.push(HORAS[(inicio + i) % 24]);
-  }
-  return slots;
-};
-
 export default function CompletarPerfil() {
-  const { isLoaded, isSignedIn, userId } = useAuth();
+  const { isLoaded, isSignedIn } = useAuth();
   const { guardarAjustes, isLoading, error } = useAjustes();
   const [ocupacion,   setOcupacion]   = useState("estudiante");
-  const [horaInicio,  setHoraInicio]  = useState<number>(22);
-  const [horaFin,     setHoraFin]     = useState<number>(6);
+  const [horaInicio,  setHoraInicio]  = useState<string>("22:00");
+  const [horaFin,     setHoraFin]     = useState<string>("06:00");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) return;
-    const exito = await guardarAjustes({ 
-      id: userId, 
-      ocupacion, 
+    const exito = await guardarAjustes({
+      ocupacion,
       hora_inicio: horaInicio, 
-      hora_fin: horaFin});
-    if (exito) window.location.href = "/calendar";
+      hora_fin: horaFin,       
+    });
+
+    if (exito) {
+      await window.location.assign("/calendar");
+    }
   };
 
   if (!isLoaded || !isSignedIn) return null;
@@ -122,8 +111,8 @@ export default function CompletarPerfil() {
                 <div className="flex flex-col gap-1.5">
                   <span className="text-xs text-gray-500 pl-1">Inicio</span>
                   <Select
-                    value={String(horaInicio)}
-                    onValueChange={(v) => setHoraInicio(Number(v))}
+                    value={horaInicio}
+                    onValueChange={(v) => setHoraInicio(v)}
                   >
                     <SelectTrigger className="w-full bg-[#171733] border-[#1e1d3a] text-white focus:ring-blue-600 rounded-xl h-[52px] text-sm font-medium">
                       <SelectValue />
@@ -134,8 +123,8 @@ export default function CompletarPerfil() {
                       sideOffset={6}
                       className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
                     >
-                      {HORAS.map(h => (
-                        <SelectItem key={h.value} value={String(h.value)}>
+                      {HORARIOS_COMPLETOS.map(h => (
+                        <SelectItem key={h.value} value={h.value}>
                           {h.label}
                         </SelectItem>
                       ))}
@@ -146,8 +135,8 @@ export default function CompletarPerfil() {
                 <div className="flex flex-col gap-1.5">
                   <span className="text-xs text-gray-500 pl-1">Fin</span>
                   <Select
-                    value={String(horaFin)}
-                    onValueChange={(v) => setHoraFin(Number(v))}
+                    value={horaFin}
+                    onValueChange={(v) => setHoraFin(v)}
                   >
                     <SelectTrigger className="w-full bg-[#171733] border-[#1e1d3a] text-white focus:ring-blue-600 rounded-xl h-[52px] text-sm font-medium">
                       <SelectValue />
@@ -158,8 +147,8 @@ export default function CompletarPerfil() {
                       sideOffset={6}
                       className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
                     >
-                      {getHorasFin(horaInicio).map(h => (
-                        <SelectItem key={h.value} value={String(h.value)}>
+                      {obtenerHorasFin(horaInicio).map(h => (
+                        <SelectItem key={h.value} value={h.value}>
                           {h.label}
                         </SelectItem>
                       ))}

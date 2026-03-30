@@ -3,15 +3,15 @@ import { apiPost } from "./apiClient";
 import { Ajustes, SchemaAjustes } from "../../interfaces/ajustes";
 
 export interface AjustesPayload{
-    id: string;
     ocupacion: string;
-    hora_inicio: number;
-    hora_fin: number;
+    hora_inicio: string;
+    hora_fin: string;
 }
 export async function saveAjustes(ajustes: AjustesPayload) {
     try {
         const validate = SchemaAjustes.parse(ajustes)
-        const response = await apiPost<Ajustes>(`/api/users/${validate.id}/settings`, validate) 
+        const response = await apiPost<Ajustes>(`/api/users/me/settings`, validate) 
+        console.log(response)
         if (response.success) {
             console.log('[SAVE_AJUSTES] Ajustes guardados correctamente')
             return true
