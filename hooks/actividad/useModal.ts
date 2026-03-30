@@ -177,7 +177,8 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
             : { useDefault: false, overrides: [{ method: "email", minutes: parseInt(reminder) }] },
           prioridadValor: mapPrioridad(prioridad),
           idEtiqueta: idEtiqueta,
-          recurrence: generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia) || []
+          recurrence: generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia) || [],
+          source: 'local'
         },
         setLoading
       );
@@ -186,7 +187,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
         {
           titulo, fecha, horaInicio, horaFin, isAllDay,
           recurrence: recurrence as TipoOcurrencia,
-          reminder, transparency, prioridad,description, idEtiqueta 
+          reminder, transparency, prioridad,description, idEtiqueta, source: 'local'
         } as FormActividad,
         setLoading
       );
