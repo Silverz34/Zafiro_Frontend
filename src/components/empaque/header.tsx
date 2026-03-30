@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
+import { algorithmHook } from '../../../hooks/calendar/algorithm/sortAgenda';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
@@ -19,6 +20,7 @@ interface CalendarHeaderProps {
 
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
   currentView, setCurrentView, onOpenModal }: CalendarHeaderProps) {
+    const algorithmController:algorithmHook = new algorithmHook()
 
   const { isConnected, isLoading, toggleSync } = useGoogleSync();
   const {
@@ -59,7 +61,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
             </span>
 
             {/*Boton para la logica del algoritmo  */}
-            <button className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
+            <button onClick={algorithmController.sortAgenda} className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
               Ordenar Calendario
             </button>
           </div>
@@ -70,7 +72,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
         <div className="hidden sm:flex items-center gap-3 mr-2">
 
           <span className={`text-sm font-medium transition-colors ${isConnected ? 'text-green-400' : 'text-gray-400'}`}>
-            {isConnected ? 'Sincronizado' : 'Google Calendar'}
+            {isConnected ? 'Sincronizado' : 'Vincular con Google Calendar'}
           </span>
 
           <Switch
