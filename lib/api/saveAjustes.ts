@@ -4,12 +4,14 @@ import { Ajustes, SchemaAjustes } from "../../interfaces/ajustes";
 
 export interface AjustesPayload{
     ocupacion: string;
-    hora_inicio: string;
-    hora_fin: string;
+    horaInicio: string;
+    horaFin: string;
 }
 export async function saveAjustes(ajustes: AjustesPayload) {
     try {
+        console.log("Input to saveAjustes:", ajustes);
         const validate = SchemaAjustes.parse(ajustes)
+        console.log("Output from Zod:", validate);
         const response = await apiPost<Ajustes>(`/api/users/me/settings`, validate) 
         console.log(response)
         if (response.success) {

@@ -37,8 +37,8 @@ export default function CompletarPerfil() {
     e.preventDefault();
     const exito = await guardarAjustes({
       ocupacion,
-      hora_inicio: horaInicio, 
-      hora_fin: horaFin,       
+      horaInicio: horaInicio, 
+      horaFin: horaFin,       
     });
 
     if (exito) {
