@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { fetchGoogleEvents } from '../../lib/CrudActividad/fetchActividad'
 import type { lecturaActividad } from '../../interfaces/Preview'
-import { getMonthBoundaries } from '../../utils/dateUtils'
+import { getCalendarViewRange } from '../../utils/dateUtils'
 
 interface UseCalendarEventsProps {
   ready: boolean
@@ -29,7 +29,7 @@ export function useCalendarEvents({
     const load = async () => {
 
       // getMonthBoundaries ya existe en utils/dateUtils.ts
-      const { timeMin, timeMax } = getMonthBoundaries(currentDate)
+      const { timeMin, timeMax } = getCalendarViewRange(currentDate)
       const data = await fetchGoogleEvents(timeMin, timeMax)
       if (data) {
         setEvents(data)
