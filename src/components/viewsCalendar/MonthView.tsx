@@ -95,8 +95,8 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                             style={dynamicCardStyle}
                                         >
                                             <div className="truncate mb-[2px]">
-                                                <span className="font-bold mr-1">{event.formattedTime}</span>
-                                                <span className="font-medium">{event.summary}</span>
+                                                <span className="font-bold mr-1 text-white">{event.formattedTime}</span>
+                                                <span className="font-medium text-white">{event.summary}</span>
                                             </div>
                                             <div className="absolute bottom-0 left-0 right-0 h-[2.5px]" style={dynamicBarStyle}/>
                                         </div>
