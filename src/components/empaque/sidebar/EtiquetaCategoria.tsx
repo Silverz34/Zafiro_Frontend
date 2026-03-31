@@ -53,13 +53,14 @@ export default function Etiquetas({desactivadas, onToggleEtiqueta}: EtiquetaProp
           return (
             <div
               key={etiqueta.id}
+              onClick={() => onToggleEtiqueta(String(etiqueta.id))}
               className="flex items-center rounded-lg px-3 py-2.5 transition-all duration-200"
               style={{
                 backgroundColor: isActive ? etiqueta.color : `${etiqueta.color}55`,
               }}
             >
              <button
-                onClick={() => onToggleEtiqueta(String(etiqueta.id))}
+                
                 className="flex items-center justify-center w-5 h-5 rounded-full bg-white/80 border border-blue-600 shrink-0 transition-all"
               >
                 {isActive && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
