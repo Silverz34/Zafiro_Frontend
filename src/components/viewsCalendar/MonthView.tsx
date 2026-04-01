@@ -94,7 +94,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                             className="relative overflow-hidden border text-[10px] px-1.5 py-1 rounded shadow-sm transition-all hover:opacity-80"
                                             style={dynamicCardStyle}
                                         >
-                                            <div className="truncate mb-[2px]">
+                                            <div className="truncate mb-0.5">
                                                 <span className="font-bold mr-1 text-white">{event.formattedTime}</span>
                                                 <span className="font-medium text-white">{event.summary}</span>
                                             </div>
@@ -142,7 +142,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                                         >
                                                             <span className="font-bold mr-1 block mb-0.5 text-white">{event.formattedTime}</span>
                                                             <span className="truncate block font-medium mb-0.5 text-white">{event.summary}</span>
-                                                            <div className="absolute bottom-0 left-0 right-0 h-[3px]" style={dynamicBarStyle}/>
+                                                            <div className="absolute bottom-0 left-0 right-0 h-0.75" style={dynamicBarStyle}/>
                                                         </div>
                                                     );
                                                 })}
