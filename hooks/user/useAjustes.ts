@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { saveAjustes } from '../../lib/api/saveAjustes';
+import { saveAjustes } from '../../lib/sincronizacion/saveAjustes';
 import type { Ajustes } from '../../interfaces/ajustes';
 export function useAjustes() {
   const [isLoading, setIsLoading] = useState(false);

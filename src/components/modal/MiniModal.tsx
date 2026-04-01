@@ -170,9 +170,12 @@ export default function EventoPreview({ evento, onClose, onEdit, onDelete }: Eve
         onOpenChange={setShowConfirmed}
         eventoId={evento.id}
         eventoNombre={evento.summary}
+        // Estos dos son nuevos — vienen del objeto evento
+        recurringEventId={evento.recurringEventId}
+        instanceDate={evento.start.dateTime || evento.start.date}
         onSuccess={() => {
-          onDelete?.(evento.id);
-          onClose();
+          onDelete?.(evento.id)
+          onClose()
         }}
       />
     </Dialog>

@@ -1,7 +1,7 @@
 'use server'
 
-import { apiPatch } from '../api/apiClient'
-import { ApiError } from '../api/apiError'
+import { apiPatch } from '../sincronizacion/apiClient'
+import { ApiError } from '../sincronizacion/apiError'
 import { SchemaCrearActividad, type CrearActividad } from '../../interfaces/Actividad'
 
 export async function updateActividad(
@@ -9,14 +9,12 @@ export async function updateActividad(
   cambios: Partial<CrearActividad>
 ) {
   try {
-    // Validar solo los campos presentes partial() hace todos opcionales
     const validated = SchemaCrearActividad.partial().parse(cambios)
 
     const response = await apiPatch(
       `/api/activities/${id}`,
       validated
     )
-
     if (!response.success) {
       console.error('[updateActividad] Error en API:', response.message)
       return { success: false, error: response.message }

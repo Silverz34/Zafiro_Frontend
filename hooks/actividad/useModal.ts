@@ -3,9 +3,10 @@ import { useCrearActividad } from "./useCrearActividad";
 import { useEditarActividad } from "./useEditarActividad";
 import { TIME_SLOTS, type TimeSlot } from "@/components/ui/time";
 import type { ModoModal, PrioridadType } from "../custom/modalconstantes";
-import type { TipoOcurrencia } from "../calendar/Ocurrencia";
 import type { FormActividad } from "../../interfaces/types/FormActividad";
 import type { MiniModal } from "../../interfaces/Preview";
+import { generarRegla, type TipoOcurrencia } from "../calendar/Ocurrencia";
+
 
 interface UseModalProps {
   onClose: () => void;
@@ -97,10 +98,9 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
   const { handleEditar } = useEditarActividad({ onClose, onSuccess });
 
   useEffect(() => {
-    console.log("DATOS QUE LLEGAN AL MODAL:", eventoInicial);
     if (eventoInicial) {
       const valorPrioridad = eventoInicial.prioridadValor || (eventoInicial as any).prioridad?.valor;
-      
+  
       setPrioridad(parsePrioridadValor(valorPrioridad));
       setTitulo(eventoInicial.summary ?? "");
       setIsAllDay(!eventoInicial.start.dateTime);
@@ -149,53 +149,51 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     if (!titulo.trim()) return;
 
     const fecha = toLocalDateString(selectedDate);
-    const idParaActualizar = (eventoInicial as any)?.localId || eventoInicial?.id;
+    const idCrudo = (eventoInicial as any)?.localId || eventoInicial?.id;
+    const idMaestro = idCrudo ? idCrudo.toString().split('_')[0] : '';
 
-    if (modo === "editar" && eventoInicial?.id) {
+    if (modo === "editar" && idMaestro) {
+      const startISO = isAllDay ? undefined : toLocalISOString(fecha, horaInicio);
+      const fechaInicioParaRegla = startISO ?? `${fecha}T00:00:00`;
+      
+      const reglaCalculada = generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia);
+
       await handleEditar(
-       idParaActualizar,
+       idMaestro, 
         {
           summary: titulo,
           description: description,
           start: isAllDay
             ? { date: fecha }
-            : {
-              dateTime: toLocalISOString(fecha, horaInicio),
-              timeZone: "America/Mexico_City"
-            },
+            : { dateTime: startISO, timeZone: "America/Mexico_City" },
           end: isAllDay
             ? { date: fecha }
-            : {
-              dateTime: toLocalISOString(fecha, horaFin),
-              timeZone: "America/Mexico_City"
-            },
+            : { dateTime: toLocalISOString(fecha, horaFin), timeZone: "America/Mexico_City" },
           transparency: transparency,
           reminders: reminder === "none"
             ? { useDefault: false }
-            : { useDefault: false, overrides: [{ method: "popup", minutes: parseInt(reminder) }] },
+            : { useDefault: false, overrides: [{ method: "email", minutes: parseInt(reminder) }] },
           prioridadValor: mapPrioridad(prioridad),
           idEtiqueta: idEtiqueta,
-          recurrence: recurrence === "none" ? [] : [
-            recurrence === "daily" ? "RRULE:FREQ=DAILY" :
-            recurrence === "weekdays" ? "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR" :
-            recurrence === "weekly" ? "RRULE:FREQ=WEEKLY" :
-            recurrence === "monthly" ? "RRULE:FREQ=MONTHLY" : "RRULE:FREQ=YEARLY"
-          ]
+          recurrence: reglaCalculada,
+          source: 'local',
         },
         setLoading
       );
+      onSuccess(); 
+
     } else {
       await handleCrear(
         {
           titulo, fecha, horaInicio, horaFin, isAllDay,
           recurrence: recurrence as TipoOcurrencia,
-          reminder, transparency, prioridad,description, idEtiqueta 
+          reminder, transparency, prioridad,description, idEtiqueta, source: 'local' 
         } as FormActividad,
         setLoading
       );
+      onSuccess();
     }
   };
-
   return {
     titulo, setTitulo,
     selectedDate, setSelectedDate,

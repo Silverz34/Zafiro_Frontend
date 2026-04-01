@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { fetchDailyActivities } from '../../lib/CrudActividad/calendarAction'
+import { fetchGoogleEvents } from '../../lib/CrudActividad/fetchActividad'
 import type { lecturaActividad } from '../../interfaces/Preview'
+import { getCalendarViewRange } from '../../utils/dateUtils'
 
 interface UseCalendarEventsProps {
   ready: boolean
@@ -22,18 +23,20 @@ export function useCalendarEvents({
   const [lastFetchedMonth, setLastFetchedMonth] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!ready) return
-
     const monthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`
     if (lastFetchedMonth === monthKey) return
 
     const load = async () => {
-      const data = await fetchDailyActivities(currentDate.toISOString())
+
+      // getMonthBoundaries ya existe en utils/dateUtils.ts
+      const { timeMin, timeMax } = getCalendarViewRange(currentDate)
+      const data = await fetchGoogleEvents(timeMin, timeMax)
       if (data) {
         setEvents(data)
         setLastFetchedMonth(monthKey)
       }
     }
+
     load()
   }, [ready, currentDate, lastFetchedMonth])
 

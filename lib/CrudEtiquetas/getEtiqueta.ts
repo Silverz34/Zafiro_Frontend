@@ -1,6 +1,6 @@
 'use server'
 
-import { apiGet } from "../api/apiClient";
+import { apiGet } from "../sincronizacion/apiClient";
 
 export type EtiquetaFrontend = {
   id: string;
@@ -12,7 +12,7 @@ export async function getEtiquetas() {
   try {
     const response = await apiGet<any[]>('/api/tags/me');
     if (response.success && response.data) {
-      const etiquetasMapeadas = response.data.map((tag: any) => ({
+      const etiquetasMapeadas:EtiquetaFrontend[] = response.data.map((tag: any) => ({
         id: tag.id,
         nombre: tag.nombre, 
         color: tag.color

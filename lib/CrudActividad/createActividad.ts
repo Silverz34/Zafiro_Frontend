@@ -1,7 +1,7 @@
 'use server';
 
-import { apiPost } from "../api/apiClient";
-import { ApiError } from "../api/apiError";
+import { apiPost } from "../sincronizacion/apiClient";
+import { ApiError } from "../sincronizacion/apiError";
 import { SchemaCrearActividad } from "../../interfaces/Actividad";
 import { buildActivityPayload } from "../buildActivity"; 
 import { FormActividad } from "../../interfaces/types/FormActividad";
@@ -19,7 +19,6 @@ export async function createActividad(form: FormActividad) {
       '/api/activities',
       validated
     )
-
     if (!response.success) {
       console.error('[createActividad] Error en API:', response.message)
       return { success: false, error: response.message }

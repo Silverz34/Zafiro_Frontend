@@ -8,9 +8,15 @@ import ModalEtiqueta from '@/components/modal/ModalEtiqueta';
 import { useEtiquetas } from '../../../../hooks/user/useEtiquetas';
 import type { EtiquetaFrontend } from '../../../../lib/CrudEtiquetas/getEtiqueta';
 
-export default function Etiquetas() {
+
+interface EtiquetaProp{
+  desactivadas: string[];
+  onToggleEtiqueta: (id: string) => void;
+}
+
+export default function Etiquetas({desactivadas, onToggleEtiqueta}: EtiquetaProp) {
+
   const { etiquetas, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetas();
-  const [activas, setActivas] = useState<string[]>([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [etiquetaEditar, setEtiquetaEditar] = useState<EtiquetaFrontend | null>(null);
 
@@ -25,11 +31,11 @@ export default function Etiquetas() {
 
   const handleEliminar = async (etiqueta: EtiquetaFrontend) => {
     await borrarEtiqueta(etiqueta.id);
-    setActivas(prev => prev.filter(id => id !== etiqueta.id));
+    onToggleEtiqueta(etiqueta.id);
   };
 
   const toggleEtiqueta = (id: string) => {
-    setActivas(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]);
+    onToggleEtiqueta(id);
   };
 
   return (
@@ -43,17 +49,17 @@ export default function Etiquetas() {
 
       <div className="space-y-2.5">
         {etiquetas.map((etiqueta) => {
-          const isActive = activas.includes(etiqueta.id);
+          const isActive = !desactivadas.includes(String(etiqueta.id));
           return (
             <div
               key={etiqueta.id}
+              onClick={() => onToggleEtiqueta(String(etiqueta.id))}
               className="flex items-center rounded-lg px-3 py-2.5 transition-all duration-200"
               style={{
                 backgroundColor: isActive ? etiqueta.color : `${etiqueta.color}55`,
               }}
             >
-              <button
-                onClick={() => toggleEtiqueta(etiqueta.id)}
+             <button
                 className="flex items-center justify-center w-5 h-5 rounded-full bg-white/80 border border-blue-600 shrink-0 transition-all"
               >
                 {isActive && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}

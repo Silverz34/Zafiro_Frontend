@@ -36,22 +36,19 @@ export function calcularUntil(fechaInicioISO: string): string{
 export function generarRegla(
   fechaInicioISO: string,
   tipo: TipoOcurrencia
-): string[] | undefined {
-  if (tipo === 'none') return undefined;
+): string[] {
+  if (tipo === 'none') return [];
 
   const until = calcularUntil(fechaInicioISO);
 
   switch (tipo) {
     case 'daily':
       return [`RRULE:FREQ=DAILY;UNTIL=${until}`];
-
     case 'weekdays':
       return [`RRULE:FREQ=WEEKLY;UNTIL=${until};BYDAY=MO,TU,WE,TH,FR`];
-
     case 'weekly':
       return [`RRULE:FREQ=WEEKLY;UNTIL=${until}`];
-
     default:
-      return undefined;
+      return []; 
   }
 }

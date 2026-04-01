@@ -1,26 +1,18 @@
-'use client';
+'use client'
+import type { PrioridadType } from "../../../../hooks/custom/modalconstantes";
 
-import React, { useState } from 'react';
-export type PriorityLevel = 'Alta' | 'Media' | 'Baja';
 const PRIORITIES = [
-  { id: 'Alta', label: 'Alta', bgColor: 'bg-[#AB3535]' },    
-  { id: 'Media', label: 'Media', bgColor: 'bg-[#E2761F]' },  
-  { id: 'Baja', label: 'Baja', bgColor: 'bg-[#2FA941]' },    
+  { id: 'alta', label: 'Alta', bgColor: 'bg-[#AB3535]' },    
+  { id: 'media', label: 'Media', bgColor: 'bg-[#E2761F]' },  
+  { id: 'baja', label: 'Baja', bgColor: 'bg-[#2FA941]' },    
 ] as const;
 
-export default function Prioridad() {
-  const [selectedPriorities, setSelectedPriorities] = useState<PriorityLevel[]>([
-    'Alta', 'Media', 'Baja'
-  ]);
+interface PrioridadProps{
+  prioriDesactivadas: PrioridadType[];
+  onTogglePriority: (priority: PrioridadType) => void;
+}
 
-  const togglePriority = (priority: PriorityLevel): void => {
-    setSelectedPriorities((prevSelected) => {
-      if (prevSelected.includes(priority)) {
-        return prevSelected.filter((p) => p !== priority);
-      }
-      return [...prevSelected, priority];
-    });
-  };
+export default function Prioridad({prioriDesactivadas, onTogglePriority}: PrioridadProps) {
 
   return (
     <div className="w-full max-w-60 p-1 rounded-xl">
@@ -28,11 +20,11 @@ export default function Prioridad() {
       
       <div className="space-y-3">
         {PRIORITIES.map((priority) => {
-          const isActive = selectedPriorities.includes(priority.id as PriorityLevel);
+          const isActive = !prioriDesactivadas.includes(priority.id as PrioridadType);
           return (
             <button
               key={priority.id}
-              onClick={() => togglePriority(priority.id as PriorityLevel)}
+              onClick={() => onTogglePriority(priority.id as PrioridadType)}
               className={`
                 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-semibold text-white
                 ${priority.bgColor}

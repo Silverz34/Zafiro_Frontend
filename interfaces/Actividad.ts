@@ -10,14 +10,14 @@ export const SchemaCrearActividad = z.object({
    end: GoogleSchema,
    description: z.string().optional(),
    transparency: z.enum(["transparent", "opaque"]).optional(),
-   recurrence: z.array(z.string()).optional(), 
+   recurrence: z.array(z.string()).optional().nullable(), 
     reminders: z.object({ 
-        useDefault: z.boolean(),
+        useDefault: z.boolean().default(false),
         overrides: z.array(reminderSchema).optional() 
     }).optional(),
     idEtiqueta: z.number().optional(),
     prioridadValor: z.enum(["alta", "media", "baja"]).optional(),
-    source: z.enum(["local", "google"]).optional(),
+    source: z.literal('local').optional(),
 });
 
 export const SchemaActividad = SchemaCrearActividad.extend({
