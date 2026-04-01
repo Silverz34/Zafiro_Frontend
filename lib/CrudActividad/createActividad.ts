@@ -19,7 +19,6 @@ export async function createActividad(form: FormActividad) {
       '/api/activities',
       validated
     )
-
     if (!response.success) {
       console.error('[createActividad] Error en API:', response.message)
       return { success: false, error: response.message }

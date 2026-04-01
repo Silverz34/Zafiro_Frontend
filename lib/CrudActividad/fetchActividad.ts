@@ -31,9 +31,13 @@ export async function fetchGoogleEvents(
       return null
     }
 
-    // Google events vienen en data.items, no en data directamente
     console.log(response.data?.items)
-    return response.data?.items ?? []
+    const rawItems = response.data?.items ?? []
+    const normalizedItems = rawItems.map((evento: any) => ({
+      ...evento,
+      idEtiqueta: evento.etiqueta?.id || evento.idEtiqueta || null
+    }))
+    return normalizedItems as lecturaActividad[];
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`[fetchGoogleEvents] Error ${error.status}:`, error.message)
