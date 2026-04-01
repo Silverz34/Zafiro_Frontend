@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
+import { algorithmHook } from '../../../hooks/calendar/algorithm/sortAgenda';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
@@ -19,16 +20,15 @@ interface CalendarHeaderProps {
 
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
   currentView, setCurrentView, onOpenModal }: CalendarHeaderProps) {
+    const algorithmController:algorithmHook = new algorithmHook()
 
   const { isConnected, isLoading, toggleSync } = useGoogleSync();
   const {
     goToToday,
     goToPrevious,
     goToNext,
-    handleYearChange,
     formattedMonth,
     currentYear,
-    yearsRange,
   } = useCalendarNavigation(currentDate, setCurrentDate, currentView);
 
 
@@ -53,30 +53,17 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
           </div>
 
           <div className="hidden sm:flex items-center gap-4 ml-2">
-            <Select
-              value={String(currentYear)}
-              onValueChange={(v) => handleYearChange({ target: { value: v } } as React.ChangeEvent<HTMLSelectElement>)}
-            >
-              <SelectTrigger className="bg-[#010112] border border-blue-600 text-white text-sm rounded-lg h-[34px] w-[90px] px-3 focus:ring-0 focus:ring-offset-0 hover:bg-gray-800 transition-colors">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent
-                position="popper"
-                side="bottom"
-                sideOffset={6}
-                className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
-              >
-                {yearsRange.map(year => (
-                  <SelectItem key={year} value={String(year)} className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">
-                    {year}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
             <span className="text-lg font-semibold tracking-wide text-gray-100">
               {formattedMonth}
             </span>
+            <span className="text-lg font-semibold tracking-wide text-gray-100">
+              {currentYear}
+            </span>
+
+            {/*Boton para la logica del algoritmo  */}
+            <button onClick={algorithmController.sortAgenda} className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
+              Ordenar Calendario
+            </button>
           </div>
         </div>
       </div>
@@ -85,7 +72,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
         <div className="hidden sm:flex items-center gap-3 mr-2">
 
           <span className={`text-sm font-medium transition-colors ${isConnected ? 'text-green-400' : 'text-gray-400'}`}>
-            {isConnected ? 'Sincronizado' : 'Google Calendar'}
+            {isConnected ? 'Sincronizado' : 'Vincular con Google Calendar'}
           </span>
 
           <Switch
