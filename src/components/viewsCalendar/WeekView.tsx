@@ -1,7 +1,7 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { Repeat } from "lucide-react";
@@ -69,22 +69,22 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                   {processedEvents.map(event => {
                     const tag = etiquetas.find((e) => e.id === (event as any).idEtiqueta);
                     const dynamicCardStyle = tag ? { backgroundColor: `${tag.color}33`, borderColor: tag.color } : {};
-                    
+
                     const prioridadStr = (event as any).prioridad?.valor || (event as any).prioridadValor;
                     const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
                     const dynamicBarStyle = prioridadObj ? { backgroundColor: prioridadObj.hexColor } : (tag ? { backgroundColor: tag.color } : {});
 
                     return (
-                    <div
-                      key={event.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!event.id) return;
-                        const eventoOriginal = events.find((orig) => orig.id === event.id);
-                        if (eventoOriginal) {
-                          onEventClick(eventoOriginal);
-                        }
-                      }}
+                      <div
+                        key={event.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!event.id) return;
+                          const eventoOriginal = events.find((orig) => orig.id === event.id);
+                          if (eventoOriginal) {
+                            onEventClick(eventoOriginal);
+                          }
+                        }}
 
                       className={`absolute left-1 right-1 border rounded-md p-1.5 
                         overflow-hidden shadow-sm backdrop-blur-sm transition-all z-10 flex flex-col justify-between ${event.isAllDay ? 'bg-blue-600/40 border-blue-400' : 'bg-blue-600/20 border-blue-500 hover:bg-blue-600/30'}`} style={{ ...event.positionStyle, ...dynamicCardStyle }}>

@@ -1,7 +1,7 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { Repeat } from "lucide-react";

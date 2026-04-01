@@ -2,7 +2,7 @@
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
-import { useEtiquetas } from "../../../hooks/useEtiquetas";
+import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 
 import {
