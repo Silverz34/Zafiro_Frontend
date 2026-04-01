@@ -17,5 +17,5 @@ export interface FormActividad {
     transparency: "opaque" | "transparent";
     prioridad: PrioridadType;
     idEtiqueta?: number;
-    source: 'local'
+    source?: 'local';
 }

@@ -149,51 +149,51 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     if (!titulo.trim()) return;
 
     const fecha = toLocalDateString(selectedDate);
-    const idParaActualizar = (eventoInicial as any)?.localId || eventoInicial?.id;
+    const idCrudo = (eventoInicial as any)?.localId || eventoInicial?.id;
+    const idMaestro = idCrudo ? idCrudo.toString().split('_')[0] : '';
 
-    if (modo === "editar" && eventoInicial?.id) {
+    if (modo === "editar" && idMaestro) {
       const startISO = isAllDay ? undefined : toLocalISOString(fecha, horaInicio);
       const fechaInicioParaRegla = startISO ?? `${fecha}T00:00:00`;
+      
+      const reglaCalculada = generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia);
+
       await handleEditar(
-       idParaActualizar,
+       idMaestro, 
         {
           summary: titulo,
           description: description,
           start: isAllDay
             ? { date: fecha }
-            : {
-              dateTime: startISO,
-              timeZone: "America/Mexico_City"
-            },
+            : { dateTime: startISO, timeZone: "America/Mexico_City" },
           end: isAllDay
             ? { date: fecha }
-            : {
-              dateTime: toLocalISOString(fecha, horaFin),
-              timeZone: "America/Mexico_City"
-            },
+            : { dateTime: toLocalISOString(fecha, horaFin), timeZone: "America/Mexico_City" },
           transparency: transparency,
           reminders: reminder === "none"
             ? { useDefault: false }
             : { useDefault: false, overrides: [{ method: "email", minutes: parseInt(reminder) }] },
           prioridadValor: mapPrioridad(prioridad),
           idEtiqueta: idEtiqueta,
-          recurrence: generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia) || [],
-          source: 'local'
+          recurrence: reglaCalculada,
+          source: 'local',
         },
         setLoading
       );
+      onSuccess(); 
+
     } else {
       await handleCrear(
         {
           titulo, fecha, horaInicio, horaFin, isAllDay,
           recurrence: recurrence as TipoOcurrencia,
-          reminder, transparency, prioridad,description, idEtiqueta, source: 'local'
+          reminder, transparency, prioridad,description, idEtiqueta, source: 'local' 
         } as FormActividad,
         setLoading
       );
+      onSuccess();
     }
   };
-
   return {
     titulo, setTitulo,
     selectedDate, setSelectedDate,

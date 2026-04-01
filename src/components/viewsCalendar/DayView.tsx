@@ -4,6 +4,7 @@ import type { ViewProps } from "../../../interfaces/types/props";
 import { useEtiquetas } from "../../../hooks/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
+import { Repeat } from "lucide-react";
 
 export default function DayView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');
@@ -73,14 +74,16 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                                         onEventClick(eventoOriginal);
                                     }
                                 }}
-                                className="absolute left-2 right-4 bg-blue-600/20 border-l-4 border-blue-500 
-                                rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10 flex flex-col"
+                                className={`absolute left-2 right-4 border-l-4 rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all z-10 flex flex-col ${event.isAllDay ? 'bg-blue-600/40 border-blue-400' : 'bg-blue-600/20 border-blue-500 hover:bg-blue-600/30'}`}
                                 style={dynamicCardStyle}
                             >
-                                <p className="text-sm font-bold text-blue-100">{event.summary}</p>
+                                <div className="flex items-center gap-1">
+                                    {event.recurringEventId && <Repeat className="w-3 h-3 text-blue-200" />}
+                                    <p className="text-sm font-bold text-blue-100">{event.summary}</p>
+                                </div>
                                 <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime}</p>
                             </div>
-                        );
+                            );
                         })}
                     </div>
 

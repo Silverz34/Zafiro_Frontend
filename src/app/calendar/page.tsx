@@ -4,7 +4,6 @@ import DashboardLayout from "@/components/empaque/empaque";
 import { useState } from 'react';
 import { ViewType } from "../../../hooks/calendar/calendar";
 import { useSession } from "../../../hooks/conexion/useSession";
-import Loading from "@/components/modal/loading";
 import ModalActividad from "@/components/modal/ModalActividad";
 import EventoPreview from "@/components/modal/MiniModal";
 import DayView from "@/components/viewsCalendar/DayView";
@@ -38,7 +37,8 @@ export default function DashboardTemporal() {
     );
   };
 
-  const eventosFiltrados = events.filter(evento => {
+  const eventosSeguros = Array.isArray(events) ? events : [];
+  const eventosFiltrados = eventosSeguros.filter(evento => {
     const pasaEtiqueta = !etiquetasDesactivadas.includes(String(evento.idEtiqueta));
     const prioridadCruda = evento.prioridadValor || (evento as any).prioridad?.valor || "media";
     const prioridadNormalizada = prioridadCruda.toLowerCase();

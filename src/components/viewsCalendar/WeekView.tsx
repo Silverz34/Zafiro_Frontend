@@ -4,6 +4,7 @@ import type { ViewProps } from "../../../interfaces/types/props";
 import { useEtiquetas } from "../../../hooks/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
+import { Repeat } from "lucide-react";
 
 export default function WeekView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
   const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'semana');
@@ -85,11 +86,16 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                         }
                       }}
 
-                      className="absolute left-1 right-1 bg-blue-600/20 border border-blue-500 rounded-md p-1.5 
-                        overflow-hidden shadow-sm backdrop-blur-sm transition-all hover:bg-blue-600/30 z-10" style={{ ...event.positionStyle, ...dynamicCardStyle }}>
-                      <p className="text-xs font-semibold text-blue-100 line-clamp-1">{event.summary}</p>
-                      <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime} - {event.endTime}</p>
-                      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-blue-600" style={dynamicBarStyle}/>
+                      className={`absolute left-1 right-1 border rounded-md p-1.5 
+                        overflow-hidden shadow-sm backdrop-blur-sm transition-all z-10 flex flex-col justify-between ${event.isAllDay ? 'bg-blue-600/40 border-blue-400' : 'bg-blue-600/20 border-blue-500 hover:bg-blue-600/30'}`} style={{ ...event.positionStyle, ...dynamicCardStyle }}>
+                      <div>
+                        <div className="flex items-center gap-1">
+                          {event.recurringEventId && <Repeat className="w-2.5 h-2.5 text-blue-200 shrink-0" />}
+                          <p className="text-[11px] font-bold text-blue-100 line-clamp-1">{event.summary}</p>
+                        </div>
+                        <p className="text-[9px] text-blue-300 mt-0.5">{event.formattedTime}</p>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600" style={dynamicBarStyle}/>
                     </div>
                   );
                 })}
