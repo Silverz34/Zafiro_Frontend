@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "../../../lib/sincronizacion/apiClient"
+import { algorithmPost, apiGet, apiPost } from "../../../lib/sincronizacion/apiClient"
 import { ApiError } from "../../../lib/sincronizacion/apiError"
 
 interface RangoTiempo {
@@ -7,9 +7,9 @@ interface RangoTiempo {
 }
 
 interface DateDict {
-    date: string | null
-    dateTime: string | null
-    timeZone: string | null
+    date?: string
+    dateTime?: string
+    timeZone?: string
 }
 
 interface ReminderOverride {
@@ -19,7 +19,7 @@ interface ReminderOverride {
 
 interface ReminderDict {
     useDefault: boolean
-    overrides: ReminderOverride[] | null
+    overrides?: ReminderOverride[]
 }
 
 interface EtiquetaDict {
@@ -38,8 +38,8 @@ interface Agenda {
     start: DateDict
     end: DateDict
 
-    recurringEventId: string | null
-    originalStartTime: string | null
+    recurringEventId?: string
+    originalStartTime?: string
 
     transparency: 'transparent' | 'opaque'
     reminders: ReminderDict
@@ -51,7 +51,6 @@ interface Config {
     tiempo_descanso: RangoTiempo
     dias_contemplados: number
     gap: number
-    tag: number
     long_first: boolean
 }
 
@@ -95,14 +94,14 @@ export class algorithmHook {
 
     public async sortAgenda():Promise<AlgorithmResponse | null>  {
         try {
-            const response = await apiPost<AlgorithmResponse>(
-                '/api/algorithm/sort'
+            const response = await algorithmPost<AlgorithmResponse>(
+                'prueba'
             )
             if (!response.success){
                 console.error('[algorithmSort] Error al reordenar las actividades.')
                 return null
             }
-            console.log(response.data)
+            console.log(response)
             return response.data
         }  catch (error) {
             if (error instanceof ApiError) {
