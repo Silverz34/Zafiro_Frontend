@@ -64,7 +64,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex justify-center md:justify-end">
-                <Image src="/calendar.png" alt="Ilustración isométrica detallada de un calendario con sincronización en la nube y iconos flotantes" width={500} height={500} className="w-auto h-[350px] object-contain" />
+                <Image src="/calendar.png" alt="Ilustración" width={500} height={500} className="w-auto h-87.5 object-contain" />
               </div>
             </div>
           </div>
@@ -113,14 +113,29 @@ export default function Home() {
       </main>
 
       <footer className="w-full border-t border-slate-800 py-8 mt-auto">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-slate-500 text-sm">
-          </div>
-          <a href="https://github.com/Silverz34/Zafiro_Frontend" className="flex gap-6">
-            <Github className="w-5 h-5 text-slate-500 hover:text-white cursor-pointer" />
-          </a>
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-slate-500 text-sm">
+          <span>© {new Date().getFullYear()} Zafiro. Todos los derechos reservados.</span>
+          <span className="hidden md:inline text-slate-700">|</span>
+          <Link 
+            href="/privacidad" 
+            className="hover:text-white transition-colors duration-200"
+          >
+            Aviso de Privacidad
+          </Link>
         </div>
-      </footer>
+        <a 
+          href="https://github.com/Silverz34/Zafiro_Frontend" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex gap-6"
+          aria-label="Repositorio de GitHub de Zafiro"
+        >
+          <Github className="w-5 h-5 text-slate-500 hover:text-white transition-colors duration-200 cursor-pointer" />
+        </a>
+
+      </div>
+    </footer>
 
     </div>
   );
