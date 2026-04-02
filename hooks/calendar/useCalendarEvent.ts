@@ -1,4 +1,4 @@
-'use server'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { fetchGoogleEvents } from '../../lib/CrudActividad/fetchActividad'
