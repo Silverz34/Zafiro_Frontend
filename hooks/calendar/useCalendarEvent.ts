@@ -12,6 +12,7 @@ interface UseCalendarEventsProps {
 
 interface UseCalendarEventsReturn {
   events: lecturaActividad[]
+  isLoading: boolean
   recargarEventos: () => void
 }
 
@@ -19,10 +20,10 @@ export function useCalendarEvents({
   ready,
   currentDate,
 }: UseCalendarEventsProps): UseCalendarEventsReturn {
-  const [events, setEvents] = useState<lecturaActividad[]>([])
-  const lastFetchedMonth = useRef<string | null>(null)
-
-  const [reloadTrigger, setReloadTrigger] = useState(0)
+  const [events, setEvents] = useState<lecturaActividad[]>([]);
+  const lastFetchedMonth = useRef<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [reloadTrigger, setReloadTrigger] = useState(0);
 
   useEffect(() => {
     // Guardia: si el usuario no está listo, no hacer nada
@@ -33,12 +34,14 @@ export function useCalendarEvents({
     if (lastFetchedMonth.current === monthKey) return
 
     const load = async () => {
+      setIsLoading(true)       
       const { timeMin, timeMax } = getCalendarViewRange(currentDate)
       const data = await fetchGoogleEvents(timeMin, timeMax)
       if (data) {
         setEvents(data)
         lastFetchedMonth.current = monthKey 
       }
+      setIsLoading(false)       
     }
 
     load()
@@ -49,5 +52,5 @@ export function useCalendarEvents({
     setReloadTrigger(t => t + 1)        // Forzar que el efecto corra de nuevo
   }
 
-  return { events, recargarEventos }
+  return { events, isLoading, recargarEventos }
 }
