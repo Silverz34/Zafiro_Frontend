@@ -1,4 +1,4 @@
-
+'use server'
 
 import { apiPatch } from "../sincronizacion/apiClient";
 import { SchemaEtiqueta } from "../../interfaces/Etiquetas";

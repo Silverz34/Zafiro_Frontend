@@ -22,23 +22,18 @@ export function useGoogleSync() {
     checkStatus();
   }, []);
   const toggleSync = async (checked: boolean) => {
-    setLoading(true);
-
-    if (!checked) {
-      const response = await disconnectGoogle();
-      if (response?.success) {
-        setConnected(false);
-      } else {
-        console.error('Fallo al desconectar de Google');
-      }
-      setLoading(false);
-    } else {
+    if (checked) {
       const response = await initiateGoogle();
       if (response?.success && response.url) {
+        
+        // Validar que la URL pertenezca a Google antes de redirigir
+        const allowed = ['https://accounts.google.com', 'https://oauth2.googleapis.com'];
+        const isValid = allowed.some(origin => response.url.startsWith(origin));
+        if (!isValid) {
+          console.error('[Google OAuth] URL de redirect sospechosa:', response.url);
+          return;
+        }
         window.location.href = response.url;
-      } else {
-        console.error('Fallo al obtener la url de Google', response?.error);
-        setLoading(false);
       }
     }
   };
