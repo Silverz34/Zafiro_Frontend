@@ -6,9 +6,9 @@ import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { Repeat } from "lucide-react";
 import { useEtiquetasCtx } from "@/context/EtiquetaContext";
+import CalendarLoader from "./CalendarLoader";
 
-
-export default function DayView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
+export default function DayView({ currentDate, events, onOpenModal, onEventClick, isLoading }: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');
     const { etiquetas } = useEtiquetasCtx();
     const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -42,7 +42,9 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                     </span>
                 </div>
             </div>
-
+            { isLoading ? (
+                <CalendarLoader />                        
+            ) : (
             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-800 relative">
                 <div className="flex min-h-max relative">
                     <div className="w-16 shrink-0 border-r border-gray-800 bg-[#100F1D]">
@@ -91,6 +93,7 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
 
                 </div>
             </div>
+          )}
         </div>
     );
 }

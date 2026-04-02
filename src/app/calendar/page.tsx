@@ -23,8 +23,7 @@ export default function DashboardTemporal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventoEditar, setEventoEditar] = useState<MiniModal | null>(null);
   const [miniModal, setMiniModal] = useState<MiniModal | null>(null);
-
-  const { events, recargarEventos } = useCalendarEvents({ ready, currentDate });
+  const { events, isLoading, recargarEventos } = useCalendarEvents({ ready, currentDate })
   const [prioridadesDesactivadas, setPrioridadesDesactivadas] = useState<PrioridadType[]>([]);
   const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
 
@@ -54,15 +53,20 @@ export default function DashboardTemporal() {
     switch (currentView) {
       case 'dia':
         return <DayView currentDate={currentDate} events={eventosFiltrados}
-          onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
+          isLoading={isLoading}     
+          onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal}
+           />;
       case 'semana':
         return <WeekView currentDate={currentDate} events={eventosFiltrados}
+          isLoading={isLoading}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
       case 'mes':
         return <MonthView currentDate={currentDate} events={eventosFiltrados}
+          isLoading={isLoading}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
       default:
         return <WeekView currentDate={currentDate} events={eventosFiltrados}
+          isLoading={isLoading}
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal} />;
     }
   };

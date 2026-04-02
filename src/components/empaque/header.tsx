@@ -9,6 +9,13 @@ import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
 import { algorithmHook } from '../../../hooks/calendar/algorithm/sortAgenda';
 import { useRef } from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";         // ← añadir este import
+import { Info } from "lucide-react"; 
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
@@ -70,22 +77,57 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="hidden sm:flex items-center gap-3 mr-2">
+         <div className="hidden sm:flex items-center gap-3 mr-2">
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-3 cursor-default">
+                  {!isConnected && !isLoading && (
+                    <Info className="w-4 h-4 text-blue-400 shrink-0 animate-pulse" />
+                  )}
 
-          <span className={`text-sm font-medium transition-colors ${isConnected ? 'text-green-400' : 'text-gray-400'}`}>
-            {isConnected ? 'Sincronizado' : 'Vincular con Google Calendar'}
-          </span>
+                  <span className={`text-sm font-medium transition-colors
+                    ${isConnected ? 'text-green-400' : 'text-gray-400'}`}>
+                    {isConnected ? 'Sincronizado' : 'Vincular con Google Calendar'}
+                  </span>
 
-          <Switch
-            checked={isConnected}
-            onCheckedChange={toggleSync}
-            disabled={isLoading}
-            className="data-[state=checked]:bg-green-500"
-          />
+                  <Switch
+                    checked={isConnected}
+                    onCheckedChange={toggleSync}
+                    disabled={isLoading}
+                    className="data-[state=checked]:bg-green-500"
+                  />
 
-          {isLoading && (
-            <span className="text-xs text-gray-500 animate-pulse">Cargando...</span>
-          )}
+                  {isLoading && (
+                    <span className="text-xs text-gray-500 animate-pulse">
+                      Cargando...
+                    </span>
+                  )}
+                </div>
+              </TooltipTrigger>
+
+              {/* Solo mostrar el tooltip cuando NO está conectado */}
+              {!isConnected && !isLoading && (
+                <TooltipContent
+                  side="bottom"
+                  align="end"
+                  className="
+                    bg-[#0d0c1e] border border-[#2554E0] text-white
+                    rounded-xl p-3 max-w-55 shadow-xl shadow-blue-950/40
+                  "
+                >
+                  <div className="flex flex-col gap-1.5">
+                    <p className="text-xs font-semibold text-white">
+                      Conecta tu Google Calendar
+                    </p>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Para ver y gestionar tus eventos necesitas vincular tu cuenta de Google.
+                    </p>
+                  </div>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <button onClick={onOpenModal}
           className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-4 rounded-lg flex items-center gap-1 transition-all shadow-md">
@@ -94,14 +136,14 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
 
         <div className="hidden md:block">
           <Select value={currentView} onValueChange={(v) => setCurrentView(v as ViewType)}>
-            <SelectTrigger className="bg-[#010112] border border-blue-600 text-white text-sm rounded-lg h-[34px] w-[100px] px-3 focus:ring-0 focus:ring-offset-0 hover:bg-gray-800 transition-colors">
+            <SelectTrigger className="bg-[#010112] border border-blue-600 text-white text-sm rounded-lg h-8.5 w-25 px-3 focus:ring-0 focus:ring-offset-0 hover:bg-gray-800 transition-colors">
               <SelectValue />
             </SelectTrigger>
             <SelectContent
               position="popper"
               side="bottom"
               sideOffset={6}
-              className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
+              className="bg-[#010112] border-blue-600 text-white w-[--radix-select-trigger-width] data-radix-select-viewport:overflow-y-auto data-radix-select-viewport:scroll-smooth"
             >
               <SelectItem value="dia" className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Día</SelectItem>
               <SelectItem value="semana" className="text-gray-300 text-sm focus:bg-blue-600/20 focus:text-white rounded-lg">Semana</SelectItem>
