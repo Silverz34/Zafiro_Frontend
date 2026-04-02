@@ -4,6 +4,8 @@ import type { ViewProps } from "../../../interfaces/types/props";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
+import { useEtiquetasCtx } from "@/context/EtiquetaContext";
+
 
 import {
   Popover,
@@ -15,7 +17,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
 
     const { days, getProcessed } = CalendarLogic(currentDate, events, 'mes');
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-    const { etiquetas } = useEtiquetas();
+    const { etiquetas } = useEtiquetasCtx();
 
     // Función auxiliar para calcular los estilos dinámicos de un evento
     const getEventStyles = (event: any) => {

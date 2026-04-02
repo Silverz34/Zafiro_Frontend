@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic'
 
 import DashboardLayout from "@/components/empaque/empaque";
 import { useState } from 'react';
@@ -12,6 +13,8 @@ import MonthView from "@/components/viewsCalendar/MonthView";
 import type { MiniModal } from "../../../interfaces/Preview";
 import { useCalendarEvents } from "../../../hooks/calendar/useCalendarEvent";
 import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
+import { EtiquetasProvider } from "@/context/EtiquetaContext";
+
 
 export default function DashboardTemporal() {
   const { ready } = useSession();
@@ -65,35 +68,38 @@ export default function DashboardTemporal() {
   };
 
   return (
-    <>
-      <DashboardLayout
-        currentDate={currentDate} setCurrentDate={setCurrentDate}
-        currentView={currentView} setCurrentView={setCurrentView}
-        onOpenModal={() => setIsModalOpen(true)}
-        prioriDesactivadas={prioridadesDesactivadas}
-        onTogglePriority={togglePriority}
-        etiquetasDesactivadas={etiquetasDesactivadas}
-        onToggleEtiqueta={toggleEtiqueta}
-      >
-        <div className="pt-12 h-full">
-          {renderCurrentView()}
-        </div>
-      </DashboardLayout>
+    <EtiquetasProvider>
+      <>
+        
+          <DashboardLayout
+            currentDate={currentDate} setCurrentDate={setCurrentDate}
+            currentView={currentView} setCurrentView={setCurrentView}
+            onOpenModal={() => setIsModalOpen(true)}
+            prioriDesactivadas={prioridadesDesactivadas}
+            onTogglePriority={togglePriority}
+            etiquetasDesactivadas={etiquetasDesactivadas}
+            onToggleEtiqueta={toggleEtiqueta}
+          >
+            <div className="pt-12 h-full">
+              {renderCurrentView()}
+            </div>
+          </DashboardLayout>
+      
+        <ModalActividad
+          isOpen={isModalOpen}
+          modo={eventoEditar ? "editar" : "crear"}
+          eventoInicial={eventoEditar}
+          onClose={() => { setIsModalOpen(false); setEventoEditar(null); }}
+          onSuccess={() => { recargarEventos(); setEventoEditar(null); }}
+        />
 
-      <ModalActividad
-        isOpen={isModalOpen}
-        modo={eventoEditar ? "editar" : "crear"}
-        eventoInicial={eventoEditar}
-        onClose={() => { setIsModalOpen(false); setEventoEditar(null); }}
-        onSuccess={() => { recargarEventos(); setEventoEditar(null); }}
-      />
-
-      <EventoPreview
-        evento={miniModal}
-        onClose={() => setMiniModal(null)}
-        onEdit={(evento) => { setMiniModal(null); setEventoEditar(evento); setIsModalOpen(true); }}
-        onDelete={() => { setMiniModal(null); recargarEventos(); }}
-      />
-    </>
+        <EventoPreview
+          evento={miniModal}
+          onClose={() => setMiniModal(null)}
+          onEdit={(evento) => { setMiniModal(null); setEventoEditar(evento); setIsModalOpen(true); }}
+          onDelete={() => { setMiniModal(null); recargarEventos(); }}
+        />
+      </>
+    </EtiquetasProvider>
   );
 }

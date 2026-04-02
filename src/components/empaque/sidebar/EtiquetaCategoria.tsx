@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import ModalEtiqueta from '@/components/modal/ModalEtiqueta';
 import { useEtiquetas } from '../../../../hooks/user/useEtiquetas';
 import type { EtiquetaFrontend } from '../../../../lib/CrudEtiquetas/getEtiqueta';
-
+import { useEtiquetasCtx } from '@/context/EtiquetaContext';
 
 interface EtiquetaProp{
   desactivadas: string[];
@@ -16,7 +16,7 @@ interface EtiquetaProp{
 
 export default function Etiquetas({desactivadas, onToggleEtiqueta}: EtiquetaProp) {
 
-  const { etiquetas, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetas();
+  const { etiquetas, agregarEtiqueta, editarEtiqueta, borrarEtiqueta } = useEtiquetasCtx();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [etiquetaEditar, setEtiquetaEditar] = useState<EtiquetaFrontend | null>(null);
 
@@ -31,7 +31,10 @@ export default function Etiquetas({desactivadas, onToggleEtiqueta}: EtiquetaProp
 
   const handleEliminar = async (etiqueta: EtiquetaFrontend) => {
     await borrarEtiqueta(etiqueta.id);
-    onToggleEtiqueta(etiqueta.id);
+    const estabaDesactivada = desactivadas.includes(String(etiqueta.id));
+    if (!estabaDesactivada) {
+      onToggleEtiqueta(String(etiqueta.id)); // lo marca como desactivado = ya no afecta nada
+    }
   };
 
   const toggleEtiqueta = (id: string) => {

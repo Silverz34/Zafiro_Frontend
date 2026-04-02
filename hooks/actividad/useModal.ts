@@ -155,7 +155,6 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
     if (modo === "editar" && idMaestro) {
       const startISO = isAllDay ? undefined : toLocalISOString(fecha, horaInicio);
       const fechaInicioParaRegla = startISO ?? `${fecha}T00:00:00`;
-      
       const reglaCalculada = generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia);
 
       await handleEditar(
@@ -180,7 +179,6 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
         },
         setLoading
       );
-      onSuccess(); 
 
     } else {
       await handleCrear(
@@ -191,7 +189,6 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
         } as FormActividad,
         setLoading
       );
-      onSuccess();
     }
   };
   return {

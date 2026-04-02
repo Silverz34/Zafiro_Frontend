@@ -1,14 +1,14 @@
 'use client'
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
-import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { Repeat } from "lucide-react";
+import { useEtiquetasCtx } from "@/context/EtiquetaContext";
 
 export default function WeekView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
   const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'semana');
-  const { etiquetas } = useEtiquetas();
+  const { etiquetas } = useEtiquetasCtx();
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
   return (

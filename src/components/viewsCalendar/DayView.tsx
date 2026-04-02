@@ -5,10 +5,12 @@ import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { Repeat } from "lucide-react";
+import { useEtiquetasCtx } from "@/context/EtiquetaContext";
+
 
 export default function DayView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
     const { days, hours, getProcessed } = CalendarLogic(currentDate, events, 'dia');
-    const { etiquetas } = useEtiquetas();
+    const { etiquetas } = useEtiquetasCtx();
     const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const targetDate = days[0] || currentDate;
     const processedEvents = getProcessed(targetDate);

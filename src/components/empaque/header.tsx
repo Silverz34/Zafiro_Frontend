@@ -8,6 +8,7 @@ import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
 import { algorithmHook } from '../../../hooks/calendar/algorithm/sortAgenda';
+import { useRef } from 'react';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
@@ -20,7 +21,7 @@ interface CalendarHeaderProps {
 
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
   currentView, setCurrentView, onOpenModal }: CalendarHeaderProps) {
-    const algorithmController:algorithmHook = new algorithmHook()
+  const algorithmController = useRef(new algorithmHook());
 
   const { isConnected, isLoading, toggleSync } = useGoogleSync();
   const {
@@ -61,7 +62,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
             </span>
 
             {/*Boton para la logica del algoritmo  */}
-            <button onClick={algorithmController.sortAgenda} className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
+            <button onClick={() => algorithmController.current.sortAgenda()} className="px-3 py-1.5 rounded-lg  bg-blue-600 text-white hover:bg-blue-900 transition-colors">
               Ordenar Calendario
             </button>
           </div>
