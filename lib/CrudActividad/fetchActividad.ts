@@ -30,8 +30,6 @@ export async function fetchGoogleEvents(
       console.error('[fetchGoogleEvents] Respuesta fallida')
       return null
     }
-
-    console.log(response.data?.items)
     const rawItems = response.data?.items ?? []
     const normalizedItems = rawItems.map((evento: any) => ({
       ...evento,

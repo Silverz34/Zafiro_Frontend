@@ -28,7 +28,7 @@ async function builheaders(): Promise<HeadersInit> {
 
 async function buildAlgorithmHeaders(data: string): Promise<HeadersInit> {
   const { getToken } = await auth();
-  const token = await getToken({ template: 'zafiro-backend' });
+  const token = await getToken()
   if (!token) {
     throw new ApiError(401, 'sin sesion activa - token no disponible')
   }
