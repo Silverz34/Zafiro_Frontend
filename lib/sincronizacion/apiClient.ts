@@ -26,6 +26,7 @@ async function builheaders(): Promise<HeadersInit> {
   }
 }
 
+// esto es del algoritmo no se si funcionam, esta hecho por yaelcito 
 async function buildAlgorithmHeaders(data: string): Promise<HeadersInit> {
   const { getToken } = await auth();
   const token = await getToken()
@@ -66,6 +67,7 @@ async function algorithmRequest<T>(data: any){
 
   return json
 }
+//aqui termina lo que hizo yael 
 
 async function request<T>(
   method: string,
