@@ -47,7 +47,6 @@ export default function ModalAlgoritmo({ isOpen, onClose, onSuccess }: ModalAlgo
         className="
           bg-[#010112] border border-[#2554E0] text-white
           max-w-md w-full rounded-2xl
-          shadow-2xl shadow-blue-950/60
           p-0 gap-0 overflow-hidden
           [&>button]:hidden
         "
