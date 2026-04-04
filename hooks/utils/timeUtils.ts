@@ -8,7 +8,7 @@ export const generarHorarios = (): TimeSlot[] => {
   const slots: TimeSlot[] = [];
   
   for (let hora = 0; hora < 24; hora++) {
-    for (let minuto = 0; minuto < 60; minuto += 15) {
+    for (let minuto = 0; minuto < 60; minuto += 30) {
       const horaStr = hora.toString().padStart(2, '0');
       const minStr = minuto.toString().padStart(2, '0');
       const valorParaAPI = `${horaStr}:${minStr}`;
