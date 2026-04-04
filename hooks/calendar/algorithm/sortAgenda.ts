@@ -1,4 +1,4 @@
-import { AlgorithmResponse, Config } from "../../../interfaces/Algorithm"
+import { AlgorithmResponse, ConfigType } from "../../../interfaces/Algorithm"
 import { apiGet, apiPost } from "../../../lib/sincronizacion/apiClient"
 import { ApiError } from "../../../lib/sincronizacion/apiError"
 
@@ -23,20 +23,12 @@ export class algorithmHook {
         }
     }
 
-    public async sortAgenda():Promise<AlgorithmResponse | null>  {
-        const mockData:Config = {
-                tiempo_descanso:{
-                    inicio:"22:00",
-                    fin:"8:00"
-                },
-                dias_contemplados:7,
-                gap:30,
-                long_first: false
-            }
+    public async sortAgenda(payload: object):Promise<AlgorithmResponse | null>  {
         try {
+            const payloadParsed = ConfigType.parse(payload)
             const response = await apiPost<AlgorithmResponse>(
                 '/api/algorithm/sort',
-                mockData
+                payloadParsed
             )
             if (!response.success){
                 console.error('[algorithmSort] Error al reordenar las actividades.')

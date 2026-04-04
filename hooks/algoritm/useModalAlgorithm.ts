@@ -3,8 +3,8 @@
 
 import { useState } from "react"
 import { toast } from "sonner"
-import { ejecutarAlgoritmo } from "../../lib/algoritmo/getAlgoritmo"
-import type { Algoritmo } from "../../interfaces/algoritmo"
+import { algorithmHook } from "../calendar/algorithm/sortAgenda"
+import { Config } from "../../interfaces/Algorithm"
 
 interface UseModalAlgoritmoProps {
   onClose:   () => void
@@ -19,34 +19,35 @@ export function useModalAlgoritmo({ onClose, onSuccess }: UseModalAlgoritmoProps
   const [longFirst,        setLongFirst]         = useState(false)
   const [idEtiqueta,       setIdEtiqueta]        = useState<number | undefined>(undefined)
   const [loading,          setLoading]           = useState(false)
+  const algorithm = new algorithmHook()
 
   const handleEjecutar = async () => {
     setLoading(true)
 
-    const payload: Algoritmo = {
+    const payload: Config = {
       tiempo_descanso: {       
-        hora_inicio: horaInicio,
-        hora_fin:    horaFin,
+        inicio: horaFin, // la diferencia yace en que la aplicación pide el tiempo de trabajo, mientras que el algoritmo trabaja con el tiempo de descanso, por lo que se tienen que invertir
+        fin:    horaInicio,
       },
       dias_contemplados: diasContemplados,
       gap,
       long_first: longFirst,
-      idEtiqueta,
+      tag: idEtiqueta,
     }
 
-    const result = await ejecutarAlgoritmo(payload)
+    const result = await algorithm.sortAgenda(payload)
+    if (!result) {
+      toast.error("No se pudo ordenar el algoritmo.")
+      return;
+    }
     setLoading(false)
 
-    if (result.success) {
+    if (result) {
       toast.success("Calendario ordenado", {
         description: "El algoritmo reorganizó tus actividades.",
       })
       onSuccess()
       onClose()
-    } else {
-      toast.error("No se pudo ordenar el calendario", {
-        description: result.error,
-      })
     }
   }
 

@@ -1,7 +1,4 @@
-interface RangoTiempo {
-    inicio: string
-    fin: string
-}
+import z from "zod"
 
 interface DateDict {
     date?: string
@@ -45,15 +42,39 @@ interface Agenda {
 }
 
 export interface AlgorithmResponse {
+    success: true
     status: string
     code: number
     tareas_agendadas: Agenda[]
     tareas_no_agendadas: Agenda[]
 }
 
-export interface Config {
-    tiempo_descanso: RangoTiempo
-    dias_contemplados: number
-    gap: number
-    long_first: boolean
+export interface Activities {
+    defaultReminders: ReminderOverride[]
+    items: Agenda[]
 }
+
+export interface AlgorithmRequest {
+    config: Config
+    calendar: Activities
+}
+
+const RangoTiempoType = z.object({
+    inicio: z.string(),
+    fin: z.string()
+})
+
+export const ConfigType = z.object({
+    tiempo_descanso: RangoTiempoType,
+    dias_contemplados: z.int().positive().min(3).max(15).default(7),
+    gap: z.int().positive().default(15),
+    long_first: z.boolean().default(false),
+    tag: z.int().positive().optional()
+})
+
+const AlgorithmRequestType = z.object({
+    config: ConfigType,
+    calendar: z //ahi lo hago
+})
+
+export type Config = z.infer<typeof ConfigType>

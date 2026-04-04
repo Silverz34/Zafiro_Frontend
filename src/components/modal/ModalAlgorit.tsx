@@ -9,7 +9,7 @@ import { Label }      from "@/components/ui/label"
 import { Switch }     from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TimePicker } from "@/components/ui/time"
-import { useModalAlgoritmo } from "../../../hooks/algoritm/useModalAlgorit"
+import { useModalAlgoritmo } from "../../../hooks/algoritm/useModalAlgorithm"
 import { useEtiquetasCtx }   from "@/context/EtiquetaContext"
 import { TimeRangePicker } from "../ui/TimeRange"
 
