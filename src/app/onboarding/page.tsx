@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Label }  from "@/components/ui/label";
 import { GraduationCap, Briefcase, Clock} from "lucide-react";
 import Image from "next/image";
+import { TimeRangePicker } from "@/components/ui/TimeRange"; 
 
 const OCUPACIONES = [
   {
@@ -108,55 +109,12 @@ export default function CompletarPerfil() {
                 <Clock className="w-3.5 h-3.5" />
                 Horario de sueño
               </Label>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-xs text-gray-500 pl-1">Inicio</span>
-                  <Select
-                    value={hora_inicio}
-                    onValueChange={(v) => setHoraInicio(v)}
-                  >
-                    <SelectTrigger className="w-full bg-[#171733] border-[#1e1d3a] text-white focus:ring-blue-600 rounded-xl h-[52px] text-sm font-medium">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent
-                      position="popper"
-                      side="bottom"
-                      sideOffset={6}
-                      className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
-                    >
-                      {HORARIOS_COMPLETOS.map(h => (
-                        <SelectItem key={h.value} value={h.value}>
-                          {h.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-xs text-gray-500 pl-1">Fin</span>
-                  <Select
-                    value={hora_fin}
-                    onValueChange={(v) => setHoraFin(v)}
-                  >
-                    <SelectTrigger className="w-full bg-[#171733] border-[#1e1d3a] text-white focus:ring-blue-600 rounded-xl h-[52px] text-sm font-medium">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent
-                      position="popper"
-                      side="bottom"
-                      sideOffset={6}
-                      className="bg-[#0d0c1e] border-[#1e1d3a] text-white w-[--radix-select-trigger-width] [&_[data-radix-select-viewport]]:max-h-[175px] [&_[data-radix-select-viewport]]:overflow-y-auto [&_[data-radix-select-viewport]]:scroll-smooth"
-                    >
-                      {obtenerHorasFin(hora_inicio).map(h => (
-                        <SelectItem key={h.value} value={h.value}>
-                          {h.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+               <TimeRangePicker
+                horaInicio={hora_inicio}
+                horaFin={hora_fin}
+                onChangeInicio={setHoraInicio}
+                onChangeFin={setHoraFin}
+              />
             </div>
 
             <Button
