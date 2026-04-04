@@ -37,7 +37,7 @@ export function buildActivityPayload(form: FormActividad): CrearActividad {
       ? { date: form.fecha }
       : { dateTime: endISO, timeZone: 'America/Mexico_City' },
 
-    transparency: form.transparency === 'transparent' ? 'transparent' : undefined,
+    transparency: form.transparency,
 
     recurrence: generarRegla(
       startISO ?? `${form.fecha}T00:00:00`,

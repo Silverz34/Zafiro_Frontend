@@ -4,6 +4,8 @@ import type { ViewProps } from "../../../interfaces/types/props";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
 import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
+import { useEtiquetasCtx } from "@/context/EtiquetaContext";
+import CalendarLoader from "./CalendarLoader";
 
 import {
   Popover,
@@ -11,11 +13,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function MonthView({ currentDate, events, onOpenModal, onEventClick }: ViewProps) {
+export default function MonthView({ currentDate, events, onOpenModal, onEventClick, isLoading }: ViewProps) {
 
     const { days, getProcessed } = CalendarLogic(currentDate, events, 'mes');
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-    const { etiquetas } = useEtiquetas();
+    const { etiquetas } = useEtiquetasCtx();
 
     // Función auxiliar para calcular los estilos dinámicos de un evento
     const getEventStyles = (event: any) => {
@@ -43,7 +45,9 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                     </div>
                 ))}
             </div>
-            
+            { isLoading ? (
+                <CalendarLoader />                      
+            ) : (
             <div className="flex-1 grid grid-cols-7 grid-rows-6 auto-rows-fr">
                 {days.map((date, index) => {
                     const processedEvents = getProcessed(date);
@@ -58,15 +62,16 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
 
                     const eventosVisibles = processedEvents.slice(0, 2);
                     const cantidadSobrantes = processedEvents.length - 2;
-
+                    
                     return (
+                        
                         <div
                             key={index}
                             onClick={onOpenModal}
                             className={`border-r border-b border-gray-800 flex flex-col min-h-25 hover:bg-gray-800/30 transition-colors cursor-pointer ${
                                 !isCurrentMonth ? 'bg-[#0a0914] opacity-50' : ''
                             }`}
-                        >
+                        > 
                             <div className={`flex justify-center py-1 transition-colors duration-300 ${headerClass}`}>
                                 <span className={`text-xs w-6 h-6 flex items-center justify-center rounded-full ${
                                     isToday 
@@ -156,6 +161,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                     );
                 })}
             </div>
+            )}
         </div>
     );
 }

@@ -5,7 +5,7 @@ import { useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { syncUser } from '../../lib/sincronizacion/syncUser'
 
-//
+
 const MAX_RETRIES = 3
 const RETRY_DELAY = 5000
 
@@ -46,8 +46,6 @@ export function useSession() {
 
       router.replace('/login')
     }
-
-    // Te faltaba llamar a la función en tu código original
     attemptSync();
 
     // Esta función se ejecuta automáticamente cuando el componente desaparece

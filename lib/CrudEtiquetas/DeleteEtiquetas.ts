@@ -1,3 +1,5 @@
+'use server'
+
 import { apiDelete } from "../sincronizacion/apiClient";
 import { ApiError } from "../sincronizacion/apiError";
 

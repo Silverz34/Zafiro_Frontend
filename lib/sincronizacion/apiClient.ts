@@ -1,9 +1,11 @@
 'use server'
 import { auth } from '@clerk/nextjs/server'
-import { undefined } from 'zod';
 import { ApiError } from './apiError';
 
 const BASE = process.env.API_URL;
+if (!BASE) {
+  throw new Error('[apiClient] API_URL no está definida. Revisa tus variables de entorno.');
+}
 
 export interface ApiResponse<T> {
   success: boolean

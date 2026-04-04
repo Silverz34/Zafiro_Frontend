@@ -15,7 +15,7 @@ import { TimePicker } from "../ui/time";
 import { MiniModal } from "../../../interfaces/Preview";
 import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { Tag, AlignLeft } from "lucide-react";
-
+import { useEtiquetasCtx } from "@/context/EtiquetaContext";
 
 interface ModalProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ interface ModalProps {
 }
 
 export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInicial, modo }: ModalProps) {
-  const { etiquetas } = useEtiquetas();
+  const { etiquetas } = useEtiquetasCtx();
   const {
     titulo, setTitulo,
     selectedDate, setSelectedDate,
