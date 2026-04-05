@@ -9,8 +9,8 @@ export class algorithmHook {
         const today = new Date()
         const currentYear = today.getFullYear()
         const currentMonth = today.getMonth()
-        const currentDay = today.getDay()
-        console.log(today.toISOString(), currentYear, currentMonth, currentDay)
+        const currentDay = today.getDate()
+
         const end = new Date(currentYear, currentMonth, currentDay + limit)
 
         const todayStr = today.toISOString()
@@ -66,11 +66,10 @@ export class algorithmHook {
     public async sortAgenda(data: object):Promise<AlgorithmResponse | null>  {
         try {
             const configParsed: Config = ConfigType.parse(data)
-            console.log(configParsed)
 
             const { today, end } = this.createDates(configParsed.dias_contemplados)
             const activities: lecturaActividad[] = await fetchGoogleEvents(today,end) ?? []
-            console.log(today, end, activities)
+
             const activitiesParsed: AgendaArray = this.parseActivities(activities)
             if (activitiesParsed.length == 0) {
                 console.error("[algorithmSort] No se recibieron actividades")
@@ -87,7 +86,6 @@ export class algorithmHook {
                     items: activitiesParsed
                 }
             }
-            console.log(payload)
             
             const response = await apiPost<AlgorithmResponse>(
                 '/api/algorithm/sort',
