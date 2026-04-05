@@ -38,7 +38,6 @@ export function useModalAlgoritmo({ onClose, onSuccess }: UseModalAlgoritmoProps
     const result = await algorithm.sortAgenda(payload)
     if (!result) {
       toast.error("No se pudo ordenar el algoritmo.")
-      return;
     }
     setLoading(false)
 
