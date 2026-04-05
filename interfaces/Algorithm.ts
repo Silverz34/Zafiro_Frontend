@@ -1,45 +1,50 @@
 import z from "zod"
 
-interface DateDict {
-    date?: string
-    dateTime?: string
-    timeZone?: string
-}
+const DateRangeType = z.object({
+    date: z.string().optional(),
+    dateTime: z.string().optional(),
+    timeZone: z.string().optional(),
+})
 
-interface ReminderOverride {
-    method: 'popup' | 'email'
-    minutes: number
-}
+const ReminderOverrideType = z.object({
+    method: z.literal(['popup', 'email']),
+    minutes: z.int().positive()
+})
 
-interface ReminderDict {
-    useDefault: boolean
-    overrides?: ReminderOverride[]
-}
+const ReminderType = z.object({
+    useDefault: z.boolean().default(true),
+    overrides: z.array(ReminderOverrideType).optional()
+})
 
-interface EtiquetaDict {
-    etiqueta: number
-    color: string
-}
+const TagType = z.object({
+    etiqueta: z.int().positive(),
+    color: z.string().min(7).max(7)
+})
 
-interface ExtrasDict {
-    prioridad: 'baja' | 'media' | 'alta'
-    etiquetas: EtiquetaDict
-}
+const ExtrasType = z.object({
+    prioridad: z.literal(['alta', 'media', 'baja']),
+    etiquetas: TagType
+})
 
-interface Agenda {
-    id: string
-    summary: string
-    start: DateDict
-    end: DateDict
+const AgendaType = z.object({
+    id: z.string(),
+    summary: z.string(),
+    start: DateRangeType,
+    end: DateRangeType,
 
-    recurringEventId?: string
-    originalStartTime?: string
+    recurringEventId: z.string().optional(),
+    originalStartTime: z.string().optional(),
 
-    transparency: 'transparent' | 'opaque'
-    reminders: ReminderDict
+    transparency: z.literal(['transparent', 'opaque']),
+    reminders: ReminderType,
 
-    extras: ExtrasDict
-}
+    extras: ExtrasType
+})
+
+export const AgendaArrayType = z.array(AgendaType)
+export type AgendaArray = z.infer<typeof AgendaArrayType>
+
+type Agenda = z.infer<typeof AgendaType>
 
 export interface AlgorithmResponse {
     success: true
@@ -49,15 +54,11 @@ export interface AlgorithmResponse {
     tareas_no_agendadas: Agenda[]
 }
 
-export interface Activities {
-    defaultReminders: ReminderOverride[]
-    items: Agenda[]
-}
-
-export interface AlgorithmRequest {
-    config: Config
-    calendar: Activities
-}
+const ActivitiesType = z.object({
+    defaultReminders: z.array(ReminderOverrideType),
+    items: z.array(AgendaType)
+})
+type Activities = z.infer<typeof ActivitiesType>
 
 const RangoTiempoType = z.object({
     inicio: z.string(),
@@ -72,9 +73,11 @@ export const ConfigType = z.object({
     tag: z.int().positive().optional()
 })
 
-const AlgorithmRequestType = z.object({
+export const AlgorithmRequestType = z.object({
     config: ConfigType,
-    calendar: z //ahi lo hago
+    calendar: ActivitiesType
 })
+
+export type AlgorithmRequest = z.infer<typeof AlgorithmRequestType>
 
 export type Config = z.infer<typeof ConfigType>
