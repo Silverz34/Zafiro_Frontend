@@ -15,7 +15,7 @@ import { useCalendarEvents } from "../../../hooks/calendar/useCalendarEvent";
 import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
 import { EtiquetasProvider } from "@/context/EtiquetaContext";
 import { AlgorithmResponse } from "../../../interfaces/Algorithm";
-import AcceptancePrompt from "@/components/modal/userAcceptancePomptModal";
+import AcceptancePrompt from "@/components/modal/userAcceptancePromptModal";
 
 
 export default function DashboardTemporal() {

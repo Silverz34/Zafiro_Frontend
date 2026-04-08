@@ -2,6 +2,7 @@ import { useState } from "react"
 import { AlgorithmResponse } from "../../../interfaces/Algorithm"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Button } from "../ui/button"
+import Task from "../ui/algorithm-task"
 
 interface AcceptancePromptProps {
     preview: AlgorithmResponse
@@ -13,7 +14,7 @@ interface AcceptancePromptProps {
 }
 
 export default function AcceptancePrompt({
-    preview, onAccept, onReject, isOpen, onClose
+    preview, onAccept, onReject, isOpen, onOpen, onClose
 }:AcceptancePromptProps) {
     return (
         <Dialog open={isOpen}>
@@ -36,23 +37,22 @@ export default function AcceptancePrompt({
                     </p>
                 </DialogHeader>
 
-                <div>
-                    {preview.tareas_agendadas && (
+                <div className="px-6 py-5 flex flex-col gap-5">
+
+                    {preview.tareas_agendadas.length > 0 && (
                         <div>
+                            <p>Tareas que se reacomodaron:</p>
                             {preview.tareas_agendadas.map((tarea, key: number) => (
-                                <div key={key}>
-                                    <p>{tarea.summary}</p>
-                                </div>
+                                <Task key={key} tarea={tarea} isScheduled={true}/>
                             ))}
                         </div>
                     )}
 
-                    {preview.tareas_no_agendadas && (
+                    {preview.tareas_no_agendadas.length > 0 && (
                         <div>
+                            <p>Tareas que no se pudieron reacomodar:</p>
                             {preview.tareas_no_agendadas.map((tarea, key: number) => (
-                                <div key={key}>
-                                    <p>{tarea.summary}</p>
-                                </div>
+                                <Task key={key} tarea={tarea} isScheduled={false} />
                             ))}
                         </div>
                     )}
