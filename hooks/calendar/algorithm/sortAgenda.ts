@@ -43,6 +43,18 @@ export class algorithmHook {
         return activitiesParsed
     }
 
+    private verifyActivities(actividades: lecturaActividad[]): boolean {
+        /**Verifica que de todas las actividades recibidas al menos una no sea opaca, por que si no, el algoritmo no tiene con qué trabajar */
+        let isValid = false
+        actividades.forEach((tarea) => {
+            if (tarea.transparency == 'transparent') {
+                isValid = true
+                return
+            }
+        })
+        return isValid
+    }
+
     public async verifyAlgorithm():Promise<boolean | null>{
         try {
             const response = await apiGet<any>("/api/algorithm/health")
@@ -72,8 +84,12 @@ export class algorithmHook {
 
             const activitiesParsed: AgendaArray = this.parseActivities(activities)
             if (activitiesParsed.length == 0) {
-                console.error("[algorithmSort] No se recibieron actividades")
+                console.error("[algorithmSort] No se recibieron actividades.")
                 return 400
+            }
+            if (!this.verifyActivities(activities)) {
+                console.error("[algorithmSort] Todas las actividades recibidas fueron opacas.")
+                return 4000
             }
 
             const payload: AlgorithmRequest = {

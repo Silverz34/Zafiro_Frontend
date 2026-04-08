@@ -41,9 +41,14 @@ export function useModalAlgoritmo({ onClose, onAlgorithmSuccess }: UseModalAlgor
         description:"Asegúrese de que hayan actividades por organizar."
       })
     }
+    if (result == 4000) {
+      toast.error("No se pudo ordenar el algoritmo.", {
+        description:"Asegúrese de que al menos una tarea esté marcada como libre, ya que solo estas tareas se reacomodan."
+      })
+    }
     if (result == 500) {
       toast.error("No se pudo ordenar el algoritmo.", {
-        description:"Ocurrió un error dentro de nuestros servidores.\nNos disculpamos por las molestias."
+        description:"Ocurrió un error dentro de nuestros servidores. Nos disculpamos por las molestias."
       })
     }
     setLoading(false)
