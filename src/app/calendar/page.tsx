@@ -30,6 +30,7 @@ export default function DashboardTemporal() {
   const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
 
   const [ preview, setPreview ] = useState<AlgorithmResponse | null>(null)
+  const [ isPromptPanelOpen, setIsPromptPanelOpen ] = useState<boolean>(false)
 
   const togglePriority = (priority: PrioridadType) => {
     setPrioridadesDesactivadas(prev =>
@@ -114,6 +115,7 @@ export default function DashboardTemporal() {
             preview={preview}
             onAccept={() => {}}
             onReject={() => setPreview(null)}
+            isOpen={true}
           />
         )}
       </>
