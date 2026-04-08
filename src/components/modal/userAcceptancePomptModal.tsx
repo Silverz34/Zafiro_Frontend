@@ -8,14 +8,15 @@ interface AcceptancePromptProps {
     onAccept: () => void
     onReject: () => void
     isOpen: boolean
+    onOpen: () => void
+    onClose: () => void
 }
 
 export default function AcceptancePrompt({
-    preview, onAccept, onReject, isOpen
+    preview, onAccept, onReject, isOpen, onClose
 }:AcceptancePromptProps) {
-    const [ isDialogOpen, setIsDialogOpen ] = useState<boolean>(isOpen)
     return (
-        <Dialog open={isDialogOpen}>
+        <Dialog open={isOpen}>
             <DialogContent className="
             bg-[#010112] border border-[#2554E0] text-white
             max-w-md w-full rounded-2xl
@@ -36,7 +37,27 @@ export default function AcceptancePrompt({
                 </DialogHeader>
 
                 <div>
-                    <Button onClick={() => {setIsDialogOpen(false)}}>Cerrar</Button>
+                    {preview.tareas_agendadas && (
+                        <div>
+                            {preview.tareas_agendadas.map((tarea, key: number) => (
+                                <div key={key}>
+                                    <p>{tarea.summary}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {preview.tareas_no_agendadas && (
+                        <div>
+                            {preview.tareas_no_agendadas.map((tarea, key: number) => (
+                                <div key={key}>
+                                    <p>{tarea.summary}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <Button onClick={onClose}>Cerrar</Button>
                 </div>
             </DialogContent>
         </Dialog>
