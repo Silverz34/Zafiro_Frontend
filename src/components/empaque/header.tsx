@@ -7,9 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
-import { algorithmHook } from '../../../hooks/calendar/algorithm/sortAgenda';
-import { useRef, useState } from 'react';
-import ModalAlgoritmo from '../modal/ModalAlgorit';
+import { useState } from 'react';
+import ModalAlgoritmo from '../modal/ModalAlgorithm';
 
 import {
   Tooltip,
@@ -18,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";         
 import { Info } from "lucide-react"; 
+import { AlgorithmResponse } from '../../../interfaces/Algorithm';
 
 interface CalendarHeaderProps {
   toggleSidebar: () => void;
@@ -26,12 +26,11 @@ interface CalendarHeaderProps {
   currentView: ViewType;
   setCurrentView: (view: ViewType) => void;
   onOpenModal: () => void;
-  onSuccess: () => void;
+  onAlgorithmSuccess: (result: AlgorithmResponse) => void;
 }
 
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
-  currentView, setCurrentView, onOpenModal, onSuccess }: CalendarHeaderProps) {
-  const algorithmController = useRef(new algorithmHook());
+  currentView, setCurrentView, onOpenModal, onAlgorithmSuccess }: CalendarHeaderProps) {
   const [isAlgoModalOpen, setIsAlgoModalOpen] = useState(false)
 
   const { isConnected, isLoading, toggleSync } = useGoogleSync();
@@ -165,7 +164,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
       <ModalAlgoritmo
         isOpen={isAlgoModalOpen}
         onClose={() => setIsAlgoModalOpen(false)}
-        onSuccess={onSuccess}
+        onAlgorithmSuccess={onAlgorithmSuccess}
       />
     </>
   );

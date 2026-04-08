@@ -1,4 +1,4 @@
-import { AgendaArray, AgendaArrayType, AlgorithmRequest, AlgorithmResponse, Config, ConfigType } from "../../../interfaces/Algorithm"
+import { AgendaArray, AlgorithmRequest, AlgorithmResponse, Config, ConfigType } from "../../../interfaces/Algorithm"
 import { lecturaActividad } from "../../../interfaces/Preview"
 import { fetchGoogleEvents } from "../../../lib/CrudActividad/fetchActividad"
 import { apiGet, apiPost } from "../../../lib/sincronizacion/apiClient"

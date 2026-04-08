@@ -5,6 +5,7 @@ import Sidebar from './sidebar/sidebar';
 import CalendarHeader from './header';
 import { ViewType } from '../../../hooks/calendar/calendar';
 import type { PrioridadType } from '../../../hooks/custom/modalconstantes';
+import { AlgorithmResponse } from '../../../interfaces/Algorithm';
 
 interface Dashboard {
   children: React.ReactNode;
@@ -18,11 +19,11 @@ interface Dashboard {
   onTogglePriority: (priority: PrioridadType) => void;
   etiquetasDesactivadas: string[];
   onToggleEtiqueta: (id: string) => void;
-  onSuccess: () => void;
+  onAlgorithmSuccess: (result: AlgorithmResponse) => void;
 }
 
 export default function DashboardLayout({ children, currentDate, 
-  setCurrentDate, currentView, setCurrentView, onOpenModal, onSuccess,
+  setCurrentDate, currentView, setCurrentView, onOpenModal, onAlgorithmSuccess,
   prioriDesactivadas, onTogglePriority, etiquetasDesactivadas, onToggleEtiqueta }: Dashboard) {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const toggleSidebar = (): void => {
@@ -40,7 +41,7 @@ export default function DashboardLayout({ children, currentDate,
       <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
         <CalendarHeader
          toggleSidebar={toggleSidebar} currentDate={currentDate} setCurrentDate={setCurrentDate}
-          currentView={currentView} setCurrentView={setCurrentView} onOpenModal={onOpenModal} onSuccess={onSuccess} />
+          currentView={currentView} setCurrentView={setCurrentView} onOpenModal={onOpenModal} onAlgorithmSuccess={onAlgorithmSuccess} />
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           {children}
         </main>

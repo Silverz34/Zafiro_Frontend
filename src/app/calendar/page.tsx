@@ -14,6 +14,7 @@ import type { MiniModal } from "../../../interfaces/Preview";
 import { useCalendarEvents } from "../../../hooks/calendar/useCalendarEvent";
 import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
 import { EtiquetasProvider } from "@/context/EtiquetaContext";
+import { AlgorithmResponse } from "../../../interfaces/Algorithm";
 
 
 export default function DashboardTemporal() {
@@ -26,6 +27,8 @@ export default function DashboardTemporal() {
   const { events, isLoading, recargarEventos } = useCalendarEvents({ ready, currentDate })
   const [prioridadesDesactivadas, setPrioridadesDesactivadas] = useState<PrioridadType[]>([]);
   const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
+
+  const [ preview, setPreview ] = useState<AlgorithmResponse | null>(null)
 
   const togglePriority = (priority: PrioridadType) => {
     setPrioridadesDesactivadas(prev =>
@@ -83,6 +86,7 @@ export default function DashboardTemporal() {
             onTogglePriority={togglePriority}
             etiquetasDesactivadas={etiquetasDesactivadas}
             onToggleEtiqueta={toggleEtiqueta}
+            onAlgorithmSuccess={(result) => setPreview(result)}
           >
             <div className="pt-12 h-full">
               {renderCurrentView()}

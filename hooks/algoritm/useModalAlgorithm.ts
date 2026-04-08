@@ -4,14 +4,14 @@
 import { useState } from "react"
 import { toast } from "sonner"
 import { algorithmHook } from "../calendar/algorithm/sortAgenda"
-import { Config } from "../../interfaces/Algorithm"
+import { AlgorithmResponse, Config } from "../../interfaces/Algorithm"
 
 interface UseModalAlgoritmoProps {
   onClose:   () => void
-  onSuccess: () => void
+  onAlgorithmSuccess: (result: AlgorithmResponse) => void
 }
 
-export function useModalAlgoritmo({ onClose, onSuccess }: UseModalAlgoritmoProps) {
+export function useModalAlgoritmo({ onClose, onAlgorithmSuccess }: UseModalAlgoritmoProps) {
   const [horaInicio,       setHoraInicio]       = useState("08:00")
   const [horaFin,          setHoraFin]           = useState("20:00")
   const [diasContemplados, setDiasContemplados]  = useState(5)
@@ -45,7 +45,7 @@ export function useModalAlgoritmo({ onClose, onSuccess }: UseModalAlgoritmoProps
       toast.success("Calendario ordenado", {
         description: "El algoritmo reorganizó tus actividades.",
       })
-      onSuccess()
+      onAlgorithmSuccess(result)
       onClose()
     }
   }

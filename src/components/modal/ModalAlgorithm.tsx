@@ -12,11 +12,12 @@ import { TimePicker } from "@/components/ui/time"
 import { useModalAlgoritmo } from "../../../hooks/algoritm/useModalAlgorithm"
 import { useEtiquetasCtx }   from "@/context/EtiquetaContext"
 import { TimeRangePicker } from "../ui/TimeRange"
+import { AlgorithmResponse } from "../../../interfaces/Algorithm"
 
 interface ModalAlgoritmoProps {
   isOpen:    boolean
   onClose:   () => void
-  onSuccess: () => void
+  onAlgorithmSuccess: (result: AlgorithmResponse) => void
 }
 
 // Opciones de gap en minutos
@@ -27,7 +28,7 @@ const GAP_OPTIONS = [
   { value: 30, label: "30 minutos" },
 ]
 
-export default function ModalAlgoritmo({ isOpen, onClose, onSuccess }: ModalAlgoritmoProps) {
+export default function ModalAlgoritmo({ isOpen, onClose, onAlgorithmSuccess }: ModalAlgoritmoProps) {
   const { etiquetas } = useEtiquetasCtx()
 
   const {
@@ -39,7 +40,7 @@ export default function ModalAlgoritmo({ isOpen, onClose, onSuccess }: ModalAlgo
     idEtiqueta,       setIdEtiqueta,
     loading,
     handleEjecutar,
-  } = useModalAlgoritmo({ onClose, onSuccess })
+  } = useModalAlgoritmo({ onClose, onAlgorithmSuccess })
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
