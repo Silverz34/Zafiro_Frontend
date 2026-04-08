@@ -15,6 +15,7 @@ import { useCalendarEvents } from "../../../hooks/calendar/useCalendarEvent";
 import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
 import { EtiquetasProvider } from "@/context/EtiquetaContext";
 import { AlgorithmResponse } from "../../../interfaces/Algorithm";
+import AcceptancePrompt from "@/components/modal/userAcceptancePomptModal";
 
 
 export default function DashboardTemporal() {
@@ -107,6 +108,14 @@ export default function DashboardTemporal() {
           onEdit={(evento) => { setMiniModal(null); setEventoEditar(evento); setIsModalOpen(true); }}
           onDelete={() => { setMiniModal(null); recargarEventos(); }}
         />
+
+        {preview && (
+          <AcceptancePrompt
+            preview={preview}
+            onAccept={() => {}}
+            onReject={() => setPreview(null)}
+          />
+        )}
       </>
     </EtiquetasProvider>
   );
