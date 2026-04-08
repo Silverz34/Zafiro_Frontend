@@ -36,18 +36,25 @@ export function useModalAlgoritmo({ onClose, onAlgorithmSuccess }: UseModalAlgor
     }
 
     const result = await algorithm.sortAgenda(payload)
-    if (!result) {
-      toast.error("No se pudo ordenar el algoritmo.")
+    if (result == 400) {
+      toast.error("No se pudo ordenar el algoritmo.", {
+        description:"Asegúrese de que hayan actividades por organizar."
+      })
+    }
+    if (result == 500) {
+      toast.error("No se pudo ordenar el algoritmo.", {
+        description:"Ocurrió un error dentro de nuestros servidores.\nNos disculpamos por las molestias."
+      })
     }
     setLoading(false)
 
-    if (result) {
+    if (typeof result !== 'number') {
       toast.success("Calendario ordenado", {
         description: "El algoritmo reorganizó tus actividades.",
       })
       onAlgorithmSuccess(result)
-      onClose()
     }
+    onClose()
   }
 
   return {

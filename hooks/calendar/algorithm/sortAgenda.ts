@@ -63,7 +63,7 @@ export class algorithmHook {
         }
     }
 
-    public async sortAgenda(data: object):Promise<AlgorithmResponse | null>  {
+    public async sortAgenda(data: object):Promise<AlgorithmResponse | number>  {
         try {
             const configParsed: Config = ConfigType.parse(data)
 
@@ -73,7 +73,7 @@ export class algorithmHook {
             const activitiesParsed: AgendaArray = this.parseActivities(activities)
             if (activitiesParsed.length == 0) {
                 console.error("[algorithmSort] No se recibieron actividades")
-                return null
+                return 400
             }
 
             const payload: AlgorithmRequest = {
@@ -93,7 +93,7 @@ export class algorithmHook {
             )
             if (!response.success){
                 console.error('[algorithmSort] Error al reordenar las actividades.')
-                return null
+                return 500
             }
             console.log(response.data)
             return response.data
@@ -103,7 +103,7 @@ export class algorithmHook {
             } else {
             console.error('[algorithmSort] Error:', error)
             }
-            return null
+            return 500
         }
     }
 }
