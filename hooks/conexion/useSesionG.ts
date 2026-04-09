@@ -22,19 +22,37 @@ export function useGoogleSync() {
     checkStatus();
   }, []);
   const toggleSync = async (checked: boolean) => {
-    if (checked) {
-      const response = await initiateGoogle();
-      if (response?.success && response.url) {
-        
-        // Validar que la URL pertenezca a Google antes de redirigir
-        const allowed = ['https://accounts.google.com', 'https://oauth2.googleapis.com'];
-        const isValid = allowed.some(origin => response.url.startsWith(origin));
-        if (!isValid) {
-          console.error('[Google OAuth] URL de redirect sospechosa:', response.url);
-          return;
+    setLoading(true);
+    try {
+      if (checked) {
+        const response = await initiateGoogle();
+        if (response?.success && response.url) {
+          
+          // Validar que la URL pertenezca a Google antes de redirigir
+          const allowed = ['https://accounts.google.com', 'https://oauth2.googleapis.com'];
+          const isValid = allowed.some(origin => response.url.startsWith(origin));
+          if (!isValid) {
+            console.error('[Google OAuth] URL de redirect sospechosa:', response.url);
+            return;
+          }
+          window.location.href = response.url;
+        } else {
+          console.error('Error al iniciar conexión con Google:', response?.error);
+          // No actualizar estado aquí, ya que redirige
         }
-        window.location.href = response.url;
+      } else {
+        // Desconectar
+        const response = await disconnectGoogle();
+        if (response?.success) {
+          setConnected(false);
+        } else {
+          console.error('Error al desconectar Google:', response?.error);
+        }
       }
+    } catch (error) {
+      console.error('Error en toggleSync:', error);
+    } finally {
+      setLoading(false);
     }
   };
 

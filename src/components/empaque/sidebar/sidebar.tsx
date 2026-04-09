@@ -33,7 +33,7 @@ export default function Sidebar({ isOpen, prioriDesactivadas, onTogglePriority,
 
       <div className="p-3 border-t border-blue-600">
         {isLoaded && user ? (
-          <div className="flex items-center justify-between border border-blue-600 p-2 rounded-xl w-full gap-2">
+          <div className="flex items-center justify-between border border-blue-600 p-2 rounded-xl w-full">
                 <div className="flex items-center gap-3 overflow-hidden flex-1 min-w-0">
                     <img 
                       src={user.imageUrl} 
