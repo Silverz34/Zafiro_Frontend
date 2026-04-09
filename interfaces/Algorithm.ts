@@ -42,7 +42,7 @@ const AgendaType = z.object({
 })
 
 export const AgendaArrayType = z.array(AgendaType)
-type AgendaArray = z.infer<typeof AgendaArrayType>
+export type AgendaArray = z.infer<typeof AgendaArrayType>
 
 export type Agenda = z.infer<typeof AgendaType>
 
