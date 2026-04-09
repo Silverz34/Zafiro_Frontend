@@ -40,24 +40,28 @@ export default function AcceptancePrompt({
                     {preview.tareas_agendadas.length > 0 && (
                         <div>
                             <p>Tareas que se reacomodaron:</p>
-                            {preview.tareas_agendadas.map((tarea, key: number) => (
-                                <Task key={key} tarea={tarea} isScheduled={true}/>
-                            ))}
+                            <div className="overflow-y-scroll max-h-100">
+                                {preview.tareas_agendadas.map((tarea, key: number) => (
+                                    <Task key={key} tarea={tarea} isScheduled={true}/>
+                                ))}
+                            </div>
                         </div>
                     )}
 
                     {preview.tareas_no_agendadas.length > 0 && (
                         <div>
                             <p>Tareas que no se pudieron reacomodar:</p>
-                            {preview.tareas_no_agendadas.map((tarea, key: number) => (
-                                <Task key={key} tarea={tarea} isScheduled={false} />
-                            ))}
+                            <div className="overflow-y-scroll max-h-100">
+                                {preview.tareas_no_agendadas.map((tarea, key: number) => (
+                                    <Task key={key} tarea={tarea} isScheduled={false} />
+                                ))}
+                            </div>
                         </div>
                     )}
 
-                    <div>
-                        <Button onClick={onAccept}>Aceptar cambios</Button>
-                        <Button onClick={onReject}>Rechazar cambios</Button>
+                    <div className="flex justify-center gap-10">
+                        <Button onClick={onAccept} className="px-5 py-2 bg-[#2b7e38] hover:font-bold hover:bg-[#2FA941]">Aceptar cambios</Button>
+                        <Button onClick={onReject} className="px-5 py-2 bg-[#7c2c2c] hover:font-bold hover:bg-[#AB3535]">Rechazar cambios</Button>
                     </div>
                 </div>
             </DialogContent>
