@@ -61,7 +61,7 @@ export default function DashboardTemporal() {
         return <DayView currentDate={currentDate} events={eventosFiltrados}
           isLoading={isLoading}     
           onOpenModal={() => setIsModalOpen(true)} onEventClick={setMiniModal}
-           />;
+          />;
       case 'semana':
         return <WeekView currentDate={currentDate} events={eventosFiltrados}
           isLoading={isLoading}
@@ -115,7 +115,7 @@ export default function DashboardTemporal() {
           <AcceptancePrompt
             preview={preview}
             onAccept={() => {algorithmController.saveChanges(preview); setPreview(null)}}
-            onReject={() => setPreview(null)}
+            onReject={() => {algorithmController.rejectChanges(); setPreview(null)}}
           />
         )}
       </>

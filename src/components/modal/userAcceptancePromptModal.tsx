@@ -13,6 +13,7 @@ interface AcceptancePromptProps {
 export default function AcceptancePrompt({
     preview, onAccept, onReject
 }:AcceptancePromptProps) {
+    const [ isLoading, setIsLoading ] = useState<boolean>(false)
     return (
         <Dialog open={true}>
             <DialogContent className="
@@ -59,8 +60,8 @@ export default function AcceptancePrompt({
                     )}
 
                     <div className="flex justify-center gap-10">
-                        <Button onClick={onAccept} className="px-5 py-2 bg-[#2b7e38] hover:font-bold hover:bg-[#2FA941]">Aceptar cambios</Button>
-                        <Button onClick={onReject} className="px-5 py-2 bg-[#7c2c2c] hover:font-bold hover:bg-[#AB3535]">Rechazar cambios</Button>
+                        <Button onClick={onAccept} className="px-5 py-2 bg-[#2b7e38] hover:font-bold hover:bg-[#2FA941]" disabled={isLoading}>Aceptar cambios</Button>
+                        <Button onClick={onReject} className="px-5 py-2 bg-[#7c2c2c] hover:font-bold hover:bg-[#AB3535]" disabled={isLoading}>Rechazar cambios</Button>
                     </div>
                 </div>
             </DialogContent>

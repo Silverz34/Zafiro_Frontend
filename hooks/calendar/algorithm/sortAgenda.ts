@@ -1,6 +1,8 @@
+import { toast } from "sonner"
 import { AgendaArray, AlgorithmRequest, AlgorithmResponse, Config, ConfigType } from "../../../interfaces/Algorithm"
 import { lecturaActividad } from "../../../interfaces/Preview"
 import { fetchGoogleEvents } from "../../../lib/CrudActividad/fetchActividad"
+import { updateActividad } from "../../../lib/CrudActividad/updateActividad"
 import { apiPost } from "../../../lib/sincronizacion/apiClient"
 import { ApiError } from "../../../lib/sincronizacion/apiError"
 
@@ -71,6 +73,7 @@ export class algorithmHook {
                 console.error("[algorithmSort] Todas las actividades recibidas fueron opacas.")
                 return 4000
             }
+            console.log(activitiesParsed)
 
             const payload: AlgorithmRequest = {
                 config: configParsed,
@@ -104,6 +107,21 @@ export class algorithmHook {
     }
 
     public async saveChanges(data: AlgorithmResponse):Promise<void> {
-        console.log("Supongamos que las estoy guardando")
+        for ( const tarea of data.tareas_agendadas ) {
+            const response = await updateActividad(tarea.id, { start: tarea.start, end: tarea.end })
+
+            if (!response.success) {
+                toast.error(`No se pudo actualizar la actividad ${tarea.summary}`, {
+                    description: response.error
+                })
+            }
+        }
+        toast.success("¡Actividades actualizadas con éxito!", {
+            description:'Actualiza la página para ver los cambios.'
+        })
+    }
+
+    public async rejectChanges(): Promise<void> {
+        console.log('Digamos que estoy mandando la métrica')
     }
 }
