@@ -8,11 +8,10 @@ interface AcceptancePromptProps {
     preview: AlgorithmResponse
     onAccept: () => void
     onReject: () => void
-    onClose: () => void
 }
 
 export default function AcceptancePrompt({
-    preview, onAccept, onReject, onClose
+    preview, onAccept, onReject
 }:AcceptancePromptProps) {
     return (
         <Dialog open={true}>

@@ -1,7 +1,7 @@
 import { AgendaArray, AlgorithmRequest, AlgorithmResponse, Config, ConfigType } from "../../../interfaces/Algorithm"
 import { lecturaActividad } from "../../../interfaces/Preview"
 import { fetchGoogleEvents } from "../../../lib/CrudActividad/fetchActividad"
-import { apiGet, apiPost } from "../../../lib/sincronizacion/apiClient"
+import { apiPost } from "../../../lib/sincronizacion/apiClient"
 import { ApiError } from "../../../lib/sincronizacion/apiError"
 
 export class algorithmHook {
@@ -55,26 +55,6 @@ export class algorithmHook {
         return isValid
     }
 
-    public async verifyAlgorithm():Promise<boolean | null>{
-        try {
-            const response = await apiGet<any>("/api/algorithm/health")
-            if (!response.success){
-                console.error('[algorithmHealthCheck] Error al verificar el estado del algoritmo.')
-                return null
-            }
-            console.log(response.data)
-            return response.data ? true : false
-
-        } catch (error) {
-            if (error instanceof ApiError) {
-                console.error(`[algorithmHealthCheck] Error ${error.status}:`, error.message)
-            } else {
-                console.error('[algorithmHealthCheck] Error inesperado:', error)
-            }
-            return null
-        }
-    }
-
     public async sortAgenda(data: object):Promise<AlgorithmResponse | number>  {
         try {
             const configParsed: Config = ConfigType.parse(data)
@@ -121,5 +101,9 @@ export class algorithmHook {
             }
             return 500
         }
+    }
+
+    public async saveChanges(data: AlgorithmResponse):Promise<void> {
+        console.log("Supongamos que las estoy guardando")
     }
 }

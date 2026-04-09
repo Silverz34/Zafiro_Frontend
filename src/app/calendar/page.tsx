@@ -16,10 +16,12 @@ import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
 import { EtiquetasProvider } from "@/context/EtiquetaContext";
 import { AlgorithmResponse } from "../../../interfaces/Algorithm";
 import AcceptancePrompt from "@/components/modal/userAcceptancePromptModal";
+import { algorithmHook } from "../../../hooks/calendar/algorithm/sortAgenda";
 
 
 export default function DashboardTemporal() {
   const { ready } = useSession();
+  const algorithmController = new algorithmHook()
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<ViewType>('semana');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,9 +114,8 @@ export default function DashboardTemporal() {
         {preview && (
           <AcceptancePrompt
             preview={preview}
-            onAccept={() => {setPreview(null)}}
+            onAccept={() => {algorithmController.saveChanges(preview); setPreview(null)}}
             onReject={() => setPreview(null)}
-            onClose={() => {setPreview(null)}}
           />
         )}
       </>
