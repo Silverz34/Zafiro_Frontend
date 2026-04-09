@@ -70,9 +70,10 @@ export default function ModalAlgoritmo({ isOpen, onClose, onAlgorithmSuccess }: 
           <p className="text-xs text-gray-500 mt-2 ml-0">
             Configura los parámetros para que el algoritmo reorganice tus actividades.
           </p>
-          <p className="text-xs text-gray-500 mt-2 ml-0">
-            Solo se tomaran en cuenta actividades que aún no han pasado. Asegúrese de que al menos una de las tareas esté marcada como libre, ya que estas son las que se reordenan.
-          </p>
+          <ol className="text-xs text-gray-500 mt-2 ml-0">
+            <li>◉ Solo se tomaran en cuenta actividades que aún no han pasado.</li>
+            <li>◉ Asegúrese de que al menos una de las tareas esté marcada como libre, ya que estas son las que se reordenan.</li>
+          </ol>
         </DialogHeader>
 
         <div className="px-6 py-5 flex flex-col gap-5">
