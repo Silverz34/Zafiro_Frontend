@@ -8,16 +8,14 @@ interface AcceptancePromptProps {
     preview: AlgorithmResponse
     onAccept: () => void
     onReject: () => void
-    isOpen: boolean
-    onOpen: () => void
     onClose: () => void
 }
 
 export default function AcceptancePrompt({
-    preview, onAccept, onReject, isOpen, onOpen, onClose
+    preview, onAccept, onReject, onClose
 }:AcceptancePromptProps) {
     return (
-        <Dialog open={isOpen}>
+        <Dialog open={true}>
             <DialogContent className="
             bg-[#010112] border border-[#2554E0] text-white
             max-w-md w-full rounded-2xl
