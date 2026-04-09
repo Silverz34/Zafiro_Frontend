@@ -55,7 +55,10 @@ export default function AcceptancePrompt({
                         </div>
                     )}
 
-                    <Button onClick={onClose}>Cerrar</Button>
+                    <div>
+                        <Button onClick={onAccept}>Aceptar cambios</Button>
+                        <Button onClick={onReject}>Rechazar cambios</Button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>

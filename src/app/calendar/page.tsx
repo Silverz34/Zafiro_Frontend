@@ -112,7 +112,7 @@ export default function DashboardTemporal() {
         {preview && (
           <AcceptancePrompt
             preview={preview}
-            onAccept={() => {}}
+            onAccept={() => {setPreview(null)}}
             onReject={() => setPreview(null)}
             onClose={() => {setPreview(null)}}
           />
