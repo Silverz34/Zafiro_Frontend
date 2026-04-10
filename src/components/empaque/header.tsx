@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ViewType } from '../../../hooks/calendar/calendar';
 import { Switch } from "@/components/ui/switch";
 import { useGoogleSync } from '../../../hooks/conexion/useSesionG';
-import { useState } from 'react';
 import ModalAlgoritmo from '../modal/ModalAlgorithm';
 
 import {
@@ -26,13 +25,14 @@ interface CalendarHeaderProps {
   currentView: ViewType;
   setCurrentView: (view: ViewType) => void;
   onOpenModal: () => void;
+  isAlgoModalOpen: boolean;
+  onOpenAlgorithmModal: () => void;
+  onCloseAlgorithmModal: () => void;
   onAlgorithmSuccess: (result: AlgorithmResponse) => void;
 }
 
 export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentDate,
-  currentView, setCurrentView, onOpenModal, onAlgorithmSuccess }: CalendarHeaderProps) {
-  const [isAlgoModalOpen, setIsAlgoModalOpen] = useState(false)
-
+  currentView, setCurrentView, onOpenModal, isAlgoModalOpen, onOpenAlgorithmModal, onCloseAlgorithmModal, onAlgorithmSuccess }: CalendarHeaderProps) {
   const { isConnected, isLoading, toggleSync } = useGoogleSync();
   const {
     goToToday,
@@ -74,7 +74,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
 
               {/*Boton para la logica del algoritmo  */}
               <button
-                onClick={() => setIsAlgoModalOpen(true)}
+                onClick={onOpenAlgorithmModal}
                 className="px-3 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-900 transition-colors"
               >
                 Ordenar Calendario
@@ -163,7 +163,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
       </header>
       <ModalAlgoritmo
         isOpen={isAlgoModalOpen}
-        onClose={() => setIsAlgoModalOpen(false)}
+        onClose={onCloseAlgorithmModal}
         onAlgorithmSuccess={onAlgorithmSuccess}
       />
     </>

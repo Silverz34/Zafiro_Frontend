@@ -30,6 +30,7 @@ export default function DashboardTemporal() {
   const { events, isLoading, recargarEventos } = useCalendarEvents({ ready, currentDate })
   const [prioridadesDesactivadas, setPrioridadesDesactivadas] = useState<PrioridadType[]>([]);
   const [etiquetasDesactivadas, setEtiquetasDesactivadas] = useState<string[]>([]);
+  const [isAlgoModalOpen, setIsAlgoModalOpen] = useState(false);
 
   const [ preview, setPreview ] = useState<AlgorithmResponse | null>(null)
 
@@ -85,6 +86,9 @@ export default function DashboardTemporal() {
             currentDate={currentDate} setCurrentDate={setCurrentDate}
             currentView={currentView} setCurrentView={setCurrentView}
             onOpenModal={() => setIsModalOpen(true)}
+            isAlgoModalOpen={isAlgoModalOpen}
+            onOpenAlgorithmModal={() => setIsAlgoModalOpen(true)}
+            onCloseAlgorithmModal={() => setIsAlgoModalOpen(false)}
             prioriDesactivadas={prioridadesDesactivadas}
             onTogglePriority={togglePriority}
             etiquetasDesactivadas={etiquetasDesactivadas}
@@ -116,6 +120,7 @@ export default function DashboardTemporal() {
             preview={preview}
             onAccept={() => {algorithmController.saveChanges(preview); setPreview(null)}}
             onReject={() => {algorithmController.rejectChanges(); setPreview(null)}}
+            onRetry={() => { setPreview(null); setIsAlgoModalOpen(true) }}
           />
         )}
       </>

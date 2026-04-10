@@ -14,6 +14,9 @@ interface Dashboard {
   currentView: ViewType;
   setCurrentView: (view: ViewType) => void;
   onOpenModal: () => void;
+  isAlgoModalOpen: boolean;
+  onOpenAlgorithmModal: () => void;
+  onCloseAlgorithmModal: () => void;
 
   prioriDesactivadas: PrioridadType[]; 
   onTogglePriority: (priority: PrioridadType) => void;
@@ -23,7 +26,8 @@ interface Dashboard {
 }
 
 export default function DashboardLayout({ children, currentDate, 
-  setCurrentDate, currentView, setCurrentView, onOpenModal, onAlgorithmSuccess,
+  setCurrentDate, currentView, setCurrentView, onOpenModal, isAlgoModalOpen,
+  onOpenAlgorithmModal, onCloseAlgorithmModal, onAlgorithmSuccess,
   prioriDesactivadas, onTogglePriority, etiquetasDesactivadas, onToggleEtiqueta }: Dashboard) {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const toggleSidebar = (): void => {
@@ -40,8 +44,17 @@ export default function DashboardLayout({ children, currentDate,
       />
       <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
         <CalendarHeader
-         toggleSidebar={toggleSidebar} currentDate={currentDate} setCurrentDate={setCurrentDate}
-          currentView={currentView} setCurrentView={setCurrentView} onOpenModal={onOpenModal} onAlgorithmSuccess={onAlgorithmSuccess} />
+          toggleSidebar={toggleSidebar}
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          currentView={currentView}
+          setCurrentView={setCurrentView}
+          onOpenModal={onOpenModal}
+          isAlgoModalOpen={isAlgoModalOpen}
+          onOpenAlgorithmModal={onOpenAlgorithmModal}
+          onCloseAlgorithmModal={onCloseAlgorithmModal}
+          onAlgorithmSuccess={onAlgorithmSuccess}
+        />
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           {children}
         </main>

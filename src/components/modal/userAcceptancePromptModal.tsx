@@ -13,11 +13,12 @@ interface AcceptancePromptProps {
   preview:  AlgorithmResponse
   onAccept: () => void
   onReject: () => void
+  onRetry: () => void
   onClose:  () => void
 }
 
 export default function AcceptancePrompt({
-  preview, onAccept, onReject, onClose
+  preview, onAccept, onReject, onRetry, onClose
 }: AcceptancePromptProps) {
 
   const [confirmandoRechazo, setConfirmandoRechazo] = useState(false)
@@ -39,11 +40,11 @@ export default function AcceptancePrompt({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <DialogTitle className="text-xl font-semibold text-white">
-                 Tareas reoganizadas 
+                Tareas reoganizadas 
               </DialogTitle>
             </div>
             <button
-              onClick={onClose}
+              onClick={() => setConfirmandoRechazo(true)}
               className="text-white hover:bg-blue-600 rounded-lg p-1.5 transition-all"
             >
               <HiXIcon className="w-5 h-5" />
@@ -124,21 +125,32 @@ export default function AcceptancePrompt({
               </div>
             </div>
           ) : (
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 w-full mt-4">
+           
+            <Button
+              variant="ghost"
+              onClick={() => setConfirmandoRechazo(true)}
+              className="border border-[#AB3535]/50 text-[#AB3535] hover:bg-[#AB3535]/10 text-sm h-9 w-full sm:w-auto"
+            >
+              Rechazar cambios
+            </Button>
+
+            <div className="flex gap-2 w-full sm:w-auto">
               <Button
                 variant="ghost"
-                onClick={() => setConfirmandoRechazo(true)}
-                className="flex-1 border border-[#AB3535]/50 text-[#AB3535] hover:bg-[#AB3535]/10 text-sm h-9"
+                onClick={onRetry}
+                className="flex-1 sm:flex-none border border-blue-600 text-white hover:bg-white/5 text-sm h-9"
               >
-                Rechazar cambios
+                Reintentar
               </Button>
               <Button
                 onClick={onAccept}
-                className="flex-1 bg-blue-600 hover:bg-[#3864c3] text-white text-sm font-semibold h-9"
+                className="flex-1 sm:flex-none bg-blue-600 hover:bg-[#3864c3] text-white text-sm font-semibold h-9"
               >
                 Aceptar cambios
               </Button>
             </div>
+          </div>
           )}
         </div>
 

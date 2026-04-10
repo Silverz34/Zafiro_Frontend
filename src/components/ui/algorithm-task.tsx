@@ -1,7 +1,6 @@
 
 import type { Agenda } from "../../../interfaces/Algorithm"
 import { Clock, CalendarDays } from "lucide-react"
-import { PRIORIDADES } from "../../../hooks/custom/modalconstantes"
 
 interface TaskProps {
   tarea:       Agenda
@@ -36,11 +35,6 @@ export default function Task({ tarea, isScheduled }: TaskProps) {
   const dynamicCardStyle = tagColor
     ? { backgroundColor: `${tagColor}33`, borderColor: tagColor }
     : { backgroundColor: 'rgba(55, 65, 81, 0.3)', borderColor: '#4b5563' }; 
-
-  const prioridadObj = PRIORIDADES?.find(p => p.nivel === prioridadStr);
-  const dynamicBarStyle = prioridadObj
-    ? { backgroundColor: prioridadObj.hexColor }
-    : (tagColor ? { backgroundColor: tagColor } : { backgroundColor: '#4b5563' });
 
   return (
     <div
@@ -78,7 +72,6 @@ export default function Task({ tarea, isScheduled }: TaskProps) {
           {isScheduled ? "Agendada" : "Sin agendar"}
         </span>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-1" style={dynamicBarStyle} />
     </div>
   )
 }
