@@ -2,7 +2,7 @@
 'use client'
 
 import { useState } from "react"
-import { BrainCircuit, CheckCircle2, XCircle } from "lucide-react"
+import { CheckCircle2, XCircle } from "lucide-react"
 import { HiX as HiXIcon } from "react-icons/hi"
 import type { AlgorithmResponse } from "../../../interfaces/Algorithm"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
@@ -134,7 +134,7 @@ export default function AcceptancePrompt({
               </Button>
               <Button
                 onClick={onAccept}
-                className="flex-1 bg-[#2FA941] hover:bg-[#228531] text-white text-sm font-semibold h-9"
+                className="flex-1 bg-blue-600 hover:bg-[#3864c3] text-white text-sm font-semibold h-9"
               >
                 Aceptar cambios
               </Button>

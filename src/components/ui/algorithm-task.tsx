@@ -1,6 +1,7 @@
 
 import type { Agenda } from "../../../interfaces/Algorithm"
 import { Clock, CalendarDays } from "lucide-react"
+import { PRIORIDADES } from "../../../hooks/custom/modalconstantes"
 
 interface TaskProps {
   tarea:       Agenda
@@ -28,14 +29,23 @@ export default function Task({ tarea, isScheduled }: TaskProps) {
   const startISO = tarea.start.dateTime ?? tarea.start.date ?? ""
   const endISO   = tarea.end.dateTime   ?? tarea.end.date   ?? ""
 
+
+  //visual colores de prioridad y etiquetas
+  const tagColor = tarea.extras?.etiquetas?.color;
+  const prioridadStr = tarea.extras?.prioridad;
+  const dynamicCardStyle = tagColor
+    ? { backgroundColor: `${tagColor}33`, borderColor: tagColor }
+    : { backgroundColor: 'rgba(55, 65, 81, 0.3)', borderColor: '#4b5563' }; 
+
+  const prioridadObj = PRIORIDADES?.find(p => p.nivel === prioridadStr);
+  const dynamicBarStyle = prioridadObj
+    ? { backgroundColor: prioridadObj.hexColor }
+    : (tagColor ? { backgroundColor: tagColor } : { backgroundColor: '#4b5563' });
+
   return (
     <div
-      className={`
-        flex flex-col gap-1.5 p-3 rounded-xl border transition-all
-        ${isScheduled
-          ? "bg-[#2FA941]/10 border-[#2FA941]/40"
-          : "bg-[#AB3535]/10 border-[#AB3535]/40"}
-      `}
+      className="relative flex flex-col gap-1.5 p-3 rounded-xl border transition-all overflow-hidden"
+      style={dynamicCardStyle}
     >
       <p className="text-sm font-semibold text-white leading-snug">
         {tarea.summary}
@@ -56,7 +66,7 @@ export default function Task({ tarea, isScheduled }: TaskProps) {
         </div>
       )}
 
-      <div className="mt-0.5">
+      <div className="mt-0.5 mb-1">
         <span
           className={`
             inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full
@@ -65,9 +75,10 @@ export default function Task({ tarea, isScheduled }: TaskProps) {
               : "bg-[#AB3535]/20 text-[#AB3535]"}
           `}
         >
-          {isScheduled ? "Agendada" : "Sin espacio disponible"}
+          {isScheduled ? "Agendada" : "Sin agendar"}
         </span>
       </div>
+      <div className="absolute bottom-0 left-0 right-0 h-1" style={dynamicBarStyle} />
     </div>
   )
 }
