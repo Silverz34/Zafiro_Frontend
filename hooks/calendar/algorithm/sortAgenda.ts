@@ -12,12 +12,9 @@ export class algorithmHook {
         const currentYear = today.getFullYear()
         const currentMonth = today.getMonth()
         const currentDay = today.getDate()
-
         const end = new Date(currentYear, currentMonth, currentDay + limit)
-
         const todayStr = today.toISOString()
         const endStr = end.toISOString()
-        
         return { today:todayStr, end:endStr }
     }
 
