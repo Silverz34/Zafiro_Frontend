@@ -1,4 +1,3 @@
-// hooks/calendar/algorithm/useModalAlgoritmo.ts
 'use client'
 
 import { useState } from "react"
