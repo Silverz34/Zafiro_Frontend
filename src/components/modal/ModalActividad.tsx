@@ -97,7 +97,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
             />
           </div>
 
-          <div className="flex items-center justify-between rounded-xl px-4 py-3 border border-[#2554E0] hover:border-[#2a2948] transition-colors">
+          {/* <div className="flex items-center justify-between rounded-xl px-4 py-3 border border-[#2554E0] hover:border-[#2a2948] transition-colors">
             <div className="flex flex-col">
               <Label className="text-sm font-medium text-gray-200 cursor-pointer">
                 Todo el día
@@ -111,7 +111,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
               onCheckedChange={setIsAllDay}
               className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-[#2a2948]"
             />
-          </div>
+          </div> */}
           <div className="flex flex-col gap-0 rounded-xl border border-[#2554E0]">
 
             <div className="px-4 py-3 border-b border-[#1e1d3a] bg-[#0d0c1e] gap-1.5 flex items-center">
