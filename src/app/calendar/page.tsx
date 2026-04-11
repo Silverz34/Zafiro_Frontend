@@ -118,6 +118,7 @@ export default function DashboardTemporal() {
         {preview && (
           <AcceptancePrompt
             preview={preview}
+            onClose={() => setPreview(null)}
             onAccept={() => {algorithmController.saveChanges(preview); setPreview(null)}}
             onReject={() => {algorithmController.rejectChanges(); setPreview(null)}}
             onRetry={() => { setPreview(null); setIsAlgoModalOpen(true) }}
