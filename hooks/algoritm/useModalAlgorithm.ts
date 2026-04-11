@@ -31,7 +31,7 @@ export function useModalAlgoritmo({ onClose, onAlgorithmSuccess }: UseModalAlgor
       dias_contemplados: diasContemplados,
       gap,
       long_first: longFirst,
-      tag: idEtiqueta,
+      tag: idEtiqueta || 9999999,
     }
 
     const result = await algorithm.sortAgenda(payload)
