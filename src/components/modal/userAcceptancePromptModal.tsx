@@ -7,7 +7,9 @@ import { HiX as HiXIcon } from "react-icons/hi"
 import type { AlgorithmResponse } from "../../../interfaces/Algorithm"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Button } from "../ui/button"
-import Task from "../ui/algorithm-task"
+import UnscheduledTray from "../previewAlgorithmo/tray"
+import AgendaCalendarGrid from "../previewAlgorithmo/calendarGrid"
+
 
 interface AcceptancePromptProps {
   preview:  AlgorithmResponse
@@ -70,43 +72,17 @@ export default function AcceptancePrompt({
           </div>
         </DialogHeader>
 
-        <div className="px-6 py-5 flex flex-col gap-5 overflow-y-auto max-h-[55vh]">
-          {totalAgendadas > 0 && (
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col gap-2">
-                {preview.tareas_agendadas.map(tarea => (
-                  <Task key={tarea.id} tarea={tarea} isScheduled={true} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* No agendadas */}
-          {totalNoAgendadas > 0 && (
-            <div className="flex flex-col gap-2">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Sin espacio disponible
-              </p>
-              <p className="text-xs text-gray-500">
-                    Estas actividades no encontraron un hueco libre en el rango configurado.
-              </p>
-              <div className="flex flex-col gap-2">
-                {preview.tareas_no_agendadas.map(tarea => (
-                  <Task key={tarea.id} tarea={tarea} isScheduled={false} />
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="px-6 py-5 flex flex-col gap-5 overflow-y-auto max-h-[65vh]">
+          <AgendaCalendarGrid tareas={preview.tareas_agendadas} />
+          <UnscheduledTray tareas={preview.tareas_no_agendadas} />          
         </div>
 
-        {/* Footer */}
         <div className="px-6 py-4 border-t border-[#1e1d3a] bg-[#080716]">
 
           {confirmandoRechazo ? (
             <div className="flex flex-col gap-3">
               <p className="text-xs text-center text-gray-400">
-                ¿Seguro que quieres rechazar? Los cambios en Google Calendar
-                ya fueron aplicados y tendrás que deshacerlos manualmente.
+                ¿Seguro que quieres rechazar? Los cambios se perderán y no podrás recuperarlos.
               </p>
               <div className="flex gap-2">
                 <Button
