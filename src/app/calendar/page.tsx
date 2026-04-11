@@ -16,7 +16,7 @@ import type { PrioridadType } from "../../../hooks/custom/modalconstantes";
 import { EtiquetasProvider } from "@/context/EtiquetaContext";
 import { AlgorithmResponse } from "../../../interfaces/Algorithm";
 import AcceptancePrompt from "@/components/modal/userAcceptancePromptModal";
-import { algorithmHook } from "../../../hooks/calendar/algorithm/sortAgenda";
+import { algorithmHook } from "../../../hooks/algoritm/sortAgenda";
 
 
 export default function DashboardTemporal() {
