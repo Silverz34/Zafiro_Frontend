@@ -85,6 +85,9 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                                     {event.recurringEventId && <Repeat className="w-3 h-3 text-blue-200" />}
                                     <p className="text-sm font-bold text-blue-100">{event.summary}</p>
                                 </div>
+                                {event.transparency == 'opaque' && (
+                                    <p className="text-[11px] font-medium text-gray-200">Ocupado</p>
+                                )}
                                 <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime}</p>
                             </div>
                             );
