@@ -1,10 +1,10 @@
 import { toast } from "sonner"
-import { AgendaArray, AlgorithmRequest, AlgorithmResponse, Config, ConfigType } from "../../../interfaces/Algorithm"
-import { lecturaActividad } from "../../../interfaces/Preview"
-import { fetchGoogleEvents } from "../../../lib/CrudActividad/fetchActividad"
-import { updateActividad } from "../../../lib/CrudActividad/updateActividad"
-import { apiPost } from "../../../lib/sincronizacion/apiClient"
-import { ApiError } from "../../../lib/sincronizacion/apiError"
+import { AgendaArray, AlgorithmRequest, AlgorithmResponse, Config, ConfigType } from "../../interfaces/Algorithm"
+import { lecturaActividad } from "../../interfaces/Preview"
+import { fetchGoogleEvents } from "../../lib/CrudActividad/fetchActividad"
+import { updateActividad } from "../../lib/CrudActividad/updateActividad"
+import { apiPost } from "../../lib/sincronizacion/apiClient"
+import { ApiError } from "../../lib/sincronizacion/apiError"
 
 export class algorithmHook {
     private createDates(limit: number): { today: string, end: string } {

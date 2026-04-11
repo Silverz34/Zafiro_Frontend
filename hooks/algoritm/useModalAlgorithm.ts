@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { toast } from "sonner"
-import { algorithmHook } from "../calendar/algorithm/sortAgenda"
+import { algorithmHook } from "./sortAgenda"
 import { AlgorithmResponse, Config } from "../../interfaces/Algorithm"
 
 interface UseModalAlgoritmoProps {
