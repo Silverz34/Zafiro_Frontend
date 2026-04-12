@@ -42,8 +42,11 @@ export class algorithmHook {
         return activitiesParsed
     }
 
+    /**Verifica que de todas las actividades recibidas al menos una no sea opaca, por que si no, el algoritmo no tiene con qué trabajar 
+    * @param actividades Un conjunto de actividades
+    * @returns Si existe por lo menos una tarea cuyo atributo `transparency` sea `"transparent"`
+    */
     private verifyActivities(actividades: lecturaActividad[]): boolean {
-        /**Verifica que de todas las actividades recibidas al menos una no sea opaca, por que si no, el algoritmo no tiene con qué trabajar */
         let isValid = false
         actividades.forEach((tarea) => {
             if (tarea.transparency == 'transparent') {
