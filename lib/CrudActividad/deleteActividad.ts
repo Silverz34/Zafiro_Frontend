@@ -10,18 +10,14 @@ export async function deleteActividad(
   recurringEventId?: string
 ) {
   try {
-    //Extraemos el ID original (maestro) por si el evento es recurrente
-    const parentId = recurringEventId ?? id.split('_')[0]
 
     //Por defecto, preparamos la ruta para borrar un solo evento
     let endpoint = `/api/activities/${id}?mode=single`;
 
-    //Si el usuario confirmó borrar toda la serie, cambiamos la ruta para usar el ID Maestro
-    if (mode === 'all') {
-      endpoint = `/api/activities/${parentId}?mode=all`;
+    //Si el usuario confirmó borrar toda la serie y tenemos el ID maestro, cambiamos la ruta
+    if (mode === 'all' && recurringEventId) {
+      endpoint = `/api/activities/${recurringEventId}?mode=all`;
     } 
-
-    //Hacemos la petición a tu API intermedia
     await apiDelete(endpoint)
     return { success: true }
 
