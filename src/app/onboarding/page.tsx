@@ -3,9 +3,7 @@
 import { useState } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useAjustes } from "../../../hooks/user/useAjustes";
-import { HORARIOS_COMPLETOS, obtenerHorasFin } from "../../../hooks/utils/timeUtils";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label }  from "@/components/ui/label";
 import { GraduationCap, Briefcase, Clock} from "lucide-react";

@@ -2,6 +2,7 @@
 import { apiPost } from "./apiClient";
 import { Ajustes, SchemaAjustes } from "../../interfaces/ajustes";
 import { auth, clerkClient } from '@clerk/nextjs/server';
+import { syncUser } from "./syncUser";
 
 export interface AjustesPayload{
     ocupacion: string;
@@ -10,9 +11,14 @@ export interface AjustesPayload{
 }
 export async function saveAjustes(ajustes: AjustesPayload) {
    try {
-        console.log("Input to saveAjustes:", ajustes);
+    
+        const session = await syncUser();
+        if (!session) {
+        console.error('[SAVE_AJUSTES] No se pudo sincronizar el usuario');
+        return false;
+        }
+
         const validate = SchemaAjustes.parse(ajustes)
-        console.log("Output from Zod:", validate);
         const response = await apiPost<Ajustes>(`/api/users/me/settings`, validate) 
         console.log(response)
         
