@@ -54,7 +54,7 @@ export default function CalendarHeader({ toggleSidebar, currentDate, setCurrentD
               <HiMenu className="w-7 h-7" />
             </button>
             <div className="flex items-center">
-              <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
+              <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" priority/>
             </div>
           </div>
           <div className="flex items-center lg:gap-6 gap-3">

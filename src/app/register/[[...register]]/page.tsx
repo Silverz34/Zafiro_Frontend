@@ -30,7 +30,7 @@ export default function RegisterPage() {
       </div>
         <div className="w-full lg:w-1/2 bg-[#100F1D] lg:rounded-l-[3rem] py-25 px-45">
           <div className="flex items-center justify-center gap-2 mb-2">
-             <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
+             <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" priority/>
           </div>
            <SignUp
               appearance={{

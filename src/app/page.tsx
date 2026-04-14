@@ -9,7 +9,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col font-sans dark:bg-background">
       <header className="w-full py-5 px-8 flex justify-between items-center max-w-10xl mx-auto">
         <div className="flex items-center gap-2">
-          <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" />
+          <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" priority/>
         </div>
         <div className="flex gap-4 ">
           <Link href="/login" className="px-4 py-2 text-sm hover:text-blue-400 transition-colors ">
@@ -64,7 +64,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex justify-center md:justify-end">
-                <Image src="/calendar.png" alt="Ilustración" width={500} height={500} className="w-auto h-87.5 object-contain" />
+                <Image src="/calendar.png" alt="Ilustración" width={500} height={500} className="w-auto h-87.5 object-contain" priority/>
               </div>
             </div>
           </div>

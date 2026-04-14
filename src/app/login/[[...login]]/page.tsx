@@ -31,7 +31,7 @@ export default function Loginpage() {
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center bg-[#100F1D] lg:rounded-l-[3rem]">
         <div className="py-30 px-50">
           <div className="flex items-center justify-center gap-2 mb-8">
-            <Image priority src="/Logo_zafiro.png" alt="Zafiro Logo" width={300} height={100} className="h-15 w-auto" />
+            <Image src="/Logo_zafiro.png" alt="Zafiro Logo" width={300} height={100} className="h-15 w-auto" priority/>
          </div>
           <SignIn 
           appearance={{
