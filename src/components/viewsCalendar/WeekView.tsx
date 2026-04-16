@@ -73,7 +73,7 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                     {processedEvents.map(event => {
                       const tag = etiquetas.find((e) => e.id === (event as any).idEtiqueta);
                       const dynamicCardStyle = tag ? { backgroundColor: `${tag.color}33`, borderColor: tag.color } : {};
-
+                      const size: "medium-" | "large+" = event.positionStyle.height == "16px" || event.positionStyle.height == "32px" || event.positionStyle.height == "48px" || event.positionStyle.height == "64px" ? "medium-" : "large+"
                       const prioridadStr = (event as any).prioridad?.valor || (event as any).prioridadValor;
                       const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
                       const dynamicBarStyle = prioridadObj ? { backgroundColor: prioridadObj.hexColor } : (tag ? { backgroundColor: tag.color } : {});
@@ -93,14 +93,14 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                         className={`absolute left-1 right-1 border rounded-md p-1.5 
                           overflow-hidden shadow-sm backdrop-blur-sm transition-all z-10 flex flex-col justify-between ${event.isAllDay ? 'bg-blue-600/40 border-blue-400' : 'bg-blue-600/20 border-blue-500 hover:bg-blue-600/30'}`} style={{ ...event.positionStyle, ...dynamicCardStyle }}>
                         <div>
-                          <div className="flex items-center gap-1">
-                            {event.recurringEventId && <Repeat className="w-2.5 h-2.5 text-blue-200 shrink-0" />}
-                            <p className="text-[14px] font-bold text-blue-100 line-clamp-1">{event.summary}</p>
-                          </div>
-                          {event.transparency == 'opaque' && (
-                            <p className="text-[11px] font-medium text-gray-200">Ocupado</p>
-                          )}
-                          <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime} - {event.endTime}</p>
+                          {event.recurringEventId && <Repeat className="w-2.5 h-2.5 text-blue-200 shrink-0" />}
+                          <p className="text-[14px] font-bold text-blue-100 line-clamp-1">{event.summary}</p>
+                          <p className={`flex ${size == "medium-" ? "gap-2" : "flex-col"}`}>
+                            {event.transparency == 'opaque' && (
+                              <span className="text-[11px] font-medium text-gray-200">Ocupado</span>
+                            )}
+                            <span className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime} - {event.endTime}</span>
+                          </p>
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600" style={dynamicBarStyle}/>
                       </div>
