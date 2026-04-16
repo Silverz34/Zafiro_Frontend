@@ -30,7 +30,7 @@ export default function RegisterPage() {
         
         {/* Contenido sobre el fondo */}
         <div className="relative z-10 flex flex-col items-center text-center px-10">
-          <h1 className="text-5xl xl:text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 drop-shadow-xl mb-4">
+          <h1 className="text-5xl xl:text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-linear-to-br from-white to-gray-400 drop-shadow-xl mb-4">
             Empieza tu experiencia ahora
           </h1>
           <p className="text-gray-400 text-lg max-w-md font-medium">
@@ -39,7 +39,7 @@ export default function RegisterPage() {
         </div>
       </div>
       
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#100F1D] lg:rounded-l-[2.5rem] border-l border-[#2554E0]/20 shadow-[-20px_0_50px_-15px_rgba(37,84,224,0.15)] relative z-20">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#100F1D] lg:rounded-l-[2.5rem] border-l border-[#2554E0]/20  relative z-20">
         
         <div className="w-full max-w-md px-8 py-12 flex flex-col items-center">
           
