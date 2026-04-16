@@ -24,7 +24,7 @@ function extractLocalDateString(isoString: string): string {
   if (!isoString) return "";
   const d = new Date(isoString);
   if (isNaN(d.getTime())) return "";
-  return new Intl.DateTimeFormat('es-MX', {
+  return new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/Mexico_City',
     year: 'numeric',
     month: '2-digit',
@@ -36,7 +36,7 @@ function extractLocalTimeString(isoString: string): string {
   if (!isoString) return "";
   const d = new Date(isoString);
   if (isNaN(d.getTime())) return "";
-  return new Intl.DateTimeFormat('es-MX', {
+  return new Intl.DateTimeFormat('en-GB', {
     timeZone: 'America/Mexico_City',
     hour: '2-digit',
     minute: '2-digit',
@@ -45,7 +45,7 @@ function extractLocalTimeString(isoString: string): string {
 }
 
 function toLocalDateString(date: Date): string {
-  return new Intl.DateTimeFormat('es-MX', {
+  return new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/Mexico_City',
     year: 'numeric',
     month: '2-digit',
