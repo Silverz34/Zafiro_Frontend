@@ -61,7 +61,7 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                         {processedEvents.map(event => {
                             const tag = etiquetas.find((e) => e.id === (event as any).idEtiqueta);
                             const prioridadStr = (event as any).prioridad?.valor || (event as any).prioridadValor;
-                            console.log(event)
+                            const size: "smallest" | "small" | "smallish" | "medium" | "large" = event.positionStyle.height == "16px" ? "smallest" : event.positionStyle.height == "32px" ? "small" : event.positionStyle.height == "48px" ? "smallish" : event.positionStyle.height == "64px" ? "medium" : "large"
                             const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
 
                             const bgStyle = tag ? { backgroundColor: `${tag.color}33` } : {};
@@ -82,14 +82,17 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                                 className={`absolute left-2 right-4 border-l-4 rounded-r-md p-2 overflow-hidden shadow-sm backdrop-blur-sm transition-all z-10 flex flex-col ${event.isAllDay ? 'bg-blue-600/40 border-blue-400' : 'bg-blue-600/20 border-blue-500 hover:bg-blue-600/30'}`}
                                 style={dynamicCardStyle}
                             >
-                                <div className="flex items-center gap-1">
-                                    {event.recurringEventId && <Repeat className="w-3 h-3 text-blue-200" />}
-                                    <p className="text-sm font-bold text-blue-100">{event.summary}</p>
+                                <div className={`flex gap-1 ${size == "smallest" || size == "small" || size == "smallish" ? "items-center gap-2" : "flex-col"}`}>
+                                    <p className={`flex ${size != "large" ? "items-center gap-2" : "flex-col gap-1"}`}>
+                                        {event.recurringEventId && <Repeat className="w-3 h-3 text-blue-200" />}
+                                        <span className={`${size == "smallest" ? "text-[10px]" : size == "small" ? "text-[12px]" : "text-[14px]"} font-bold text-blue-100`}>{event.summary}</span>
+                                        {event.transparency == 'opaque' && (
+                                            <span className="text-[11px] font-medium text-gray-200">Ocupado</span>
+                                        )}
+                                    </p>
+                                    
+                                    <p className={`${size == "smallest" ? "text-[10px]" : size == "small" ? "text-[11px]" : "text-[12px]"} text-blue-300 font-medium`}>{event.formattedTime} - {event.endTime}</p>
                                 </div>
-                                {event.transparency == 'opaque' && (
-                                    <p className="text-[11px] font-medium text-gray-200">Ocupado</p>
-                                )}
-                                <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime} - {event.endTime}</p>
                             </div>
                             );
                         })}
