@@ -61,6 +61,7 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                         {processedEvents.map(event => {
                             const tag = etiquetas.find((e) => e.id === (event as any).idEtiqueta);
                             const prioridadStr = (event as any).prioridad?.valor || (event as any).prioridadValor;
+                            console.log(event)
                             const prioridadObj = PRIORIDADES.find(p => p.nivel === prioridadStr);
 
                             const bgStyle = tag ? { backgroundColor: `${tag.color}33` } : {};
@@ -88,7 +89,7 @@ export default function DayView({ currentDate, events, onOpenModal, onEventClick
                                 {event.transparency == 'opaque' && (
                                     <p className="text-[11px] font-medium text-gray-200">Ocupado</p>
                                 )}
-                                <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime}</p>
+                                <p className="text-xs text-blue-300 mt-1 font-medium">{event.formattedTime} - {event.endTime}</p>
                             </div>
                             );
                         })}

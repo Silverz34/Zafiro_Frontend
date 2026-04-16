@@ -100,7 +100,7 @@ export default function WeekView({ currentDate, events, onOpenModal, onEventClic
                           {event.transparency == 'opaque' && (
                             <p className="text-[11px] font-medium text-gray-200">Ocupado</p>
                           )}
-                          <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime}</p>
+                          <p className="text-[10px] text-blue-300 mt-0.5">{event.formattedTime} - {event.endTime}</p>
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600" style={dynamicBarStyle}/>
                       </div>
