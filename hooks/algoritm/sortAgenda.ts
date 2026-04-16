@@ -7,6 +7,12 @@ import { apiPost } from "../../lib/sincronizacion/apiClient"
 import { ApiError } from "../../lib/sincronizacion/apiError"
 
 export class algorithmHook {
+
+    /**
+     * Obtiene la fecha actual y la fecha límite según los días contemplados
+     * @param limit Número de días que se tomarán en cuenta
+     * @returns la fecha actual y la fecha máxima a tomar
+     */
     private createDates(limit: number): { today: string, end: string } {
         const today = new Date()
         const currentYear = today.getFullYear()
@@ -18,6 +24,11 @@ export class algorithmHook {
         return { today:todayStr, end:endStr }
     }
 
+    /**
+     * Convierte actividades de tipo `lecturaActividad` a `AgendaArray`
+     * @param activities Un conjunto de actividades sin convertir
+     * @returns Las actividades convertidas en datos usables por el algoritmo
+     */
     private parseActivities(activities: lecturaActividad[] ): AgendaArray {
         if (activities.length == 0) {
             return []
@@ -42,8 +53,11 @@ export class algorithmHook {
         return activitiesParsed
     }
 
+    /**Verifica que de todas las actividades recibidas al menos una no sea opaca, por que si no, el algoritmo no tiene con qué trabajar 
+    * @param actividades Un conjunto de actividades
+    * @returns Si existe por lo menos una tarea cuyo atributo `transparency` sea `"transparent"`
+    */
     private verifyActivities(actividades: lecturaActividad[]): boolean {
-        /**Verifica que de todas las actividades recibidas al menos una no sea opaca, por que si no, el algoritmo no tiene con qué trabajar */
         let isValid = false
         actividades.forEach((tarea) => {
             if (tarea.transparency == 'transparent') {
@@ -61,8 +75,7 @@ export class algorithmHook {
             const { today, end } = this.createDates(configParsed.dias_contemplados)
             const activities: lecturaActividad[] = await fetchGoogleEvents(today,end) ?? []
 
-            const activitiesParsed: AgendaArray = this.parseActivities(activities)
-            if (activitiesParsed.length == 0) {
+            if (activities.length == 0) {
                 console.error("[algorithmSort] No se recibieron actividades.")
                 return 400
             }
@@ -70,7 +83,7 @@ export class algorithmHook {
                 console.error("[algorithmSort] Todas las actividades recibidas fueron opacas.")
                 return 4000
             }
-            console.log(activitiesParsed)
+            const activitiesParsed: AgendaArray = this.parseActivities(activities)
 
             const payload: AlgorithmRequest = {
                 config: configParsed,
@@ -91,7 +104,6 @@ export class algorithmHook {
                 console.error('[algorithmSort] Error al reordenar las actividades.')
                 return 500
             }
-            console.log(response.data)
             return response.data
         }  catch (error) {
             if (error instanceof ApiError) {
@@ -116,9 +128,45 @@ export class algorithmHook {
         toast.success("¡Actividades actualizadas con éxito!", {
             description:'Actualiza la página para ver los cambios.'
         })
+
+        try {
+            const response = await apiPost<void>(
+                '/api/algorithm/success',
+                { exito: true }
+            )
+            if (!response.success) {
+                console.error('[algorithmSuccess] Error al subir la métrica.')
+                return
+            }
+            console.log("¡Gracias por usar nuestra aplicación! Se ha registrado tu uso de manera anónima.")
+        } catch (error) {
+            if (error instanceof ApiError) {
+            console.error(`[algorithmSuccess] Error ${error.status}:`, error.message)
+            } else {
+            console.error('[algorithmSuccess] Error:', error)
+            }
+            return
+        }
     }
 
     public async rejectChanges(): Promise<void> {
-        console.log('Digamos que estoy mandando la métrica')
+        try {
+            const response = await apiPost<void>(
+                '/api/algorithm/success',
+                { exito: false }
+            )
+            if (!response.success) {
+                console.error('[algorithmSuccess] Error al subir la métrica.')
+                return
+            }
+            console.log("¡Gracias por usar nuestra aplicación! Se ha registrado tu uso de manera anónima.")
+        } catch (error) {
+            if (error instanceof ApiError) {
+            console.error(`[algorithmSuccess] Error ${error.status}:`, error.message)
+            } else {
+            console.error('[algorithmSuccess] Error:', error)
+            }
+            return
+        }
     }
 }

@@ -100,7 +100,10 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                         >
                                             <div className="truncate mb-0.5">
                                                 <span className="font-bold mr-1 text-white">{event.formattedTime}</span>
-                                                <span className="font-medium text-white">{event.summary}</span>
+                                                <span className="font-medium mr-1 text-white">{event.summary}</span>
+                                                {event.transparency == 'opaque' && (
+                                                    <span className="font-bold text-gray-200">Ocupado</span>
+                                                )}
                                             </div>
                                             <div className="absolute bottom-0 left-0 right-0 h-[2.5px]" style={dynamicBarStyle}/>
                                         </div>
