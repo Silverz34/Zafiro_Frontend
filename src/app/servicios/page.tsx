@@ -69,7 +69,11 @@ export default function TerminosPage() {
               3. Uso de la Tecnología y Sincronización
             </h2>
             <p>
-              Zafiro utiliza algoritmos de vanguardia para la optimización de agenda. Al utilizar el servicio, el usuario autoriza la sincronización con servicios de terceros (como Google Calendar) para la lectura y escritura de eventos, necesaria para el funcionamiento del modelo adaptativo. El usuario mantiene en todo momento el control sobre la conexión y desconexión de estos servicios.
+              Zafiro utiliza algoritmos de vanguardia para la optimización de agenda. 
+              Al utilizar el servicio, el usuario autoriza la sincronización con servicios de terceros 
+              (como Google Calendar) para la lectura y escritura de eventos, necesaria para el funcionamiento
+               del modelo adaptativo. El usuario mantiene en todo momento el control sobre la conexión y 
+               desconexión de estos servicios.
             </p>
           </section>
 
@@ -79,7 +83,11 @@ export default function TerminosPage() {
               4. Limitación de Responsabilidad
             </h2>
             <p>
-              Zafiro es una herramienta de asistencia y apoyo a la toma de decisiones. Aunque el algoritmo busca optimizar la carga de trabajo y reducir la fatiga de decisión, la responsabilidad final sobre el cumplimiento de compromisos, citas y plazos recae exclusivamente en el usuario. Zafiro no se hace responsable por imprevistos derivados de fallos en la conectividad externa o interpretaciones del modelo algorítmico.
+              Zafiro es una herramienta de asistencia y apoyo a la toma de decisiones. 
+              Aunque el algoritmo busca optimizar la carga de trabajo y reducir la fatiga de decisión, 
+              la responsabilidad final sobre el cumplimiento de compromisos, citas y plazos recae exclusivamente 
+              en el usuario. Zafiro no se hace responsable por imprevistos derivados de fallos en la conectividad 
+              externa o interpretaciones del modelo algorítmico.
             </p>
           </section>
 
@@ -89,14 +97,19 @@ export default function TerminosPage() {
               5. Propiedad Intelectual
             </h2>
             <p>
-              Todo el contenido, algoritmos, diseños y software relacionado con el Proyecto Zafiro son propiedad exclusiva de sus desarrolladores. El usuario recibe una licencia limitada, no exclusiva y revocable para utilizar la plataforma conforme a su propósito de gestión personal.
+              Todo el contenido, algoritmos, diseños y software relacionado con el Proyecto Zafiro son propiedad 
+              exclusiva de sus desarrolladores. El usuario recibe una licencia limitada, no exclusiva y revocable 
+              para utilizar la plataforma conforme a su propósito de gestión personal.
             </p>
           </section>
 
           <section className="p-6 rounded-2xl bg-[#100F1D] border border-[#2554E0]/20">
             <h2 className="text-lg font-bold text-white mb-3">Compromiso Zafiro</h2>
             <p className="text-sm text-gray-400">
-              Reafirmamos nuestro compromiso de ser una herramienta que no solo organiza el tiempo, sino que custodia la identidad y la privacidad de quienes confían en nuestra tecnología para mejorar su calidad de vida. Para más información sobre el manejo de tus datos, consulta nuestra <Link href="/privacidad" className="text-[#2554E0] hover:underline">Política de Privacidad</Link>.
+              Reafirmamos nuestro compromiso de ser una herramienta que no solo organiza el tiempo, 
+              sino que custodia la identidad y la privacidad de quienes confían en nuestra tecnología para 
+              mejorar su calidad de vida. Para más información sobre el manejo de tus datos, consulta nuestra 
+              <Link href="/privacidad" className="text-[#2554E0] hover:underline">Política de Privacidad</Link>.
             </p>
           </section>
         </div>
