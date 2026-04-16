@@ -9,5 +9,5 @@ export const COLORES_ETIQUETA = [
   '#4ABDAC', 
   '#F47B6B', 
   '#8C6BAE', 
-  '#f561f5ff', 
+  '#F561F5', 
 ] as const;

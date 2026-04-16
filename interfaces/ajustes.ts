@@ -10,7 +10,7 @@ export const SchemaAjustes = z.object({
 
 //lectura
 export const SchemaAjust = z.object({
-  id: z.string,
+  id: z.string(),
   ocupacion: z.string(),
   hora_inicio: z.string(),
   hora_fin: z.string(),

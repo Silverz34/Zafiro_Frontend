@@ -27,8 +27,8 @@ export default function ConfirmDelete({
 }: ConfirmDeleteProps) {
   const [deleting, setDeleting] = useState(false)
   
-  // Detectamos si es recurrente
-  const isRecurring = Boolean(recurringEventId) || eventoId.includes('_');
+  // Detectamos si es recurrente solo por recurringEventId
+  const isRecurring = Boolean(recurringEventId);
 
   const handleDelete = async () => {
     setDeleting(true)
