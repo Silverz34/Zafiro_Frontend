@@ -52,7 +52,7 @@ function toLocalDateString(date: Date): string {
 }
 
 function toLocalISOString(fecha: string, hora: string): string {
-  return `${fecha}T${hora}:00$-06:00`
+  return `${fecha}T${hora}:00-06:00`
 }
 
 function parsePrioridadValor(prioridad?: string): PrioridadType {
