@@ -95,7 +95,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                                 const eventoOriginal = events.find((orig) => orig.id === event.id);
                                                 if (eventoOriginal) onEventClick(eventoOriginal);
                                             }}
-                                            className="relative overflow-hidden border text-[10px] px-1.5 py-1 rounded shadow-sm transition-all hover:opacity-80"
+                                            className="relative overflow-hidden border text-xs px-1.5 py-1 rounded shadow-sm transition-all hover:opacity-80"
                                             style={dynamicCardStyle}
                                         >
                                             <div className="truncate mb-0.5">
@@ -115,7 +115,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                         <PopoverTrigger asChild>
                                             <button 
                                                 onClick={(e) => e.stopPropagation()}
-                                                className="text-[10px] font-medium text-gray-400 hover:text-white text-left px-1 py-0.5 mt-auto rounded hover:bg-gray-800 transition-colors"
+                                                className="text-xs font-medium text-gray-400 hover:text-white text-left px-1 py-0.5 mt-auto rounded hover:bg-gray-800 transition-colors"
                                             >
                                                 + {cantidadSobrantes} más
                                             </button>
@@ -144,7 +144,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                                                 const eventoOriginal = events.find((orig) => orig.id === event.id);
                                                                 if (eventoOriginal) onEventClick(eventoOriginal);
                                                             }}
-                                                            className="relative overflow-hidden border text-[11px] h-15 px-2 py-1.5 rounded cursor-pointer shadow-sm transition-all hover:opacity-80 shrink-0"
+                                                            className="relative overflow-hidden border text-xs h-15 px-2 py-1.5 rounded cursor-pointer shadow-sm transition-all hover:opacity-80 shrink-0"
                                                             style={dynamicCardStyle}
                                                         >
                                                             <span className="truncate block font-medium mb-0.5 text-white">{event.summary}</span>

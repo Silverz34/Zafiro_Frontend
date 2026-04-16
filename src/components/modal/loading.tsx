@@ -6,7 +6,7 @@ export default function Loading(){
       <div className="relative flex h-screen w-full items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
             <FondoHero/>
-            <div className="absolute inset-0 bg-linear-to-t from-[#010112] via-[#010112]/60 to-[#010112]/30 backdrop-blur-[2px]"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-[#010112] via-[#010112]/60 to-[#010112]/30 backdrop-blur-sm"></div>
         </div>
         <div className="relative z-10 flex flex-col items-center gap-5 px-12 py-10 rounded-2xl">
             <Loader className="w-20 h-20 text-blue-500 animate-spin" />

@@ -52,9 +52,9 @@ export default function CompletarPerfil() {
 
   return (
     <div className="min-h-screen bg-[#0a0918] flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-[-10%] left-[-5%] w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-5%] w-80 h-80 bg-indigo-700/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute top-[40%] right-[20%] w-48 h-48 bg-blue-800/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-5%] w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-5%] w-80 h-80 bg-indigo-700/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-[40%] right-[20%] w-48 h-48 bg-blue-800/10 rounded-full blur-2xl pointer-events-none" />
 
       <Card className="w-full max-w-md bg-[#0d0c1e]/90 border border-[#1e1d3a] rounded-2xl shadow-2xl shadow-blue-950/40 backdrop-blur-sm relative z-10">
         <CardHeader className="px-7 pt-6 pb-2 text-center">

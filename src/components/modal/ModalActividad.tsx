@@ -51,7 +51,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
       <DialogContent
         className="
           bg-[#010112] border border-[#2554E0] text-white
-          max-w-120 w-full rounded-2xl
+          w-full max-w-2xl rounded-2xl
           shadow-2xl shadow-blue-950/60
           p-0 gap-0 overflow-hidden
           [&>button]:hidden
@@ -73,7 +73,7 @@ export default function ModalActividad({ isOpen, onClose, onSuccess, eventoInici
           </div>
         </DialogHeader>
 
-        <div className="px-6 py-5 flex flex-col gap-5 overflow-y-auto max-h-[72vh] scrollbar-thin scrollbar-thumb-[#2a2948] scrollbar-track-transparent">
+        <div className="px-6 py-5 flex flex-col gap-5 overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-[#2a2948] scrollbar-track-transparent">
           <div className="group">
             <Input
               value={titulo}
