@@ -24,14 +24,12 @@ function extractLocalDateString(isoString: string): string {
   if (!isoString) return "";
   const d = new Date(isoString);
   if (isNaN(d.getTime())) return "";
-  const parts = new Intl.DateTimeFormat('sv-SE', {
+  return new Intl.DateTimeFormat('es-MX', {
     timeZone: 'America/Mexico_City',
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  }).formatToParts(d);
-  const year = parts.find(p => p.type === 'year')?.value;
-  const month = parts.find(p => p.type === 'month')?.value;
-  const day = parts.find(p => p.type === 'day')?.value;
-  return `${year}-${month}-${day}`;
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(d);
 }
 
 function extractLocalTimeString(isoString: string): string {
@@ -40,15 +38,19 @@ function extractLocalTimeString(isoString: string): string {
   if (isNaN(d.getTime())) return "";
   return new Intl.DateTimeFormat('es-MX', {
     timeZone: 'America/Mexico_City',
-    hour: '2-digit', minute: '2-digit', hour12: false
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
   }).format(d);
 }
 
 function toLocalDateString(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  return new Intl.DateTimeFormat('es-MX', {
+    timeZone: 'America/Mexico_City',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date);
 }
 
 function toLocalISOString(fecha: string, hora: string): string {
@@ -148,7 +150,7 @@ export function useModalActividad({ onClose, onSuccess, eventoInicial, modo }: U
 
     if (modo === "editar" && idMaestro) {
       const startISO = isAllDay ? undefined : toLocalISOString(fecha, horaInicio);
-      const fechaInicioParaRegla = startISO ?? `${fecha}T00:00:00`;
+      const fechaInicioParaRegla = startISO ?? `${fecha}T00:00:00-06:00`;
       const reglaCalculada = generarRegla(fechaInicioParaRegla, recurrence as TipoOcurrencia);
 
       await handleEditar(
