@@ -52,13 +52,7 @@ function toLocalDateString(date: Date): string {
 }
 
 function toLocalISOString(fecha: string, hora: string): string {
-  const dt = new Date(`${fecha}T${hora}:00`)
-  const offsetMinutes = dt.getTimezoneOffset()
-  const sign = offsetMinutes <= 0 ? '+' : '-'
-  const absOffset = Math.abs(offsetMinutes)
-  const hh = String(Math.floor(absOffset / 60)).padStart(2, '0')
-  const mm = String(absOffset % 60).padStart(2, '0')
-  return `${fecha}T${hora}:00${sign}${hh}:${mm}`
+  return `${fecha}T${hora}:00$-06:00`
 }
 
 function parsePrioridadValor(prioridad?: string): PrioridadType {
