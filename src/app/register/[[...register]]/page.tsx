@@ -1,6 +1,6 @@
 'use client'
 
-import { SignUp , useAuth} from '@clerk/nextjs';
+import { SignUp, useAuth } from '@clerk/nextjs';
 import Image from 'next/image';
 import { FondoHero } from '@/components/landing/Hero/fondo-hero';
 import Loading from '@/components/modal/loading';
@@ -8,67 +8,101 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function RegisterPage() {
-  const {isLoaded, userId} = useAuth();
-    const router = useRouter();
-  
-    useEffect(()=>{
-      if(isLoaded && userId){
-        router.push('/calendar');
-      }
-    }, [isLoaded,userId,router]);
-  
-    if(!isLoaded || userId){
-      return <Loading/>;
+  const { isLoaded, userId } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && userId) {
+      router.push('/calendar');
     }
+  }, [isLoaded, userId, router]);
+
+  if (!isLoaded || userId) {
+    return <Loading />;
+  }
+
   return (
-    <main className="relative min-h-screen w-full flex overflow-hidden">
-      <div className="relative hidden lg:flex lg:w-1/2 items-center justify-center">
-            <FondoHero /> 
-            <h1 className="relative z-10 text-white text-4xl font-bold tracking-tighter">
-             Empieza tu experiencia ahora
-            </h1>
+    <main className="relative min-h-screen w-full flex overflow-hidden bg-[#010112]">
+      
+      {/* Lado Izquierdo: Hero & Branding */}
+      <div className="relative hidden lg:flex lg:w-1/2 flex-col items-center justify-center">
+        <FondoHero /> 
+        
+        {/* Contenido sobre el fondo */}
+        <div className="relative z-10 flex flex-col items-center text-center px-10">
+          <h1 className="text-5xl xl:text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-linear-to-br from-white to-gray-400 drop-shadow-xl mb-4">
+            Empieza tu experiencia ahora
+          </h1>
+          <p className="text-gray-400 text-lg max-w-md font-medium">
+            Únete a Zafiro y transforma tu manera de organizar el tiempo y tus proyectos.
+          </p>
+        </div>
       </div>
-        <div className="w-full lg:w-1/2 bg-[#100F1D] lg:rounded-l-[3rem] py-25 px-45">
-          <div className="flex items-center justify-center gap-2 mb-2">
-             <Image loading="eager" src="/Logo_zafiro.png" alt="Zafiro Logo" width={500} height={500} className="h-10 w-auto" priority/>
-          </div>
-           <SignUp
-              appearance={{
-                      variables: {
-                        colorPrimary: '#2563eb',
-                        colorBackground: '#100F1D', 
-                        colorText: 'white', 
-                        colorInputBackground: 'rgba(30, 41, 59, 0.5)', 
-                        colorInputText: 'white',
-                        fontSize: '1.1rem', 
-                        spacingUnit: '1.2rem'
-                      },
-                      elements: {
-                        rootBox: "!w-full",
-                        cardBox: "!w-full !shadow-none !bg-transparent", 
-                        card: "!w-full !max-w-none !shadow-none !bg-transparent !p-0",
-                        main: "!w-full !flex !flex-col !gap-4",
-                      
-                        headerTitle: "!hidden",
-                        headerSubtitle: "!hidden",
-           
-                        formFieldLabel: "!text-gray-300 !text-base !ml-1 !font-normal",
-                        formFieldInput: "!rounded-lg !py-3 !px-4 focus:!border-blue-500 !transition-colors",
-                        formButtonPrimary: "!py-3 !rounded-lg !mt-4 !text-base !normal-case !shadow-lg !shadow-blue-900/20",
-                        socialButtonsBlockButton: "!border-gray-600 hover:!bg-gray-800/50 !transition-all",
-                        socialButtonsBlockButtonText: "!text-white !font-normal",
-                        socialButtonsBlockButtonArrow: "!text-white",
-                        dividerLine: "!bg-gray-700",
-                        dividerText: "!text-gray-400",
+      
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#100F1D] lg:rounded-l-[2.5rem] border-l border-[#2554E0]/20  relative z-20">
+        
+        <div className="w-full max-w-md px-8 py-12 flex flex-col items-center">
           
-                        footerActionText: "!text-gray-400 !text-base",
-                        footerActionLink: "!text-blue-600 hover:!text-blue-500 !text-base !font-normal",
+          <div className="flex items-center justify-center mb-10">
+            <Image 
+              priority 
+              src="/Logo_zafiro.png" 
+              alt="Zafiro Logo" 
+              width={300} 
+              height={100} 
+              className="h-14 w-auto drop-shadow-lg" 
+            />
+          </div>
+          
+          <SignUp
+            appearance={{
+              layout: {
+                socialButtonsPlacement: "bottom", 
+              },
+              variables: {
+                colorPrimary: '#2554E0', // Azul Zafiro
+                colorBackground: 'transparent',
+                colorText: '#F5F5F5',
+                colorInputBackground: '#171733',
+                colorInputText: '#F5F5F5',
+                borderRadius: '0.75rem', 
+              },
+              elements: {
+                rootBox: "!w-full",
+                cardBox: "!w-full !shadow-none !bg-transparent", 
+                card: "!w-full !max-w-none !shadow-none !bg-transparent !p-0",
+                main: "!w-full !flex !flex-col !gap-5",
+              
+                headerTitle: "!hidden",
+                headerSubtitle: "!hidden",
+   
+                // Inputs
+                formFieldLabel: "!text-gray-300 !text-sm !font-medium !mb-1.5",
+                formFieldInput: "!bg-[#171733] !border-transparent focus:!border-[#2554E0] focus:!ring-1 focus:!ring-[#2554E0] !rounded-xl !py-3.5 !px-4 !transition-all !shadow-inner",
+                
+                // Botón Principal
+                formButtonPrimary: "!bg-[#2554E0] hover:!bg-blue-600 !py-3.5 !rounded-xl !text-base !font-semibold !transition-all !shadow-lg !shadow-blue-900/30",
+                
+                // Botones Sociales
+                socialButtonsBlockButton: "!bg-[#171733] !border-gray-700/50 hover:!border-[#2554E0]/50 hover:!bg-[#1e1e40] !rounded-xl !py-3.5 !transition-all",
+                socialButtonsBlockButtonText: "!text-gray-200 !font-medium",
+                socialButtonsBlockButtonArrow: "!text-gray-400",
+                
+                // Separadores
+                dividerRow: "!my-2",
+                dividerLine: "!bg-gray-700/50",
+                dividerText: "!text-gray-400 !text-sm !font-medium",
+
+                footerActionText: "!text-gray-400 !text-sm",
+                footerActionLink: "!text-[#2554E0] hover:!text-blue-400 !text-sm !font-semibold !transition-colors",
+                identityPreviewText: "!text-gray-300",
+                identityPreviewEditButton: "!text-[#2554E0] hover:!text-blue-400",
               }
             }}
           />
           
         </div>
-      
+      </div>
     </main>
   );
 }
