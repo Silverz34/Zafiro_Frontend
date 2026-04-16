@@ -2,7 +2,6 @@
 import { CalendarLogic } from "../../../hooks/calendar/calendar"
 import type { ViewProps } from "../../../interfaces/types/props";
 import { calcularSemaforo } from "../../../hooks/calendar/semaforo";
-import { useEtiquetas } from "../../../hooks/user/useEtiquetas";
 import { PRIORIDADES } from "../../../hooks/custom/modalconstantes";
 import { useEtiquetasCtx } from "@/context/EtiquetaContext";
 import CalendarLoader from "./CalendarLoader";
@@ -128,7 +127,7 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                                 {date.toLocaleDateString('es-MX', { weekday: 'short', day: 'numeric', month: 'short' })}
                                             </div>
                                             
-                                            <div className="flex flex-col gap-1.5 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 pr-1">
+                                            <div className="flex flex-col gap-1.5 max-h-50 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent pr-1">
                                                 
                                                 {processedEvents.map(event => {
                                                     const { dynamicCardStyle, dynamicBarStyle } = getEventStyles(event);
@@ -142,11 +141,11 @@ export default function MonthView({ currentDate, events, onOpenModal, onEventCli
                                                                 const eventoOriginal = events.find((orig) => orig.id === event.id);
                                                                 if (eventoOriginal) onEventClick(eventoOriginal);
                                                             }}
-                                                            className="relative overflow-hidden border text-[11px] px-2 py-1.5 rounded cursor-pointer shadow-sm transition-all hover:opacity-80"
+                                                            className="relative overflow-hidden border text-[11px] h-15 px-2 py-1.5 rounded cursor-pointer shadow-sm transition-all hover:opacity-80 shrink-0"
                                                             style={dynamicCardStyle}
                                                         >
-                                                            <span className="font-bold mr-1 block mb-0.5 text-white">{event.formattedTime}</span>
                                                             <span className="truncate block font-medium mb-0.5 text-white">{event.summary}</span>
+                                                            <span className="font-bold mr-1 block mb-0.5 text-white">{event.formattedTime}</span>
                                                             <div className="absolute bottom-0 left-0 right-0 h-0.75" style={dynamicBarStyle}/>
                                                         </div>
                                                     );
