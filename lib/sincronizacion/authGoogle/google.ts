@@ -21,6 +21,8 @@ export async function initiateGoogle() {
       '/api/integrations/google/connect'
     )
     
+    console.log('[GOOGLE_CONNECT] Response:', response)
+
     if (response.success && response.data?.url) {
       return { success: true, url: response.data.url }
     }
@@ -37,6 +39,7 @@ export async function getGoogle(){
       const response = await apiGet<GoogleConnectionStatus>(
         '/api/integrations/google/status'
       )
+      console.log('[GOOGLE_STATUS] Response:', response)
       return response.data
     }
     catch(error){
