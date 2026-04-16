@@ -6,6 +6,8 @@ const isPublicRoute = createRouteMatcher([
   '/',
   '/login(.*)',
   '/register(.*)',
+  '/privacidad',
+  '/servicios'
 ])
 
 const onboardingRoutes = createRouteMatcher(['/onboarding'])
