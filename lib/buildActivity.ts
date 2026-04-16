@@ -8,13 +8,7 @@ function mapPrioridad(prioridad: PrioridadType): 'alta' | 'media' | 'baja' {
 }
 
 function toLocalISOString(fecha: string, hora: string): string {
-  const dt = new Date(`${fecha}T${hora}:00`)
-  const offsetMinutes = dt.getTimezoneOffset()
-  const sign = offsetMinutes <= 0 ? '+' : '-'
-  const absOffset = Math.abs(offsetMinutes)
-  const hh = String(Math.floor(absOffset / 60)).padStart(2, '0')
-  const mm = String(absOffset % 60).padStart(2, '0')
-  return `${fecha}T${hora}:00${sign}${hh}:${mm}`
+  return `${fecha}T${hora}:00-06:00`
 }
 
 export function buildActivityPayload(form: FormActividad): CrearActividad {
@@ -40,7 +34,7 @@ export function buildActivityPayload(form: FormActividad): CrearActividad {
     transparency: form.transparency,
 
     recurrence: generarRegla(
-      startISO ?? `${form.fecha}T00:00:00`,
+      startISO ?? `${form.fecha}T00:00:00-06:00`,
       form.recurrence
     ),
 
